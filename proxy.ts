@@ -9,11 +9,12 @@ const FIRST_HOST = 'salesroom-maininstancelai.vercel.app';
 const SITE_HOST = new URL(SITE_URL).host;
 const APP_HOST = new URL(APP_URL).host;
 
-// The signed-in app lives on its own address, so its session cookie is never sent to the public
-// site. Buyer rooms (/r/) and the API (/api/) answer on both: room links already sent out keep
-// working on the public address, and a member can preview a draft room while signed in to the app.
-const APP_PREFIXES = ['/login', '/onboarding', '/w', '/invite', '/admin', '/auth', '/content'];
-const SITE_PATHS = new Set(['/contact', '/privacy', '/terms', '/cookies', '/llms.txt', '/sitemap.xml']);
+// The signed-in app lives on its own address; sign-in (/login) stays on the public site, and the
+// session cookie is shared across the parent domain so it carries over. Buyer rooms (/r/), the API
+// (/api/) and the sign-in callback (/auth/) answer on both: room links already sent out keep working
+// on the public address, and the admin console signs in on the app address.
+const APP_PREFIXES = ['/onboarding', '/w', '/invite', '/admin', '/content'];
+const SITE_PATHS = new Set(['/login', '/contact', '/privacy', '/terms', '/cookies', '/llms.txt', '/sitemap.xml']);
 
 const isAppPath = (pathname: string) => APP_PREFIXES.some((p) => pathname === p || pathname.startsWith(`${p}/`));
 

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { Brand } from '@/components/ui/Brand';
+import { appOrigin } from '@/lib/origin';
 import { safeNextPath } from '@/lib/safe-next';
 import { getUser } from '@/lib/supabase/server';
 import { LoginForm } from './LoginForm';
@@ -12,7 +13,7 @@ export default async function LoginPage({
 }) {
   const { next, error } = await searchParams;
   const target = safeNextPath(next);
-  if (await getUser()) redirect(target);
+  if (await getUser()) redirect(`${await appOrigin()}${target}`);
 
   return (
     <main className="center">
