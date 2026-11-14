@@ -1,6 +1,6 @@
 import { linksCsv } from '@/lib/audience-core';
 import { getAudience, linkRows } from '@/lib/audiences';
-import { appOrigin } from '@/lib/origin';
+import { siteOrigin } from '@/lib/origin';
 import { getTrackDetail } from '@/lib/tracks';
 import { getWorkspaceContext } from '@/lib/workspaces';
 
@@ -17,7 +17,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ work
   const [found, detail] = await Promise.all([getAudience(context.workspace.id, audienceId), getTrackDetail(context.workspace.id, trackId)]);
   if (!found || !detail) return new Response('Not found', { status: 404 });
 
-  const rows = await linkRows(audienceId, trackId, await appOrigin(), context.workspace.slug, detail.track.slug);
+  const rows = await linkRows(audienceId, trackId, await siteOrigin(), context.workspace.slug, detail.track.slug);
   return new Response(linksCsv(rows), {
     headers: {
       'content-type': 'text/csv; charset=utf-8',

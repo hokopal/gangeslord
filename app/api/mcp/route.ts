@@ -1,7 +1,7 @@
 import { toolsFor } from '@/lib/api/tools';
 import { authenticateApiKey, countRequest, rateHeaders } from '@/lib/api-keys';
 import { handleMcpBody } from '@/lib/mcp';
-import { appOrigin } from '@/lib/origin';
+import { siteOrigin } from '@/lib/origin';
 import { planIncludesMcp } from '@/lib/plan-limits';
 
 export const maxDuration = 30;
@@ -32,7 +32,7 @@ export async function POST(request: Request) {
   } catch {
     return json({ jsonrpc: '2.0', id: null, error: { code: -32700, message: 'Parse error.' } }, 400, headers);
   }
-  const reply = await handleMcpBody(body, toolsFor(caller, await appOrigin()), { canWrite: caller.scope === 'write' });
+  const reply = await handleMcpBody(body, toolsFor(caller, await siteOrigin()), { canWrite: caller.scope === 'write' });
   return reply === null ? new Response(null, { status: 202, headers }) : json(reply, 200, headers);
 }
 

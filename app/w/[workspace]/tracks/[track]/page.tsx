@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { TYPE_LABEL, TypeIcon } from '@/components/assets/labels';
 import { CopyButton } from '@/components/ui/CopyButton';
+import { siteOrigin } from '@/lib/origin';
 import { SubmitButton } from '@/components/ui/SubmitButton';
 import { listAssets } from '@/lib/assets';
 import { errorMessage } from '@/lib/messages';
@@ -38,6 +39,7 @@ export default async function TrackEditorPage({
   const published = track.status === 'published';
   const base = `/w/${workspace.slug}/tracks/${track.id}`;
   const roomPath = `/r/${workspace.slug}/${track.slug}`;
+  const roomOrigin = await siteOrigin();
   const selected = items.find((i) => i.id === sp.item) ?? null;
   const cta = (placement: 'header' | 'sidebar') => ctas.find((c) => c.placement === placement);
   const itemCta = selected ? ctas.find((c) => c.placement === 'item' && c.trackItemId === selected.id) : undefined;
@@ -69,7 +71,7 @@ export default async function TrackEditorPage({
             <ExternalLink width={14} height={14} aria-hidden="true" />
             {published ? 'Open room' : 'Preview room'}
           </a>
-          {published ? <CopyButton path={roomPath} label="Copy room link" /> : null}
+          {published ? <CopyButton origin={roomOrigin} path={roomPath} label="Copy room link" /> : null}
           {can(role, 'content.publish') ? (
             <form action={publishTrackAction}>
               {hidden}
@@ -204,7 +206,7 @@ export default async function TrackEditorPage({
                     Save item
                   </SubmitButton>
                 ) : null}
-                <CopyButton path={`${roomPath}/${selected.slug}`} label="Copy direct link" />
+                <CopyButton origin={roomOrigin} path={`${roomPath}/${selected.slug}`} label="Copy direct link" />
               </div>
             </form>
           ) : (

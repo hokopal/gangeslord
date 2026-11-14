@@ -2,6 +2,7 @@ import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { CopyButton } from '@/components/ui/CopyButton';
+import { siteOrigin } from '@/lib/origin';
 import { RatioBar, Stat, formatWhen } from '@/components/ui/Stat';
 import { SubmitButton } from '@/components/ui/SubmitButton';
 import { formatDuration, formatPercent, itemStats, sessionTotals, summarize, visitorLabel } from '@/lib/analytics';
@@ -39,6 +40,7 @@ export default async function TrackAnalyticsPage({
   );
   const base = `/w/${workspace.slug}/analytics`;
   const roomPath = `/r/${workspace.slug}/${track.slug}`;
+  const roomOrigin = await siteOrigin();
   const canWrite = can(role, 'links.write');
   const published = track.status === 'published';
   const hidden = (
@@ -190,7 +192,7 @@ export default async function TrackAnalyticsPage({
                       <form action={deleteShareLinkAction} style={{ display: 'inline-flex', gap: 6 }}>
                         {hidden}
                         <input type="hidden" name="link" value={link.id} />
-                        <CopyButton path={`${roomPath}?r=${link.token}`} label="Copy link" />
+                        <CopyButton origin={roomOrigin} path={`${roomPath}?r=${link.token}`} label="Copy link" />
                         {canWrite ? <SubmitButton className="btn btn-sm btn-danger">Delete</SubmitButton> : null}
                       </form>
                     </td>

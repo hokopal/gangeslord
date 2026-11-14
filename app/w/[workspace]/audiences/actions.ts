@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { deleteAudience, generateLinks, importSegment, writeLinksToHubspot } from '@/lib/audiences';
-import { appOrigin } from '@/lib/origin';
+import { siteOrigin } from '@/lib/origin';
 import { can } from '@/lib/roles';
 import { getTrackDetail } from '@/lib/tracks';
 import { getWorkspaceContext } from '@/lib/workspaces';
@@ -71,7 +71,7 @@ export async function writeLinksAction(formData: FormData): Promise<void> {
   const { workspace, slug, back, audienceId, track } = await linkContext(formData);
   let count: number;
   try {
-    count = await writeLinksToHubspot(workspace.id, audienceId, track.id, await appOrigin(), slug, track.slug);
+    count = await writeLinksToHubspot(workspace.id, audienceId, track.id, await siteOrigin(), slug, track.slug);
   } catch (error) {
     redirect(`${back}?error=${encodeURIComponent(codeOf(error))}`);
   }

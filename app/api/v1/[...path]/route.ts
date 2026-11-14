@@ -1,6 +1,6 @@
 import { ApiError, apiCreateLink, apiListLibrary, apiListTracks, apiRecentSessions, apiTrackAnalytics } from '@/lib/api/service';
 import { authenticateApiKey, countRequest, rateHeaders, type ApiCaller } from '@/lib/api-keys';
-import { appOrigin } from '@/lib/origin';
+import { siteOrigin } from '@/lib/origin';
 
 export const maxDuration = 30;
 
@@ -27,7 +27,7 @@ async function route(request: Request, path: string[], caller: ApiCaller): Promi
     } catch {
       throw new ApiError(400, 'invalid_request', 'The request body must be JSON.');
     }
-    return apiCreateLink(caller.workspaceId, caller.workspaceSlug, id, body ?? {}, await appOrigin());
+    return apiCreateLink(caller.workspaceId, caller.workspaceSlug, id, body ?? {}, await siteOrigin());
   }
   throw new ApiError(404, 'not_found', 'No such endpoint.');
 }

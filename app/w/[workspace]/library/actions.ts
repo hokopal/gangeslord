@@ -10,7 +10,7 @@ import {
   updateAsset,
   switchToLivePage,
 } from '@/lib/assets';
-import { appOrigin } from '@/lib/origin';
+import { siteOrigin } from '@/lib/origin';
 import { can, type Action } from '@/lib/roles';
 import { getWorkspaceContext, type WorkspaceContext } from '@/lib/workspaces';
 
@@ -31,7 +31,7 @@ export async function addContentAction(formData: FormData): Promise<void> {
   const urls = [...new Set(text(formData, 'urls').split(/\s+/).filter(Boolean))].slice(0, MAX_URLS);
   if (urls.length === 0) redirect(`${back}?error=url_invalid`);
 
-  const origin = await appOrigin();
+  const origin = await siteOrigin();
   let failed = 0;
   let review = 0;
   let lastId = '';
@@ -101,7 +101,7 @@ export async function saveSnapshotAction(formData: FormData): Promise<void> {
   const { workspace } = await authorize(slug, 'content.write', back);
   if (text(formData, 'rights') !== 'on') redirect(`${back}?error=rights_required`);
   try {
-    await saveSnapshot(workspace.id, id, await appOrigin());
+    await saveSnapshot(workspace.id, id, await siteOrigin());
   } catch (error) {
     redirect(`${back}?error=${encodeURIComponent(codeOf(error))}`);
   }
@@ -115,7 +115,7 @@ export async function switchToLivePageAction(formData: FormData): Promise<void> 
   const back = `/w/${slug}/library/${id}`;
   const { workspace } = await authorize(slug, 'content.write', back);
   try {
-    await switchToLivePage(workspace.id, id, await appOrigin());
+    await switchToLivePage(workspace.id, id, await siteOrigin());
   } catch (error) {
     redirect(`${back}?error=${encodeURIComponent(codeOf(error))}`);
   }

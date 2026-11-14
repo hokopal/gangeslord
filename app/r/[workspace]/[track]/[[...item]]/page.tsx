@@ -7,7 +7,7 @@ import { RoomViewer } from '@/components/room/RoomViewer';
 import { WelcomeNote } from '@/components/room/WelcomeNote';
 import { personalizeRoom, renderMerge, type MergeFields } from '@/lib/merge';
 import { applyOrder } from '@/lib/optimize';
-import { appOrigin } from '@/lib/origin';
+import { siteOrigin } from '@/lib/origin';
 import { initialItem } from '@/lib/room';
 import { normalizeDisplay, publicForm, type Display, type PublicForm } from '@/lib/room-options';
 import { loadRoom } from '@/lib/room-server';
@@ -108,7 +108,7 @@ export default async function RoomPage({
         form={extras.form ? { ...extras.form, locked } : null}
         formDone={formDone}
         known={known}
-        shareUrl={`${await appOrigin()}/r/${room.workspace.slug}/${room.track.slug}`}
+        shareUrl={`${await siteOrigin()}/r/${room.workspace.slug}/${room.track.slug}`}
       />
       <WelcomeNote text={renderMerge(extras.welcome, extras.fields)} />
       {room.track.published ? (

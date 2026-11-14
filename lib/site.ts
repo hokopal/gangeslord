@@ -1,5 +1,12 @@
 /** Where the public site lives. NEXT_PUBLIC_SITE_URL overrides it, for a staging copy on another address. */
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.pipemouse.com').replace(/\/$/, '');
+/**
+ * Where the signed-in app lives. NEXT_PUBLIC_APP_URL overrides it. A staging copy that sets only
+ * NEXT_PUBLIC_SITE_URL keeps the site and the app together on that one address.
+ */
+export const APP_URL = (
+  process.env.NEXT_PUBLIC_APP_URL ?? (process.env.NEXT_PUBLIC_SITE_URL ? SITE_URL : 'https://space.pipemouse.com')
+).replace(/\/$/, '');
 export const SITE_NAME = 'Pipemouse';
 export const SITE_TAGLINE = 'Send buyers a room, not a pile of links';
 export const SITE_DESCRIPTION =
