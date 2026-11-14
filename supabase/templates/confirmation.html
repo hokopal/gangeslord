@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light only">
+    <title>Confirm your email for Pipemouse</title>
+  </head>
+  <body style="margin:0;padding:0;background:#f6f4f1;">
+    <div style="display:none;max-height:0;overflow:hidden;opacity:0;">One click and your workspace is ready.</div>
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f6f4f1" style="background:#f6f4f1;">
+      <tr>
+        <td align="center" style="padding:40px 16px;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:520px;">
+            <tr>
+              <td bgcolor="#1d1630" style="background:#1d1630;border-radius:14px 14px 0 0;padding:22px 32px;">
+                <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td style="vertical-align:middle;"><img src="https://www.pipemouse.com/apple-icon" width="32" height="32" alt="" style="display:block;border:0;border-radius:8px;"></td>
+                    <td style="vertical-align:middle;padding-left:12px;font-family:'Bricolage Grotesque', 'Segoe UI', Helvetica, Arial, sans-serif;font-size:20px;font-weight:700;letter-spacing:-0.02em;color:#ffffff;">Pipemouse</td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td bgcolor="#ffffff" style="background:#ffffff;border:1px solid #ddd8e6;border-top:0;border-radius:0 0 14px 14px;padding:36px 32px 32px;">
+              <h1 style="margin:0 0 16px;font-family:'Bricolage Grotesque', 'Segoe UI', Helvetica, Arial, sans-serif;font-size:28px;font-weight:700;line-height:32px;letter-spacing:-0.02em;color:#1a1523;">Welcome to Pipemouse</h1>
+              <p style="margin:0 0 14px;font-family:-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;font-size:16px;line-height:25px;color:#1a1523;">Confirm this is your email address and we’ll open your workspace.</p>
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:28px 0 8px;">
+                <tr>
+                  <td bgcolor="#ffc247" style="border-radius:8px;">
+                    <a href="https://www.pipemouse.com/auth/callback?token_hash={{ .TokenHash }}&type=email&redirect_to={{ .RedirectTo }}" target="_blank" style="display:inline-block;padding:14px 26px;font-family:-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;font-size:16px;font-weight:600;line-height:20px;color:#1a1523;text-decoration:none;border-radius:8px;">Confirm my email</a>
+                  </td>
+                </tr>
+              </table>
+              <p style="margin:20px 0 0;font-family:-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;font-size:13px;line-height:20px;color:#6b5ca5;">Button not working? Paste this link into your browser:<br><a href="https://www.pipemouse.com/auth/callback?token_hash={{ .TokenHash }}&type=email&redirect_to={{ .RedirectTo }}" target="_blank" style="color:#6b5ca5;word-break:break-all;">https://www.pipemouse.com/auth/callback?token_hash={{ .TokenHash }}&type=email&redirect_to={{ .RedirectTo }}</a></p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:24px 32px 0;font-family:-apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;font-size:13px;line-height:20px;color:#6b5ca5;">
+                If you didn’t ask for this email, you can ignore it. Nothing changes until the link is used.<br>
+                <a href="https://www.pipemouse.com" target="_blank" style="color:#6b5ca5;">pipemouse.com</a>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
