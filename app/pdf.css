@@ -1,0 +1,193 @@
+/* ── Pipemouse's PDF viewer ─ */
+.pdf {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--hover);
+}
+
+.pdf-bar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 36px;
+  padding: 0 12px;
+  flex: none;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.pdf-count {
+  margin-right: auto;
+}
+
+.pdf-zoom {
+  min-width: 40px;
+  text-align: center;
+}
+
+.pdf-bar .icon-button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.pdf-pages {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.pdf-pages:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.pdf-page {
+  flex: none;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(15, 15, 15, 0.14);
+}
+
+.pdf-page canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.pdf-page {
+  position: relative;
+}
+
+/* Selectable text laid over the drawn page. It is transparent: the drawing underneath is what you see. */
+.pdf-text {
+  position: absolute;
+  inset: 0;
+  overflow: clip;
+  line-height: 1;
+  text-size-adjust: none;
+  forced-color-adjust: none;
+  transform-origin: 0 0;
+}
+
+.pdf-text span,
+.pdf-text br {
+  position: absolute;
+  color: transparent;
+  white-space: pre;
+  cursor: text;
+  transform-origin: 0% 0%;
+}
+
+.pdf-text ::selection {
+  background: color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+.pdf-text br::selection {
+  background: transparent;
+}
+
+/* Page-by-page reading, for the room's owner. */
+.page-bar {
+  display: block;
+  height: 8px;
+  min-width: 2px;
+  border-radius: 4px;
+  background: var(--accent);
+}
+
+/* ── Marking up a page: pen, marker, pinned sticky notes ─ */
+.pdf-tools {
+  display: flex;
+  gap: 2px;
+  margin-right: 8px;
+  padding-right: 8px;
+  border-right: 1px solid var(--border);
+}
+
+.pdf-tools .icon-button[aria-pressed="true"] {
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  color: var(--accent);
+}
+
+.pdf-marks {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  /* Out of the way while reading, so text underneath stays selectable. */
+  pointer-events: none;
+}
+
+.pdf-marks[data-tool="pen"],
+.pdf-marks[data-tool="marker"] {
+  pointer-events: auto;
+  cursor: crosshair;
+  /* A finger or stylus draws; it does not scroll the page. */
+  touch-action: none;
+}
+
+.pdf-marks[data-tool="note"] {
+  pointer-events: auto;
+  cursor: copy;
+}
+
+.pdf-marks[data-tool="erase"] polyline {
+  pointer-events: stroke;
+  cursor: pointer;
+}
+
+.pdf-pin {
+  position: absolute;
+  z-index: 2;
+  transform: translate(-50%, -50%);
+}
+
+.pdf-pin > button {
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #e0b100;
+  border-radius: 6px 6px 6px 0;
+  background: #ffe066;
+  color: #5c4310;
+  box-shadow: 0 1px 3px rgba(15, 15, 15, 0.25);
+  cursor: pointer;
+}
+
+.pdf-pin-note,
+.pdf-pin-draft {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 220px;
+  margin: 6px 0 0;
+  padding: 10px;
+  border-radius: 8px;
+  background: #fff7c2;
+  color: #3a3200;
+  font-size: 13px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  box-shadow: var(--shadow);
+}
+
+.pdf-pin-draft {
+  top: 0;
+  transform: none;
+  display: grid;
+  gap: 6px;
+}
+
+.pdf-pin-draft span {
+  display: flex;
+  gap: 6px;
+}

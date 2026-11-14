@@ -1,0 +1,186 @@
+/* ── Collapsible sidebar and the responsive pass for every screen ─ */
+
+/* Use the real visible height on phones, where browser bars come and go. */
+.shell {
+  height: 100dvh;
+}
+
+.sidebar {
+  transition: width 160ms ease;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 4px 2px 8px;
+}
+
+.sidebar-footer .brand {
+  margin: 0;
+}
+
+/* Minimised: icons only. Labels stay available as tooltips and to screen readers. */
+@media (min-width: 768px) {
+  .sidebar[data-collapsed="true"] {
+    width: 52px;
+  }
+  .sidebar[data-collapsed="true"] .sidebar-row {
+    justify-content: center;
+    padding: 0;
+  }
+  .sidebar[data-collapsed="true"] > .sidebar-row > span.truncate,
+  .sidebar[data-collapsed="true"] .switcher > span.truncate,
+  .sidebar[data-collapsed="true"] .switcher > svg,
+  .sidebar[data-collapsed="true"] .sidebar-section,
+  .sidebar[data-collapsed="true"] .sidebar-footer .brand {
+    display: none;
+  }
+  .sidebar[data-collapsed="true"] .sidebar-footer {
+    justify-content: center;
+    padding: 6px 0 2px;
+  }
+  /* The workspace menu opens beside the narrow rail instead of inside it. */
+  .sidebar[data-collapsed="true"] .menu {
+    left: 46px !important;
+    top: 4px !important;
+  }
+}
+
+/* Small laptops and tablets in landscape: give the content more of the width. */
+@media (min-width: 768px) and (max-width: 1100px) {
+  .sidebar:not([data-collapsed="true"]) {
+    width: 224px;
+  }
+  .page {
+    padding-left: 28px;
+    padding-right: 28px;
+  }
+}
+
+/* Very wide screens: let data-heavy pages use the room. */
+@media (min-width: 1700px) {
+  .page-wide {
+    max-width: 1440px;
+  }
+}
+
+@media (max-width: 767px) {
+  /* The drawer is always full width on phones; minimising is a desktop control. */
+  .sidebar-toggle {
+    display: none;
+  }
+  .sidebar {
+    width: min(300px, 86vw);
+  }
+  .sidebar-row {
+    height: 38px;
+  }
+  .menu {
+    width: min(268px, calc(100vw - 24px));
+  }
+
+  /* 16px inputs stop iOS from zooming the page on focus. */
+  .input,
+  .select,
+  .textarea {
+    font-size: 16px;
+  }
+
+  .page-title {
+    font-size: 24px;
+  }
+  .header-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .header-actions {
+    width: 100%;
+  }
+  .header-actions > .btn,
+  .header-actions > form,
+  .header-actions > form > .btn {
+    flex: 1 1 auto;
+  }
+
+  /* Inline forms stack: each field takes the full row, whatever width it was given on desktop. */
+  .row-form {
+    align-items: stretch;
+  }
+  .row-form > .field,
+  .row-form > .input,
+  .row-form > .select {
+    flex: 1 1 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+  }
+  .row-form > .btn {
+    flex: 1 1 auto;
+  }
+  .toolbar > .input {
+    flex: 1 1 100%;
+    max-width: none !important;
+  }
+
+  /* Wide tables scroll sideways inside their own box rather than squashing or widening the page. */
+  .table-wrap {
+    margin-left: -16px;
+    margin-right: -16px;
+    padding: 0 16px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .table-wrap > .table {
+    min-width: 560px;
+  }
+
+  .meta-list {
+    grid-template-columns: 1fr;
+    gap: 2px 0;
+  }
+  .meta-list dd {
+    margin-bottom: 8px;
+  }
+
+  .admin-bar {
+    height: auto;
+    min-height: 48px;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    padding: 8px 16px;
+  }
+  .admin-bar > span:not(.admin-bar-title):not(.admin-bar-spacer) {
+    display: none;
+  }
+
+  .key-reveal {
+    font-size: 12px;
+  }
+}
+
+/* Fingers need bigger targets than cursors, at any width. */
+@media (pointer: coarse) {
+  .btn {
+    min-height: 36px;
+  }
+  .btn-sm {
+    min-height: 32px;
+  }
+  .icon-button {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+/* Long addresses, emails and keys wrap instead of forcing the page wider. */
+.notice,
+.hint,
+.table td {
+  overflow-wrap: anywhere;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar {
+    transition: none;
+  }
+}

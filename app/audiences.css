@@ -1,0 +1,55 @@
+/* ── Audiences and personalisation ─────────────────────── */
+.welcome-note {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 40;
+  max-width: 340px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 14px 14px 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  box-shadow: 0 8px 24px rgba(15, 15, 15, 0.14);
+  line-height: 1.45;
+  animation: rise-in 260ms ease-out 400ms both;
+}
+
+.welcome-note p {
+  margin: 0;
+  flex: 1;
+  white-space: pre-line;
+}
+
+.field-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.field-list code {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 12px;
+}
+
+@media (max-width: 640px) {
+  .welcome-note {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    max-width: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .welcome-note {
+    animation: none;
+  }
+}

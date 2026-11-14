@@ -1,0 +1,236 @@
+/* ── Room: navigation, progress cues, sharing and the form gate ─ */
+.room-nav {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex: none;
+}
+
+.room-nav .icon-button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.room-count {
+  min-width: 44px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.room-progress {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px 10px;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.room-progress-bar {
+  flex: 1;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--hover);
+  overflow: hidden;
+}
+
+.room-progress-bar span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transition: width 300ms ease;
+}
+
+.room-item > span:nth-child(2) {
+  flex: 1;
+  min-width: 0;
+}
+
+.room-item[data-visited="true"]:not([aria-current]) {
+  color: var(--text-secondary);
+}
+
+.room-item .room-item-check {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  color: var(--accent);
+}
+
+.room-item-number {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--hover);
+  font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.room-share {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px 4px;
+  font-size: 12px;
+}
+
+.room-share-label {
+  color: var(--text-secondary);
+  margin-right: 2px;
+}
+
+.room-share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 24px;
+  padding: 0 8px;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+  transition: background-color 120ms;
+}
+
+.room-share-btn:hover {
+  background: var(--hover);
+}
+
+.room-share-btn svg {
+  width: 12px;
+  height: 12px;
+}
+
+.room-main {
+  position: relative;
+}
+
+/* The form sits over the content, which stays faintly visible so the visitor knows what is behind it. */
+.room-gate {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: color-mix(in srgb, var(--bg) 78%, transparent);
+  backdrop-filter: blur(6px);
+  overflow-y: auto;
+  animation: rise-in 220ms ease both;
+}
+
+.room-gate-card {
+  width: 100%;
+  max-width: 380px;
+  padding: 24px;
+  border-radius: 12px;
+  background: var(--bg);
+  box-shadow: var(--shadow);
+}
+
+.room-gate-card h2 {
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+
+.room-gate-intro {
+  color: var(--text-secondary);
+  margin-bottom: 14px;
+}
+
+.room-gate-card .field:first-of-type {
+  margin-top: 12px;
+}
+
+/* Options screen */
+.option-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 10px 16px;
+  margin-bottom: 12px;
+}
+
+.option-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.option-inline .input {
+  width: 76px;
+}
+
+@media (max-width: 767px) {
+  .room-count {
+    min-width: 36px;
+  }
+  .room-header-title {
+    display: none;
+  }
+  .room-nav {
+    margin-right: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .room-gate {
+    animation: none;
+  }
+  .room-progress-bar span {
+    transition: none;
+  }
+}
+
+/* ── Public site: sections that left half the page empty on wide screens ─ */
+@media (min-width: 1000px) {
+  .site-faq {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+    column-gap: clamp(40px, 6vw, 96px);
+    align-items: start;
+  }
+  .site-faq > div {
+    margin-top: 0;
+    max-width: none;
+  }
+  .site-answer {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+    column-gap: clamp(40px, 6vw, 96px);
+    align-items: start;
+  }
+  .site-answer p {
+    margin-top: 6px;
+    max-width: none;
+  }
+  .site-close {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: clamp(40px, 6vw, 96px);
+    align-items: center;
+  }
+  .site-close h2 {
+    grid-row: 1 / span 2;
+    margin-bottom: 0;
+    max-width: 18ch;
+  }
+  .site-close .site-btn {
+    grid-column: 2;
+    align-self: end;
+    justify-self: start;
+  }
+  .site-close p {
+    grid-column: 2;
+    align-self: start;
+    max-width: 28ch;
+  }
+}

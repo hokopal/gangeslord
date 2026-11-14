@@ -1,0 +1,66 @@
+/* ── Integrations ──────────────────────────────────────── */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.tile {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  color: inherit;
+  text-decoration: none;
+  transition: background-color 120ms, border-color 120ms;
+}
+
+.tile:hover {
+  background: var(--hover);
+}
+
+.tile-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tile-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: var(--hover);
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+
+.tile-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.tile-name {
+  font-weight: 600;
+  flex: 1;
+}
+
+.tile-body {
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.check-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 6px 0;
+}
+
+.check-row input {
+  margin-top: 3px;
+}

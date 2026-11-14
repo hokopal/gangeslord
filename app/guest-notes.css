@@ -1,0 +1,310 @@
+/* ── Comments in a room: a side panel of threads with a composer at the bottom ─ */
+.comments-tab {
+  position: fixed;
+  right: 12px;
+  bottom: 76px;
+  z-index: 25;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: color 120ms, background-color 120ms;
+}
+
+.comments-tab:hover {
+  color: var(--text);
+  background: var(--hover);
+}
+
+.comments-tab svg {
+  width: 15px;
+  height: 15px;
+}
+
+.comments {
+  position: fixed;
+  inset: 0 0 0 auto;
+  z-index: 40;
+  width: min(380px, 100vw);
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  border-left: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  animation: rise-in 160ms ease both;
+}
+
+.comments-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 45px;
+  padding: 0 8px 0 16px;
+  flex: none;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+
+.comments-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  list-style: none;
+  margin: 0;
+  padding: 8px 0;
+}
+
+.comments-empty {
+  padding: 24px 16px;
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+.comment {
+  position: relative;
+  display: flex;
+  gap: 10px;
+  padding: 10px 16px;
+  transition: background-color 120ms;
+}
+
+.comment:hover {
+  background: var(--hover);
+}
+
+.comment-avatar {
+  width: 24px;
+  height: 24px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--accent) 16%, var(--bg));
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.comment-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.comment-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 13px;
+  line-height: 24px;
+}
+
+.comment-meta time {
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+
+.comment-kind {
+  padding: 0 6px;
+  border-radius: 4px;
+  background: var(--hover);
+  color: var(--text-secondary);
+  font-size: 11px;
+  line-height: 18px;
+}
+
+.comment[data-kind="note"] .comment-kind {
+  background: #fdecc8;
+  color: #5c4310;
+}
+
+/* What the comment is about, shown the way a quoted passage is. */
+.comment-context {
+  margin: 2px 0 4px;
+  padding-left: 8px;
+  border-left: 2px solid var(--border-strong);
+  color: var(--text-secondary);
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.comment-body {
+  margin: 0;
+  font-size: 14px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.comment-delete {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  opacity: 0;
+  transition: opacity 120ms;
+}
+
+.comment:hover .comment-delete,
+.comment-delete:focus-visible {
+  opacity: 1;
+}
+
+.comments-composer {
+  flex: none;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+  padding: 12px 16px 14px;
+  border-top: 1px solid var(--border);
+}
+
+.comments-identity {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 6px;
+}
+
+.comments-input {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 6px 6px 6px 8px;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  transition: border-color 120ms, box-shadow 120ms;
+}
+
+.comments-input:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+.comments-input textarea {
+  flex: 1;
+  min-width: 0;
+  min-height: 24px;
+  max-height: 160px;
+  padding: 2px 0;
+  border: 0;
+  outline: 0;
+  resize: none;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  line-height: 20px;
+  field-sizing: content;
+}
+
+.comments-send {
+  width: 24px;
+  height: 24px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+}
+
+.comments-send:disabled {
+  background: var(--border-strong);
+  cursor: default;
+}
+
+.comments-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.comments-options [role="radiogroup"] {
+  display: flex;
+  gap: 2px;
+}
+
+.comments-options button {
+  flex: none;
+  white-space: nowrap;
+  height: 24px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  color: var(--text-secondary);
+  font: inherit;
+  cursor: pointer;
+}
+
+.comments-options button:hover {
+  background: var(--hover);
+}
+
+.comments-options button[aria-checked="true"] {
+  background: var(--hover);
+  color: var(--text);
+  font-weight: 600;
+}
+
+.comments-options select {
+  flex: 0 1 130px;
+  min-width: 0;
+  height: 24px;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  color: var(--text-secondary);
+  font: inherit;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.comments-privacy {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 11px;
+}
+
+/* The owner's answer, threaded under the comment it replies to. */
+.comment-reply {
+  margin-top: 8px;
+  padding-left: 10px;
+  border-left: 2px solid var(--accent);
+}
+
+/* Touch screens have no hover, so the delete control is always there. */
+@media (hover: none) {
+  .comment-delete {
+    opacity: 1;
+  }
+}
+
+/* The owner's list of what guests left. */
+.note-kind[data-kind="question"] {
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+}
+
+.note-kind[data-kind="note"] {
+  background: #fdecc8;
+  color: #5c4310;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .comments {
+    animation: none;
+  }
+}

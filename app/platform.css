@@ -1,0 +1,109 @@
+/* ── Branding, room footer and the platform admin console ─ */
+.branding-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 32px;
+  align-items: start;
+}
+
+.brand-preview {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  background: var(--sidebar-bg, var(--hover));
+  position: sticky;
+  top: 24px;
+}
+
+.brand-preview-logo {
+  min-height: 28px;
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+}
+
+.brand-preview-logo img {
+  max-height: 28px;
+  max-width: 160px;
+}
+
+.brand-preview-item {
+  padding: 6px 8px;
+  border-left: 3px solid transparent;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+.room-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 16px 14px;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.room-footer a {
+  color: inherit;
+}
+
+.admin-shell {
+  min-height: 100vh;
+}
+
+.admin-bar {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 0 24px;
+  height: 48px;
+  background: #1f1f1f;
+  color: #fff;
+  font-size: 14px;
+}
+
+.admin-bar a {
+  color: #d4d4d4;
+  text-decoration: none;
+}
+
+.admin-bar a:hover {
+  color: #fff;
+}
+
+.admin-bar-title {
+  font-weight: 600;
+  color: #fff;
+  margin-right: 8px;
+}
+
+.admin-bar-spacer {
+  flex: 1;
+}
+
+.admin-bar button {
+  background: none;
+  border: 0;
+  color: #d4d4d4;
+  cursor: pointer;
+  font: inherit;
+}
+
+.key-reveal {
+  display: block;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 13px;
+  word-break: break-all;
+  user-select: all;
+}
+
+@media (max-width: 800px) {
+  .branding-grid {
+    grid-template-columns: 1fr;
+  }
+  .brand-preview {
+    position: static;
+  }
+}

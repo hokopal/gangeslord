@@ -1,0 +1,206 @@
+/* ── Public site: alignment on wide screens, reading pages and the contact form ─ */
+
+/* The hero, closing banner and footer are full-width bands, but their content must line up
+   with the centred column the sections use. Without this they hug the far left on wide screens. */
+.site-nav,
+.site-hero,
+.site-close,
+.site-footer,
+.site-page-head {
+  padding-left: max(var(--gutter), calc((100% - 1320px) / 2 + var(--gutter)));
+  padding-right: max(var(--gutter), calc((100% - 1320px) / 2 + var(--gutter)));
+}
+
+/* Sign-up: the invitations and company workspaces a newcomer can join. */
+.join-list {
+  list-style: none;
+  margin: 0 0 8px;
+  padding: 0;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+}
+
+.join-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--border);
+}
+
+.join-list li:first-child {
+  border-top: 0;
+}
+
+/* Sized against the centred column rather than the whole window, so the headline holds three lines on any screen. */
+.site .site-hero h1 {
+  font-size: clamp(44px, 5.2vw, 72px);
+  max-width: 13ch;
+}
+
+.site-section[id],
+.site-prose h2[id] {
+  scroll-margin-top: 24px;
+}
+
+html:has(.site) {
+  scroll-behavior: smooth;
+}
+
+.site-answer p {
+  max-width: 820px;
+  margin-top: 22px;
+  font-size: clamp(19px, 1.7vw, 23px);
+  line-height: 1.5;
+}
+
+.site-page-head {
+  padding-top: clamp(28px, 5vw, 64px);
+  padding-bottom: clamp(40px, 6vw, 72px);
+}
+
+.site-page-head h1 {
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.site-page-head p {
+  margin-top: 16px;
+  max-width: 60ch;
+  color: #cfdcd8;
+}
+
+.site-page-head .site-page-date {
+  font-size: 14px;
+  color: #9db4ae;
+}
+
+.site-prose {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: clamp(40px, 6vw, 72px) var(--gutter) clamp(64px, 8vw, 112px);
+}
+
+.site-prose > * {
+  max-width: 72ch;
+}
+
+.site .site-prose h2 {
+  font-size: 26px;
+  line-height: 1.2;
+  margin: 44px 0 12px;
+  max-width: 72ch;
+}
+
+.site-prose h2:first-child {
+  margin-top: 0;
+}
+
+.site .site-prose p {
+  margin: 0 0 14px;
+}
+
+.site .site-prose ul {
+  list-style: disc;
+  margin: 0 0 14px;
+  padding-left: 22px;
+}
+
+.site-prose li {
+  margin-bottom: 6px;
+}
+
+.site .site-prose a {
+  color: var(--moss);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.site-prose table {
+  width: 100%;
+  max-width: none;
+  border-collapse: collapse;
+  margin: 8px 0 18px;
+  font-size: 15px;
+}
+
+.site-prose th,
+.site-prose td {
+  text-align: left;
+  vertical-align: top;
+  padding: 10px 14px 10px 0;
+  border-bottom: 1px solid var(--mist);
+}
+
+.site-prose th {
+  font-weight: 600;
+  border-bottom: 2px solid var(--ink);
+}
+
+.site-table-wrap {
+  overflow-x: auto;
+  max-width: none;
+}
+
+.site-form {
+  display: grid;
+  gap: 16px;
+  max-width: 560px;
+}
+
+.site-form label {
+  display: grid;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.site-form input,
+.site-form select,
+.site-form textarea {
+  font: inherit;
+  font-weight: 400;
+  padding: 10px 12px;
+  border: 1px solid #b7c6c1;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink);
+  width: 100%;
+}
+
+.site-form textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.site-form input:focus-visible,
+.site-form select:focus-visible,
+.site-form textarea:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 1px;
+}
+
+.site-form button {
+  justify-self: start;
+  border: 0;
+  cursor: pointer;
+}
+
+.site-form-trap {
+  position: absolute;
+  left: -9999px;
+}
+
+.site-note {
+  padding: 14px 16px;
+  border-radius: 8px;
+  background: #fffbea;
+  border: 1px solid #f0d98a;
+}
+
+.site-note-error {
+  background: #fdecec;
+  border-color: #f0b4b4;
+}

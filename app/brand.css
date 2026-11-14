@@ -1,0 +1,111 @@
+/* ── Pipemouse theme ─
+   Loaded last, so these values replace the earlier palette everywhere it is used.
+   Plum for depth, violet for the product's own accent, and a warm yellow for the main action. */
+:root {
+  --accent: #5b47e0;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --accent: #9a8bff;
+  }
+}
+
+.site {
+  --night: #1d1630;
+  --paper: #f6f4f1;
+  --ink: #1a1523;
+  --lamp: #ffc247;
+  --mist: #ddd8e6;
+  --moss: #6b5ca5;
+}
+
+/* Colours that were written out by hand in the old palette, retuned so nothing green-grey is left on plum. */
+.site-nav nav,
+.demo-readout-head {
+  color: #cbc3e0;
+}
+
+.site-hero-copy > .site-hero-note,
+.demo-caption,
+.site-close p,
+.site-page-head .site-page-date {
+  color: #a79fc0;
+}
+
+.site-page-head p {
+  color: #d6d0e6;
+}
+
+.site-lede,
+.site-steps p,
+.site-plan-audience,
+.site-faq details p {
+  color: #4a4360;
+}
+
+.demo-readout,
+.site-footer {
+  background: #140f24;
+}
+
+.site-footer {
+  color: #a79fc0;
+}
+
+.site .site-btn-lamp:hover {
+  background: #ffd272;
+}
+
+/* The plan comparison table on the marketing page. */
+.site .site-compare-title {
+  margin: 48px 0 14px;
+  font-family: var(--display);
+  font-size: 22px;
+}
+
+.site-compare {
+  overflow-x: auto;
+  border: 1px solid var(--mist);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.site-compare table {
+  width: 100%;
+  min-width: 620px;
+  border-collapse: collapse;
+  font-size: 14.5px;
+}
+
+.site-compare th,
+.site-compare td {
+  padding: 11px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--mist);
+}
+
+.site-compare tbody tr:last-child th,
+.site-compare tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.site-compare thead th {
+  font-family: var(--display);
+  font-size: 15px;
+  background: var(--paper);
+}
+
+.site-compare tbody th {
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.site-compare td {
+  color: var(--ink);
+  width: 16%;
+}
+
+.site-compare td[data-no='true'] {
+  color: #9a93ac;
+}
