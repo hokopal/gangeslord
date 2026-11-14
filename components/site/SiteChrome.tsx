@@ -1,12 +1,12 @@
 import Link from 'next/link';
 import { Logo } from '@/components/ui/Brand';
+import { pageAt } from '@/lib/marketing';
 import { LEGAL_UPDATED } from '@/lib/site';
 
 const START = '/login';
 
 /** The public site's header. `home` uses in-page links; other pages link back to the home page's sections. */
-export function SiteHeader({ home = false }: { home?: boolean }) {
-  const to = (hash: string) => (home ? hash : `/${hash}`);
+export function SiteHeader(_props: { home?: boolean }) {
   return (
     <header className="site-nav">
       <Link href="/" className="site-logo" aria-label="Pipemouse home">
@@ -15,9 +15,10 @@ export function SiteHeader({ home = false }: { home?: boolean }) {
         <span className="site-alpha">Alpha</span>
       </Link>
       <nav aria-label="Sections">
-        <a href={to('#how')}>How it works</a>
-        <a href={to('#teams')}>Who it’s for</a>
-        <a href={to('#plans')}>Plans</a>
+        <Link href="/product">Product</Link>
+        <Link href="/use-cases/sales">Use cases</Link>
+        <Link href="/integrations">Integrations</Link>
+        <Link href="/pricing">Pricing</Link>
       </nav>
       <div className="site-nav-actions">
         <Link href={START} className="site-link">
@@ -31,18 +32,49 @@ export function SiteHeader({ home = false }: { home?: boolean }) {
   );
 }
 
-export function SiteFooter({ home = false }: { home?: boolean }) {
-  const to = (hash: string) => (home ? hash : `/${hash}`);
+const FOOTER_GROUPS: { title: string; paths: string[] }[] = [
+  { title: 'Product', paths: ['/product', '/pricing', '/integrations', '/faq'] },
+  { title: 'Use cases', paths: ['/use-cases/marketing', '/use-cases/account-based-marketing', '/use-cases/sales', '/use-cases/revenue-operations'] },
+  { title: 'Learn', paths: ['/what-is-a-sales-room', '/guides/track-buyer-engagement', '/compare/sales-room-vs-email-attachments', '/compare/content-room-vs-deal-room'] },
+];
+
+export function SiteFooter(_props: { home?: boolean }) {
   return (
+    <>
+      <nav aria-label="Site map" className="mk-sitemap">
+        {FOOTER_GROUPS.map((group) => (
+          <div key={group.title}>
+            <h2>{group.title}</h2>
+            <ul>
+              {group.paths.map((path) => (
+                <li key={path}>
+                  <Link href={path}>{pageAt(path).label}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+        <div>
+          <h2>For AI agents</h2>
+          <ul>
+            <li>
+              <a href="/llms.txt">llms.txt</a>
+            </li>
+            <li>
+              <a href="/llms-full.txt">llms-full.txt</a>
+            </li>
+            <li>
+              <a href="/sitemap.xml">Sitemap</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
     <footer className="site-footer">
       <span className="site-logo">
         <Logo size={18} />
         <span>Pipemouse</span>
       </span>
       <nav aria-label="Footer">
-        <a href={to('#how')}>How it works</a>
-        <a href={to('#plans')}>Plans</a>
-        <a href={to('#faq')}>Questions</a>
         <Link href="/privacy">Privacy policy</Link>
         <Link href="/terms">Terms of service</Link>
         <Link href="/cookies">Cookies</Link>
@@ -51,6 +83,7 @@ export function SiteFooter({ home = false }: { home?: boolean }) {
       </nav>
       <span>© 2026 Pipemouse. In alpha.</span>
     </footer>
+    </>
   );
 }
 

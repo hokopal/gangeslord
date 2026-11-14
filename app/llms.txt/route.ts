@@ -1,3 +1,4 @@
+import { MARKETING_PAGES } from '@/lib/marketing';
 import { COMPARISON, PLANS, PRICE_NOTE, priceLabel } from '@/lib/plans';
 import { SITE_DEFINITION, SITE_URL } from '@/lib/site';
 
@@ -45,6 +46,8 @@ Payments are taken by Paddle, which sells Pipemouse as merchant of record and ha
 ## Pages
 
 - [Home](${SITE_URL}/): what Pipemouse is, how it works, plans, pricing and common questions
+${MARKETING_PAGES.map((p) => `- [${p.label}](${SITE_URL}${p.path}): ${p.description} Markdown: ${SITE_URL}/md${p.path}`).join('\n')}
+- [Full site content in one file](${SITE_URL}/llms-full.txt)
 - [Privacy policy](${SITE_URL}/privacy)
 - [Terms of service](${SITE_URL}/terms)
 - [Cookies](${SITE_URL}/cookies)
