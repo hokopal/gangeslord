@@ -1,5 +1,6 @@
 import type { EmailOtpType } from '@supabase/supabase-js';
 import { NextResponse, type NextRequest } from 'next/server';
+import { appOrigin } from '@/lib/origin';
 import { safeNextPath } from '@/lib/safe-next';
 import { createServerSupabase } from '@/lib/supabase/server';
 
@@ -22,5 +23,5 @@ export async function GET(request: NextRequest) {
   if (!ok) {
     return NextResponse.redirect(`${origin}/login?error=1&next=${encodeURIComponent(next)}`);
   }
-  return NextResponse.redirect(`${origin}${next}`);
+  return NextResponse.redirect(`${await appOrigin()}${next}`);
 }

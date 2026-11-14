@@ -1,14 +1,17 @@
 import { createServerClient } from '@supabase/ssr';
 import type { SupabaseClient, User } from '@supabase/supabase-js';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { cache } from 'react';
+import { cookieDomainFor } from '@/lib/site';
 import { supabaseEnv } from './env';
 
 /** Supabase client bound to the current request's cookies. Row-level security applies. */
 export async function createServerSupabase(): Promise<SupabaseClient> {
-  const store = await cookies();
+  const [store, h] = await Promise.all([cookies(), headers()]);
   const { url, anonKey } = supabaseEnv();
+  const domain = cookieDomainFor(h.get('x-forwarded-host') ?? h.get('host') ?? '');
   return createServerClient(url, anonKey, {
+    ...(domain ? { cookieOptions: { domain } } : {}),
     cookies: {
       getAll: () => store.getAll(),
       setAll: (list) => {

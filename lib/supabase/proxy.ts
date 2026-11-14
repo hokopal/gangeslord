@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
+import { cookieDomainFor } from '@/lib/site';
 import { supabaseEnv } from './env';
 
 const PROTECTED_PREFIXES = ['/w/', '/onboarding'];
@@ -8,7 +9,9 @@ const PROTECTED_PREFIXES = ['/w/', '/onboarding'];
 export async function updateSession(request: NextRequest): Promise<NextResponse> {
   let response = NextResponse.next({ request });
   const { url, anonKey } = supabaseEnv();
+  const domain = cookieDomainFor(request.headers.get('x-forwarded-host') ?? request.headers.get('host') ?? '');
   const supabase = createServerClient(url, anonKey, {
+    ...(domain ? { cookieOptions: { domain } } : {}),
     cookies: {
       getAll: () => request.cookies.getAll(),
       setAll: (list) => {
