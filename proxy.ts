@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server';
+import { MARKETING_PAGES } from '@/lib/marketing';
 import { APP_URL, SITE_URL } from '@/lib/site';
 import { updateSession } from '@/lib/supabase/proxy';
 
@@ -14,7 +15,8 @@ const APP_HOST = new URL(APP_URL).host;
 // (/api/) and the sign-in callback (/auth/) answer on both: room links already sent out keep working
 // on the public address, and the admin console signs in on the app address.
 const APP_PREFIXES = ['/onboarding', '/w', '/invite', '/admin', '/content'];
-const SITE_PATHS = new Set(['/login', '/contact', '/privacy', '/terms', '/cookies', '/llms.txt', '/sitemap.xml']);
+const SITE_PATHS = new Set(['/login', '/contact', '/privacy', '/terms', '/cookies', '/llms.txt', '/llms-full.txt', '/sitemap.xml', ...MARKETING_PAGES.map((p) => p.path)]);
+const isSitePath = (pathname: string) => SITE_PATHS.has(pathname) || pathname.startsWith('/md/');
 
 const isAppPath = (pathname: string) => APP_PREFIXES.some((p) => pathname === p || pathname.startsWith(`${p}/`));
 
@@ -35,7 +37,7 @@ export async function proxy(request: NextRequest) {
       if (pathname === '/robots.txt') {
         return new NextResponse('User-agent: *\nDisallow: /\n', { headers: { 'content-type': 'text/plain; charset=utf-8' } });
       }
-      if (SITE_PATHS.has(pathname)) {
+      if (isSitePath(pathname)) {
         return NextResponse.redirect(`${SITE_URL}${pathname}${search}`, 307);
       }
     }

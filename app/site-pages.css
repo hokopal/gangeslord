@@ -204,3 +204,134 @@ html:has(.site) {
   background: #fdecec;
   border-color: #f0b4b4;
 }
+
+/* ── Content pages (product, use cases, guides, comparisons) ── */
+.mk-crumbs ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  list-style: none;
+  margin: 0 0 20px;
+  padding: 0;
+  font-size: 14px;
+  color: #9db4ae;
+}
+
+.mk-crumbs li + li::before {
+  content: "/";
+  margin-right: 6px;
+  color: #6f8c86;
+}
+
+.mk-crumbs a:hover {
+  color: var(--lamp);
+}
+
+.mk-eyebrow {
+  margin: 0 0 10px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--lamp);
+}
+
+.mk-updated {
+  font-size: 14px;
+  color: #9db4ae;
+}
+
+.site .mk-answer {
+  margin: 0 0 36px;
+  padding: 20px 22px;
+  border: 1px solid var(--mist);
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.site .mk-answer h2 {
+  margin: 0 0 8px;
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--moss);
+}
+
+.site .mk-answer p {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.55;
+}
+
+.mk-toc {
+  margin: 0 0 8px;
+  font-size: 15px;
+}
+
+.site .mk-toc h2 {
+  margin: 0 0 8px;
+  font-size: 15px;
+}
+
+.mk-faq h3 {
+  margin: 22px 0 6px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.mk-related ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 10px;
+}
+
+.site .mk-related ul {
+  list-style: none;
+  padding: 0;
+}
+
+.site .site-prose .mk-related a {
+  display: block;
+  padding: 12px 14px;
+  border: 1px solid var(--mist);
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.site .site-prose .mk-related a:hover {
+  border-color: var(--moss);
+}
+
+/* Site map above the footer: every public page in four short columns. */
+.mk-sitemap {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 28px;
+  padding: 44px max(var(--gutter), calc((100% - 1320px) / 2 + var(--gutter))) 12px;
+  background: #0a1f21;
+  color: #9db4ae;
+  font-size: 14px;
+}
+
+.mk-sitemap h2 {
+  margin: 0 0 10px;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--paper);
+}
+
+.mk-sitemap ul {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mk-sitemap a:hover {
+  color: var(--lamp);
+}
