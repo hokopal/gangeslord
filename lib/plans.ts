@@ -16,6 +16,12 @@ export type Plan = {
 
 export const TRIAL_DAYS = 7;
 
+/**
+ * Every plan is free for now. Each plan's `price` stays its regular price, shown crossed
+ * out next to "Free". Set this to false when paid plans switch on and the site reverts to normal pricing.
+ */
+export const EVERY_PLAN_FREE = true;
+
 /** The plans Pipemouse sells. One price covers the whole workspace, however many people are in it. */
 export const PLANS: Plan[] = [
   {
@@ -72,12 +78,20 @@ export const PLANS: Plan[] = [
   },
 ];
 
-export const priceLabel = (plan: Plan) => (plan.price === 0 ? 'Free' : `$${plan.price} a month`);
-export const PRICE_NOTE = `Starter is free for good. Pro and Business start with a ${TRIAL_DAYS}-day free trial, are billed monthly per workspace, not per person, and can be cancelled at any time.`;
+/** What a plan costs today. */
+export const priceLabel = (plan: Plan) => (plan.price === 0 || EVERY_PLAN_FREE ? 'Free' : `$${plan.price} a month`);
+
+/** The regular price, shown crossed out beside the current one. Null when there is nothing to cross out. */
+export const regularPriceLabel = (plan: Plan) => (plan.price > 0 && EVERY_PLAN_FREE ? `$${plan.price} a month` : null);
+
+/** The price to tell machines about: zero while every plan is free. */
+export const currentPrice = (plan: Plan): number => (EVERY_PLAN_FREE ? 0 : plan.price);
+
+export const PRICE_NOTE = `Every plan is free for now — the crossed-out prices are what they will cost later. Starter stays free for good. When paid plans open, they will be billed monthly per workspace, not per person, start with a ${TRIAL_DAYS}-day free trial, and can be cancelled at any time.`;
 
 /** The side-by-side table: one row per thing people compare, one value per plan in the order above. */
 export const COMPARISON: { label: string; values: [string, string, string] }[] = [
-  { label: 'Price per workspace', values: ['Free', '$20 a month', '$49 a month'] },
+  { label: 'Price per workspace', values: ['Free', 'Free', 'Free'] },
   { label: 'Free trial', values: ['Not needed', `${TRIAL_DAYS} days`, `${TRIAL_DAYS} days`] },
   { label: 'Tracks (rooms)', values: ['3', '25', 'Unlimited'] },
   { label: 'Team members', values: ['Unlimited', 'Unlimited', 'Unlimited'] },
@@ -96,7 +110,7 @@ export const COMPARISON: { label: string; values: [string, string, string] }[] =
 ];
 
 export const PLAN_LABEL: Record<string, string> = {
-  alpha_trial: 'Early access',
+  alpha_trial: 'Free',
   starter: 'Starter',
   pro: 'Pro',
   business: 'Business',

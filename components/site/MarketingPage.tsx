@@ -191,7 +191,7 @@ export function MarketingPageView({ path }: { path: string }) {
         <Link href={START} className="site-btn site-btn-lamp site-btn-lg">
           Start free
         </Link>
-        <p>Starter is free for good. No card needed.</p>
+        <p>Every plan is free. No card needed.</p>
       </section>
       <SiteFooter />
     </div>

@@ -91,7 +91,7 @@ export default function PrivacyPage() {
       <h2 id="security">How we protect it</h2>
       <p>
         Pipemouse is served over encrypted connections. Each workspace’s data is separated from every other workspace’s by access rules in the
-        database. Keys and tokens are encrypted before they are stored. No system is perfectly secure, and Pipemouse is in alpha, so please do not put
+        database. Keys and tokens are encrypted before they are stored. No system is perfectly secure, so please do not put
         information in it that you could not afford to have exposed.
       </p>
 

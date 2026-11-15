@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { FAQ } from '@/lib/faq';
-import { COMPARISON, PLANS, PRICE_NOTE, priceLabel, TRIAL_DAYS } from '@/lib/plans';
+import { COMPARISON, PLANS, PRICE_NOTE, currentPrice, priceLabel, regularPriceLabel } from '@/lib/plans';
 import { SITE_DEFINITION, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/site';
 import { RoomDemo } from './RoomDemo';
 import { SiteFooter, SiteHeader } from './SiteChrome';
@@ -83,8 +83,8 @@ const STRUCTURED_DATA = {
       operatingSystem: 'Web',
       publisher: { '@id': `${SITE_URL}/#organization` },
       offers: PLANS.map((plan) => ({
-        '@type': 'Offer', name: plan.name, price: String(plan.price), priceCurrency: 'USD', description: plan.audience,
-        ...(plan.price > 0 ? { priceSpecification: { '@type': 'UnitPriceSpecification', price: String(plan.price), priceCurrency: 'USD', billingDuration: 'P1M', unitText: 'workspace per month' } } : {}),
+        '@type': 'Offer', name: plan.name, price: String(currentPrice(plan)), priceCurrency: 'USD', description: plan.audience,
+        ...(currentPrice(plan) > 0 ? { priceSpecification: { '@type': 'UnitPriceSpecification', price: String(currentPrice(plan)), priceCurrency: 'USD', billingDuration: 'P1M', unitText: 'workspace per month' } } : {}),
       })),
       featureList: PLANS.flatMap((plan) => plan.features),
     },
@@ -117,7 +117,7 @@ export function Landing() {
                 See how it works
               </a>
             </div>
-            <p className="site-hero-note">Starter is free for good. Sign in with your work email: no password and no card.</p>
+            <p className="site-hero-note">Every plan is free. Sign in with your work email: no password and no card.</p>
           </div>
           <RoomDemo />
         </section>
@@ -206,7 +206,9 @@ export function Landing() {
           {PLANS.map((plan) => (
             <article key={plan.id} className="site-plan" data-plan={plan.id}>
               <h3>{plan.name}</h3>
-              <p className="site-plan-price">{priceLabel(plan)}</p>
+              <p className="site-plan-price">
+                {regularPriceLabel(plan) ? <s className="site-plan-regular">{regularPriceLabel(plan)}</s> : null} {priceLabel(plan)}
+              </p>
               <p className="site-plan-audience">{plan.audience}</p>
               {plan.includes ? <p className="site-plan-includes">{plan.includes}</p> : null}
               <ul>
@@ -215,7 +217,7 @@ export function Landing() {
                 ))}
               </ul>
               <Link href={START} className="site-btn site-btn-dark">
-                {plan.price === 0 ? 'Start free' : `Start ${TRIAL_DAYS}-day free trial`}
+                Start free
               </Link>
             </article>
           ))}

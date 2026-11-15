@@ -114,17 +114,6 @@
   letter-spacing: -0.02em;
 }
 
-.site-alpha {
-  font-family: ui-sans-serif, -apple-system, "Segoe UI", sans-serif;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0;
-  padding: 2px 7px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 200, 61, 0.55);
-  color: var(--lamp);
-}
-
 .site-btn {
   display: inline-flex;
   align-items: center;
@@ -195,7 +184,7 @@
   margin-top: 28px;
   max-width: 46ch;
   font-size: clamp(17px, 1.5vw, 20px);
-  color: #cfdcd8;
+  color: #d6d0e6;
 }
 
 .site-hero-actions {
@@ -208,7 +197,7 @@
 .site-hero-copy > .site-hero-note {
   margin-top: 18px;
   font-size: 14px;
-  color: #9db4ae;
+  color: #a79fc0;
 }
 
 /* ── The room demo: the one loud thing on the page ── */
@@ -387,7 +376,7 @@
 }
 
 .demo-readout {
-  background: #0a1f21;
+  background: #140f24;
   border: 1px solid rgba(255, 200, 61, 0.28);
   border-top: 0;
   border-radius: 0 0 14px 14px;
@@ -472,7 +461,7 @@
 .demo-caption {
   margin-top: 12px !important;
   font-size: 13px;
-  color: #9db4ae;
+  color: #a79fc0;
 }
 
 /* ── Sections ── */
@@ -485,7 +474,7 @@
 .site-lede {
   margin-top: 20px !important;
   max-width: 62ch;
-  color: #3b524e;
+  color: #4a4360;
 }
 
 .site-views-grid {
@@ -549,7 +538,7 @@
 
 .site-steps p {
   margin-top: 10px;
-  color: #3b524e;
+  color: #4a4360;
   font-size: 16px;
 }
 
@@ -663,9 +652,16 @@
   color: var(--moss);
 }
 
+.site-plan-regular {
+  margin-right: 6px;
+  font-size: 15px;
+  font-weight: 500;
+  opacity: 0.55;
+}
+
 .site-plan-audience {
   margin-top: 14px !important;
-  color: #3b524e;
+  color: #4a4360;
   font-size: 16px;
   min-height: 3.1em;
 }
@@ -741,7 +737,7 @@
 .site-faq details p {
   padding: 0 0 22px;
   max-width: 64ch;
-  color: #3b524e;
+  color: #4a4360;
 }
 
 .site-close {
@@ -759,7 +755,7 @@
 .site-close p {
   margin-top: 16px;
   font-size: 15px;
-  color: #9db4ae;
+  color: #a79fc0;
 }
 
 .site-footer {
@@ -770,8 +766,8 @@
   align-items: center;
   gap: 16px 32px;
   padding: 28px var(--gutter) 36px;
-  background: #0a1f21;
-  color: #9db4ae;
+  background: #140f24;
+  color: #a79fc0;
   font-size: 14px;
 }
 

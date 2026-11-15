@@ -69,12 +69,12 @@ html:has(.site) {
 .site-page-head p {
   margin-top: 16px;
   max-width: 60ch;
-  color: #cfdcd8;
+  color: #d6d0e6;
 }
 
 .site-page-head .site-page-date {
   font-size: 14px;
-  color: #9db4ae;
+  color: #a79fc0;
 }
 
 .site-prose {
@@ -214,13 +214,13 @@ html:has(.site) {
   margin: 0 0 20px;
   padding: 0;
   font-size: 14px;
-  color: #9db4ae;
+  color: #a79fc0;
 }
 
 .mk-crumbs li + li::before {
   content: "/";
   margin-right: 6px;
-  color: #6f8c86;
+  color: #7d739e;
 }
 
 .mk-crumbs a:hover {
@@ -238,7 +238,7 @@ html:has(.site) {
 
 .mk-updated {
   font-size: 14px;
-  color: #9db4ae;
+  color: #a79fc0;
 }
 
 .site .mk-answer {
@@ -310,8 +310,8 @@ html:has(.site) {
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: 28px;
   padding: 44px max(var(--gutter), calc((100% - 1320px) / 2 + var(--gutter))) 12px;
-  background: #0a1f21;
-  color: #9db4ae;
+  background: #140f24;
+  color: #a79fc0;
   font-size: 14px;
 }
 
