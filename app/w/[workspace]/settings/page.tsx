@@ -82,7 +82,7 @@ export default async function SettingsPage({
 
       <h2 className="section-title">Plan</h2>
       <Link className="btn" href={`/w/${workspace.slug}/settings/plan`}>
-        Alpha free trial: see what’s included
+        Plan: see what’s included
       </Link>
 
       {editable ? (

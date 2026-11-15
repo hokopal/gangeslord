@@ -1,5 +1,5 @@
 import { FAQ } from '@/lib/faq';
-import { COMPARISON, PLANS, PRICE_NOTE, priceLabel, TRIAL_DAYS } from '@/lib/plans';
+import { COMPARISON, PLANS, PRICE_NOTE, priceLabel, regularPriceLabel, TRIAL_DAYS } from '@/lib/plans';
 import { SITE_DEFINITION } from '@/lib/site';
 
 /**
@@ -115,17 +115,17 @@ export const MARKETING_PAGES: MarketingPage[] = [
   {
     path: '/pricing',
     label: 'Pricing',
-    title: 'Pricing: free to start, $20 or $49 a month per workspace',
-    description: `Pipemouse pricing. Starter is free, Pro is $20 a month and Business is $49 a month, per workspace rather than per person, with a ${TRIAL_DAYS}-day free trial.`,
+    title: 'Pricing: every plan is free',
+    description: `Pipemouse pricing. Every plan is free, including Pro and Business. Starter stays free for good; the crossed-out prices are what the paid plans will cost later.`,
     eyebrow: 'Pricing',
-    h1: 'One price for the whole workspace.',
+    h1: 'Every plan is free for the whole workspace.',
     intro: PRICE_NOTE,
-    answer: `Pipemouse has three plans. Starter is free with up to 3 tracks. Pro is $20 a month with up to 25 tracks, HubSpot audiences, merge fields, CRM connections and Slack alerts. Business is $49 a month with unlimited tracks, HubSpot timeline logging and a REST API. Prices are per workspace, not per person, and paid plans start with a ${TRIAL_DAYS}-day free trial.`,
+    answer: `Pipemouse has three plans, and all of them are free. Starter is free for good with up to 3 tracks. Pro, normally $20 a month, has up to 25 tracks, HubSpot audiences, merge fields, CRM connections and Slack alerts. Business, normally $49 a month, has unlimited tracks, HubSpot timeline logging and a REST API. Prices are per workspace, not per person, and paid plans will start with a ${TRIAL_DAYS}-day free trial when they open.`,
     schemaType: 'WebPage',
     sections: [
       ...PLANS.map((p) => ({
         id: p.id,
-        heading: `${p.name}: ${priceLabel(p)}`,
+        heading: `${p.name}: ${priceLabel(p)}${regularPriceLabel(p) ? ` (normally ${regularPriceLabel(p)})` : ''}`,
         paragraphs: [p.audience, ...(p.includes ? [p.includes] : [])],
         list: p.features,
       })),
@@ -137,13 +137,13 @@ export const MARKETING_PAGES: MarketingPage[] = [
       {
         id: 'billing',
         heading: 'Billing',
-        paragraphs: ['Payments are taken by Paddle, which sells Pipemouse as merchant of record and handles sales tax and invoices. Card details go to Paddle and never reach Pipemouse. A workspace admin can switch plan, update the card or cancel from the Plan page at any time.'],
+        paragraphs: ['No card is needed and nothing is charged while every plan is free. When paid plans open, payments will be taken by Paddle, which sells Pipemouse as merchant of record and handles sales tax and invoices. Card details go to Paddle and never reach Pipemouse. A workspace admin can switch plan, update the card or cancel from the Plan page at any time.'],
       },
     ],
     faq: [
-      { q: 'Is Pipemouse free?', a: 'Starter is free for good, with up to 3 tracks and no card required.' },
+      { q: 'Is Pipemouse free?', a: 'Yes. Every plan is free, including Pro and Business, with no card required. Starter stays free for good.' },
       { q: 'Is pricing per user?', a: 'No. Each price covers the whole workspace, however many people are in it.' },
-      { q: 'How does the free trial work?', a: `Pro and Business start with ${TRIAL_DAYS} days free. You enter a card to begin, and the first payment is taken when the trial ends. Cancel before then and nothing is charged.` },
+      { q: 'How does the free trial work?', a: `While every plan is free there is no trial and no card. When paid plans open, Pro and Business will start with ${TRIAL_DAYS} days free: you enter a card to begin, and the first payment is taken when the trial ends.` },
       { q: 'What happens if I move down to Starter?', a: 'Nothing is deleted and existing rooms keep working. You cannot create new tracks until you are within Starter’s limit of three.' },
     ],
     related: ['/product', '/integrations', '/faq'],

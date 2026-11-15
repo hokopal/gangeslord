@@ -41,7 +41,7 @@ ${PLANS.map((plan) => `- ${plan.name}: ${priceLabel(plan)}. ${plan.audience} ${p
 |---|---|---|---|
 ${COMPARISON.map((row) => `| ${row.label} | ${row.values.join(' | ')} |`).join('\n')}
 
-Payments are taken by Paddle, which sells Pipemouse as merchant of record and handles tax and invoices.
+Every plan is free. When paid plans open, payments will be taken by Paddle, which sells Pipemouse as merchant of record and handles tax and invoices.
 
 ## Pages
 

@@ -12,7 +12,6 @@ export function SiteHeader(_props: { home?: boolean }) {
       <Link href="/" className="site-logo" aria-label="Pipemouse home">
         <Logo size={24} />
         <span>Pipemouse</span>
-        <span className="site-alpha">Alpha</span>
       </Link>
       <nav aria-label="Sections">
         <Link href="/product">Product</Link>
@@ -81,7 +80,7 @@ export function SiteFooter(_props: { home?: boolean }) {
         <Link href="/contact">Contact</Link>
         <Link href={START}>Sign in</Link>
       </nav>
-      <span>© 2026 Pipemouse. In alpha.</span>
+      <span>© 2026 Pipemouse.</span>
     </footer>
     </>
   );

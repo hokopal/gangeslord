@@ -4,20 +4,20 @@ import { SitePage } from '@/components/site/SiteChrome';
 
 export const metadata: Metadata = {
   title: 'Terms of service',
-  description: 'The terms for using Pipemouse during its alpha: your account, your content, acceptable use, and what Pipemouse does and does not promise.',
+  description: 'The terms for using Pipemouse: your account, your content, acceptable use, and what Pipemouse does and does not promise.',
   alternates: { canonical: '/terms' },
 };
 
 export default function TermsPage() {
   return (
-    <SitePage title="Terms of service" intro="The agreement between you and Pipemouse when you use the service. Pipemouse is in alpha, and these terms say plainly what that means.">
+    <SitePage title="Terms of service" intro="The agreement between you and Pipemouse when you use the service.">
       <h2 id="agreement">The agreement</h2>
       <p>
         By creating an account or using Pipemouse, you agree to these terms. If you use Pipemouse for a company, you agree on that company’s behalf and
         confirm you are allowed to.
       </p>
 
-      <h2 id="alpha">Pipemouse is in alpha</h2>
+      <h2 id="early">Pipemouse is an early version</h2>
       <p>
         Pipemouse is an early version. Features may change or be removed, the service may be unavailable at times, and data could be lost. It is
         provided as it is, without any promise of uptime or support response. Do not rely on it as the only copy of anything important.
@@ -64,16 +64,17 @@ export default function TermsPage() {
 
       <h2 id="price">Price</h2>
       <p>
-        The Starter plan is free. Pro and Business are paid plans, priced per workspace per month as shown on our pricing page, and each
-        starts with a 7-day free trial. Nothing is charged unless a workspace admin chooses a paid plan. If you do, the first payment is taken
-        when the trial ends and then monthly until you cancel. You can cancel at any time from the Plan page; the plan stays active until the
-        end of the period already paid for, and payments already made are not refunded except where the law requires it. Payments are taken by
-        Paddle, which sells Pipemouse as merchant of record and is responsible for tax and invoices; Paddle’s own terms apply to the purchase.
+        Every plan is currently free and nothing is charged. Starter stays free for good. Pro and Business will later
+        be paid plans, priced per workspace per month as shown on our pricing page, and each will start with a 7-day free trial. Nothing is
+        charged unless a workspace admin chooses a paid plan. If you do, the first payment is taken when the trial ends and then monthly until
+        you cancel. You can cancel at any time from the Plan page; the plan stays active until the end of the period already paid for, and
+        payments already made are not refunded except where the law requires it. Payments are taken by Paddle, which sells Pipemouse as
+        merchant of record and is responsible for tax and invoices; Paddle’s own terms apply to the purchase.
       </p>
 
       <h2 id="leaving">Leaving Pipemouse</h2>
       <p>
-        You can stop using Pipemouse at any time and ask us to delete your workspace. We may end the alpha, or close an account, and will give notice
+        You can stop using Pipemouse at any time and ask us to delete your workspace. We may discontinue the service, or close an account, and will give notice
         where we reasonably can.
       </p>
 

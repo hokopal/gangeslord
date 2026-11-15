@@ -13,11 +13,11 @@ export const FAQ: { q: string; a: string }[] = [
   },
   {
     q: 'How much does Pipemouse cost?',
-    a: `Starter is free. Pro is $20 a month and Business is $49 a month. Each price covers the whole workspace, however many people are in it. Pro and Business start with a ${TRIAL_DAYS}-day free trial.`,
+    a: `Every plan is free, including Pro and Business. The crossed-out prices on the pricing page — $20 a month for Pro and $49 a month for Business — are what they will cost later. Each price covers the whole workspace, however many people are in it.`,
   },
   {
     q: 'How does the free trial work?',
-    a: `Pro and Business start with ${TRIAL_DAYS} days free. You enter a card to begin, and the first payment is taken when the trial ends. Cancel before then and nothing is charged.`,
+    a: `While every plan is free there is no trial and no card. When paid plans open, Pro and Business will start with ${TRIAL_DAYS} days free. You enter a card to begin, and the first payment is taken when the trial ends. Cancel before then and nothing is charged.`,
   },
   {
     q: 'Can I cancel or change plan at any time?',

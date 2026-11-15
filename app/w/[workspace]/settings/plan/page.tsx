@@ -42,7 +42,7 @@ export default async function PlanPage({
   const admin = can(role, 'settings.write');
 
   let state = PRICE_NOTE;
-  if (plan === 'alpha_trial') state = 'This workspace joined during early access, so it has everything in Business at no cost for now. You can move to a paid plan whenever you like.';
+  if (plan === 'alpha_trial') state = 'This workspace has everything in Business at no cost. You can move to a paid plan whenever you like.';
   else if (subscribed && ends) state = `Your plan has been cancelled and stays active until ${formatDate(ends)}. After that the workspace moves to Starter.`;
   else if (subscribed && status === 'trialing') state = `You are in your ${TRIAL_DAYS}-day free trial.${renews ? ` Your first payment is due on ${formatDate(renews)}.` : ''}`;
   else if (subscribed && status === 'past_due') state = 'Your last payment didn’t go through. Update your card to keep the plan.';
