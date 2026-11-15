@@ -1,4 +1,4 @@
-import { ApiError, apiCreateLink, apiListLibrary, apiListTracks, apiRecentSessions, apiTrackAnalytics } from '@/lib/api/service';
+import { ApiError, apiCreateLink, apiGetLibraryItem, apiGetTrack, apiGetWorkspace, apiListGuestNotes, apiListLibrary, apiListTracks, apiRecentSessions, apiTrackAnalytics } from '@/lib/api/service';
 import { authenticateApiKey, countRequest, rateHeaders, type ApiCaller } from '@/lib/api-keys';
 import { siteOrigin } from '@/lib/origin';
 
@@ -12,9 +12,13 @@ async function route(request: Request, path: string[], caller: ApiCaller): Promi
   const url = new URL(request.url);
   const [resource, id, sub] = path;
   if (request.method === 'GET') {
+    if (resource === 'workspace' && !id) return apiGetWorkspace(caller.workspaceId);
     if (resource === 'tracks' && !id) return apiListTracks(caller.workspaceId);
-    if (resource === 'library' && !id) return apiListLibrary(caller.workspaceId, url.searchParams.get('q') ?? undefined);
+    if (resource === 'tracks' && id && !sub) return apiGetTrack(caller.workspaceId, id);
     if (resource === 'tracks' && id && sub === 'analytics') return apiTrackAnalytics(caller.workspaceId, id);
+    if (resource === 'tracks' && id && sub === 'guest-notes') return apiListGuestNotes(caller.workspaceId, id);
+    if (resource === 'library' && !id) return apiListLibrary(caller.workspaceId, url.searchParams.get('q') ?? undefined, url.searchParams.get('type') ?? undefined);
+    if (resource === 'library' && id) return apiGetLibraryItem(caller.workspaceId, id);
     if (resource === 'sessions' && !id) {
       return apiRecentSessions(caller.workspaceId, { trackId: url.searchParams.get('track') ?? undefined, limit: Number(url.searchParams.get('limit')) || undefined });
     }

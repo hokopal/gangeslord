@@ -1,7 +1,7 @@
 import type { ApiCaller } from '../api-keys';
 import type { McpTool } from '../mcp';
 import {
-  apiCreateLink, apiGetLibraryItem, apiGetTrack, apiListGuestNotes, apiListLibrary, apiListTracks, apiRecentSessions, apiTrackAnalytics,
+  apiCreateLink, apiGetLibraryItem, apiGetTrack, apiListGuestNotes, apiListLibrary, apiListTracks, apiRecentSessions, apiTrackAnalytics, ApiError,
 } from './service';
 import {
   apiAddAssetFromUrl, apiAddItem, apiAddPdf, apiCreateTrack, apiDeleteAsset, apiDeleteTrack, apiMoveItem, apiRemoveItem, apiSetCta, apiSetPublished, apiUpdateAsset, apiUpdateItem, apiUpdateTrack,
@@ -25,10 +25,10 @@ export function toolsFor(caller: ApiCaller, origin: string): McpTool[] {
     {
       name: 'search_library',
       title: 'Search library',
-      description: 'List content in the workspace library (web pages, PDFs, YouTube videos), newest first. Optionally filter by words in the title, description or extracted text.',
-      inputSchema: { type: 'object', properties: { query: { type: 'string', description: 'Words to look for. Omit to list everything.' } }, additionalProperties: false },
+      description: 'List content in the workspace library (web pages, PDFs, YouTube videos), newest first. Optionally filter by words in the title, description or extracted text, and by content type.',
+      inputSchema: { type: 'object', properties: { query: { type: 'string', description: 'Words to look for. Omit to list everything.' }, type: { type: 'string', enum: ['web', 'pdf', 'youtube'], description: 'Only this content type.' } }, additionalProperties: false },
       outputSchema: listOutput,
-      run: (args) => apiListLibrary(ws, str(args.query)),
+      run: (args) => apiListLibrary(ws, str(args.query), str(args.type)),
     },
     {
       name: 'get_library_item',
@@ -41,7 +41,7 @@ export function toolsFor(caller: ApiCaller, origin: string): McpTool[] {
     {
       name: 'list_tracks',
       title: 'List tracks',
-      description: 'List the workspace’s tracks. A track is an ordered set of content shared with buyers as one room. Returns each track’s id, name, slug and whether it is published.',
+      description: 'List the workspace’s tracks. A track is an ordered set of content shared with buyers as one room. Returns each track’s id, name, slug, item count and whether it is published.',
       inputSchema: { type: 'object', properties: {}, additionalProperties: false },
       outputSchema: listOutput,
       run: () => apiListTracks(ws),
@@ -280,7 +280,13 @@ export function toolsFor(caller: ApiCaller, origin: string): McpTool[] {
       },
       outputSchema: okOutput,
       write: true,
-      run: (args) => done(apiSetCta(ws, String(args.track_id), String(args.placement) as 'header' | 'sidebar' | 'item', str(args.item_id) ?? null, strOr(args.label), strOr(args.url))),
+      run: (args) => {
+        const placement = args.placement;
+        if (placement !== 'header' && placement !== 'sidebar' && placement !== 'item') {
+          throw new ApiError(400, 'invalid_request', 'placement must be header, sidebar, or item.');
+        }
+        return done(apiSetCta(ws, String(args.track_id), placement, str(args.item_id) ?? null, strOr(args.label), strOr(args.url)));
+      },
     },
   ];
 }

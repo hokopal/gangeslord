@@ -20,23 +20,30 @@ export class ApiError extends Error {
 
 const notFound = (what: string) => new ApiError(404, 'not_found', `${what} not found.`);
 
-export async function apiListTracks(workspaceId: string) {
-  const { data } = await createAdminSupabase()
-    .from('tracks')
-    .select('id, name, slug, status, created_at')
-    .eq('workspace_id', workspaceId)
-    .order('created_at', { ascending: false })
-    .limit(200);
-  return (data ?? []).map((t) => ({ id: t.id, name: t.name, slug: t.slug, status: t.status, created_at: t.created_at }));
+export async function apiGetWorkspace(workspaceId: string) {
+  const { data } = await createAdminSupabase().from('workspaces').select('id, name, slug, plan').eq('id', workspaceId).maybeSingle();
+  if (!data) throw notFound('Workspace');
+  return { id: data.id, name: data.name, slug: data.slug, plan: data.plan };
 }
 
-export async function apiListLibrary(workspaceId: string, query?: string) {
+export async function apiListTracks(workspaceId: string) {
+  const admin = createAdminSupabase();
+  const [tracks, items] = await Promise.all([
+    admin.from('tracks').select('id, name, slug, status, created_at').eq('workspace_id', workspaceId).order('created_at', { ascending: false }).limit(200),
+    admin.from('track_items').select('track_id').eq('workspace_id', workspaceId),
+  ]);
+  const counts = new Map<string, number>();
+  for (const row of (items.data ?? []) as { track_id: string }[]) counts.set(row.track_id, (counts.get(row.track_id) ?? 0) + 1);
+  return (tracks.data ?? []).map((t) => ({ id: t.id, name: t.name, slug: t.slug, status: t.status, created_at: t.created_at, item_count: counts.get(t.id) ?? 0 }));
+}
+
+export async function apiListLibrary(workspaceId: string, query?: string, type?: string) {
   let request = createAdminSupabase()
     .from('assets')
     .select('id, title, type, status, source_url, description, created_at')
-    .eq('workspace_id', workspaceId)
-    .order('created_at', { ascending: false })
-    .limit(200);
+    .eq('workspace_id', workspaceId);
+  if (type === 'web' || type === 'pdf' || type === 'youtube') request = request.eq('type', type);
+  request = request.order('created_at', { ascending: false }).limit(200);
   const q = (query ?? '').replace(/[%_,()]/g, ' ').trim();
   if (q) request = request.or(`title.ilike.%${q}%,description.ilike.%${q}%,extracted_text.ilike.%${q}%`);
   const { data } = await request;
