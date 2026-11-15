@@ -21,8 +21,8 @@ const codeOf = (error: unknown) =>
   error instanceof Error && INGEST_ERRORS.has(error.message) ? error.message : 'fetch_failed';
 
 type AssetSummary = { id: string; title: string; type: string; status: string; source_url: string | null };
-type AssetRow = { id: string; title: string; description: string; slug: string; threshold_seconds: number; type: string; source_url: string | null; file_path: string | null; status: string };
-type TrackRow = { id: string; name: string; slug: string; status: string; header_title: string; show_next_button: boolean };
+type AssetRow = { id: string; title: string; description: string | null; slug: string; threshold_seconds: number; type: string; source_url: string | null; file_path: string | null; status: string };
+type TrackRow = { id: string; name: string; slug: string; status: string; header_title: string | null; show_next_button: boolean };
 
 async function storeFile(path: string, body: Uint8Array | string, contentType: string): Promise<void> {
   const { error } = await createAdminSupabase().storage.from(BUCKET).upload(path, body, { contentType, upsert: true });
@@ -176,7 +176,7 @@ export async function apiUpdateAsset(
     .from('assets')
     .update({
       title: title.slice(0, 300),
-      description: (patch.description ?? existing.description).trim().slice(0, 1000),
+      description: (patch.description ?? existing.description ?? '').trim().slice(0, 1000),
       slug,
       threshold_seconds: thresholdSeconds,
     })
@@ -233,7 +233,7 @@ export async function apiUpdateTrack(
     .update({
       name: name.slice(0, 120),
       slug,
-      header_title: (patch.headerTitle ?? track.header_title).trim().slice(0, 120),
+      header_title: (patch.headerTitle ?? track.header_title ?? '').trim().slice(0, 120),
       show_next_button: patch.showNextButton ?? track.show_next_button,
     })
     .eq('workspace_id', workspaceId)
