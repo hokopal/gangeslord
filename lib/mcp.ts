@@ -1,7 +1,9 @@
 export type McpTool = {
   name: string;
+  title?: string;
   description: string;
   inputSchema: { type: 'object'; properties: Record<string, unknown>; required?: string[]; additionalProperties?: boolean };
+  outputSchema?: Json;
   /** Tools that change data need a read-write key. */
   write?: boolean;
   run: (args: Record<string, unknown>) => Promise<unknown>;
@@ -13,10 +15,17 @@ const SUPPORTED_VERSIONS = ['2025-11-25', '2025-06-18', '2025-03-26', '2024-11-0
 export const SERVER_INFO = { name: 'fello', title: 'Pipemouse', version: '1.0.0' };
 const INSTRUCTIONS =
   'Pipemouse is a sales room platform. Sellers bundle content into tracks and share them with buyers as rooms. ' +
-  'Use these tools to look up library content and tracks, read engagement analytics, and create personal room links for named recipients.';
+  'Use these tools to read and manage library content and tracks, read engagement analytics, and create personal room links.';
 
 const result = (id: unknown, value: unknown) => ({ jsonrpc: '2.0', id, result: value });
 const failure = (id: unknown, code: number, message: string) => ({ jsonrpc: '2.0', id: id ?? null, error: { code, message } });
+
+/** structuredContent must be a JSON object. Arrays are wrapped so the shape stays stable. */
+const structured = (value: unknown): Json => {
+  if (Array.isArray(value)) return { items: value };
+  if (value !== null && typeof value === 'object') return value as Json;
+  return { result: value };
+};
 
 /**
  * Answers one JSON-RPC message of the Model Context Protocol. Returns null for notifications,
@@ -45,8 +54,10 @@ export async function handleMcpMessage(message: unknown, tools: readonly McpTool
       return result(id, {
         tools: tools.map((t) => ({
           name: t.name,
+          ...(t.title ? { title: t.title } : {}),
           description: t.description,
           inputSchema: t.inputSchema,
+          ...(t.outputSchema ? { outputSchema: t.outputSchema } : {}),
           annotations: { readOnlyHint: !t.write },
         })),
       });
@@ -59,7 +70,11 @@ export async function handleMcpMessage(message: unknown, tools: readonly McpTool
       const missing = (tool.inputSchema.required ?? []).filter((name) => args[name] === undefined || args[name] === null || args[name] === '');
       if (missing.length > 0) return text(`Missing required argument${missing.length === 1 ? '' : 's'}: ${missing.join(', ')}.`, true);
       try {
-        return text(JSON.stringify(await tool.run(args), null, 2));
+        const value = await tool.run(args);
+        return result(id, {
+          content: [{ type: 'text', text: JSON.stringify(value, null, 2) }],
+          structuredContent: structured(value),
+        });
       } catch (error) {
         // Only messages we wrote ourselves are passed on; anything unexpected is reported generically.
         const known = error instanceof Error && error.name === 'ApiError';
