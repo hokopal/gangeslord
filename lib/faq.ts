@@ -1,4 +1,3 @@
-import { TRIAL_DAYS } from '@/lib/plans';
 import { SITE_DEFINITION } from '@/lib/site';
 
 /** The questions people ask first, shown on the home page and the FAQ page. */
@@ -16,8 +15,8 @@ export const FAQ: { q: string; a: string }[] = [
     a: `Every plan is free, including Pro and Business. The crossed-out prices on the pricing page — $20 a month for Pro and $49 a month for Business — are what they will cost later. Each price covers the whole workspace, however many people are in it.`,
   },
   {
-    q: 'How does the free trial work?',
-    a: `While every plan is free there is no trial and no card. When paid plans open, Pro and Business will start with ${TRIAL_DAYS} days free. You enter a card to begin, and the first payment is taken when the trial ends. Cancel before then and nothing is charged.`,
+    q: 'Do I need a card to use Pipemouse?',
+    a: 'No. Every plan is free and no card is needed. When paid plans open, nothing will be charged unless a workspace admin chooses a paid plan, and you can cancel at any time.',
   },
   {
     q: 'Can I cancel or change plan at any time?',

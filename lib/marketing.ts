@@ -1,5 +1,5 @@
 import { FAQ } from '@/lib/faq';
-import { COMPARISON, PLANS, PRICE_NOTE, priceLabel, regularPriceLabel, TRIAL_DAYS } from '@/lib/plans';
+import { COMPARISON, PLANS, PRICE_NOTE, priceLabel, regularPriceLabel } from '@/lib/plans';
 import { SITE_DEFINITION } from '@/lib/site';
 
 /**
@@ -120,7 +120,7 @@ export const MARKETING_PAGES: MarketingPage[] = [
     eyebrow: 'Pricing',
     h1: 'Every plan is free for the whole workspace.',
     intro: PRICE_NOTE,
-    answer: `Pipemouse has three plans, and all of them are free. Starter is free for good with up to 3 tracks. Pro, normally $20 a month, has up to 25 tracks, HubSpot audiences, merge fields, CRM connections and Slack alerts. Business, normally $49 a month, has unlimited tracks, HubSpot timeline logging and a REST API. Prices are per workspace, not per person, and paid plans will start with a ${TRIAL_DAYS}-day free trial when they open.`,
+    answer: `Pipemouse has three plans, and all of them are free. Starter is free for good with up to 3 tracks. Pro, normally $20 a month, has up to 25 tracks, HubSpot audiences, merge fields, CRM connections and Slack alerts. Business, normally $49 a month, has unlimited tracks, HubSpot timeline logging and a REST API. Prices are per workspace, not per person.`,
     schemaType: 'WebPage',
     sections: [
       ...PLANS.map((p) => ({
@@ -143,7 +143,7 @@ export const MARKETING_PAGES: MarketingPage[] = [
     faq: [
       { q: 'Is Pipemouse free?', a: 'Yes. Every plan is free, including Pro and Business, with no card required. Starter stays free for good.' },
       { q: 'Is pricing per user?', a: 'No. Each price covers the whole workspace, however many people are in it.' },
-      { q: 'How does the free trial work?', a: `While every plan is free there is no trial and no card. When paid plans open, Pro and Business will start with ${TRIAL_DAYS} days free: you enter a card to begin, and the first payment is taken when the trial ends.` },
+      { q: 'Do I need a card?', a: 'No. Every plan is free and no card is needed. When paid plans open, nothing will be charged unless a workspace admin chooses a paid plan.' },
       { q: 'What happens if I move down to Starter?', a: 'Nothing is deleted and existing rooms keep working. You cannot create new tracks until you are within Starter’s limit of three.' },
     ],
     related: ['/product', '/integrations', '/faq'],
@@ -388,7 +388,7 @@ export const MARKETING_PAGES: MarketingPage[] = [
     path: '/faq',
     label: 'Questions',
     title: 'Pipemouse questions and answers',
-    description: 'Answers to common questions about Pipemouse: what it is, pricing, the free trial, integrations, buyer privacy and how engagement is measured.',
+    description: 'Answers to common questions about Pipemouse: what it is, pricing, integrations, buyer privacy and how engagement is measured.',
     eyebrow: 'Questions',
     h1: 'Questions people ask first.',
     intro: 'Short, direct answers. If yours is not here, the contact page reaches a person.',

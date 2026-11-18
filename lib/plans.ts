@@ -87,12 +87,12 @@ export const regularPriceLabel = (plan: Plan) => (plan.price > 0 && EVERY_PLAN_F
 /** The price to tell machines about: zero while every plan is free. */
 export const currentPrice = (plan: Plan): number => (EVERY_PLAN_FREE ? 0 : plan.price);
 
-export const PRICE_NOTE = `Every plan is free for now — the crossed-out prices are what they will cost later. Starter stays free for good. When paid plans open, they will be billed monthly per workspace, not per person, start with a ${TRIAL_DAYS}-day free trial, and can be cancelled at any time.`;
+export const PRICE_NOTE = `Every plan is free for now — the crossed-out prices are what they will cost later. Starter stays free for good. When paid plans open, they will be billed monthly per workspace, not per person, and can be cancelled at any time.`;
 
 /** The side-by-side table: one row per thing people compare, one value per plan in the order above. */
 export const COMPARISON: { label: string; values: [string, string, string] }[] = [
   { label: 'Price per workspace', values: ['Free', 'Free', 'Free'] },
-  { label: 'Free trial', values: ['Not needed', `${TRIAL_DAYS} days`, `${TRIAL_DAYS} days`] },
+  { label: 'Card required', values: ['No', 'No', 'No'] },
   { label: 'Tracks (rooms)', values: ['3', '25', 'Unlimited'] },
   { label: 'Team members', values: ['Unlimited', 'Unlimited', 'Unlimited'] },
   { label: 'Buyers and visits', values: ['Unlimited', 'Unlimited', 'Unlimited'] },
