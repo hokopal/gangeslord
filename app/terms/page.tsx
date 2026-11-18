@@ -65,8 +65,8 @@ export default function TermsPage() {
       <h2 id="price">Price</h2>
       <p>
         Every plan is currently free and nothing is charged. Starter stays free for good. Pro and Business will later
-        be paid plans, priced per workspace per month as shown on our pricing page, and each will start with a 7-day free trial. Nothing is
-        charged unless a workspace admin chooses a paid plan. If you do, the first payment is taken when the trial ends and then monthly until
+        be paid plans, priced per workspace per month as shown on our pricing page. Nothing is
+        charged unless a workspace admin chooses a paid plan. If you do, payments are taken monthly until
         you cancel. You can cancel at any time from the Plan page; the plan stays active until the end of the period already paid for, and
         payments already made are not refunded except where the law requires it. Payments are taken by Paddle, which sells Pipemouse as
         merchant of record and is responsible for tax and invoices; Paddle’s own terms apply to the purchase.
