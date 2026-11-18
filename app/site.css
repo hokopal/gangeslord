@@ -955,6 +955,7 @@
   --hover: rgba(16, 32, 31, 0.05);
   --accent: var(--ink);
   --accent-text: var(--paper);
+  --login-column: 440px;
   display: grid;
   grid-template-columns: minmax(380px, 0.9fr) minmax(0, 1.1fr);
   min-height: 100dvh;
@@ -976,6 +977,9 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
+  width: 100%;
+  max-width: var(--login-column);
+  margin: 0 auto;
 }
 
 .login-back {
@@ -993,7 +997,7 @@
 
 .login-form-content {
   width: 100%;
-  max-width: 400px;
+  max-width: var(--login-column);
   margin: auto;
   padding: 48px 0;
 }
@@ -1014,7 +1018,8 @@
 .login-form-content h1 {
   max-width: none;
   margin-bottom: 12px;
-  font-size: clamp(34px, 4vw, 48px);
+  font-size: clamp(34px, 4vw, 44px);
+  text-wrap: balance;
 }
 
 .login-shell .login-sub {
@@ -1104,6 +1109,9 @@
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 8px 20px;
+  width: 100%;
+  max-width: var(--login-column);
+  margin: 0 auto;
   color: var(--text-secondary);
   font-size: 13px;
 }
