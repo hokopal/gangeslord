@@ -88,6 +88,16 @@ const MESSAGES: Record<string, string> = {
   contact_too_many: 'You’ve sent several messages in the last hour. We have them; please wait before sending another.',
   contact_failed: 'We couldn’t send your message. Please try again.',
   contact_rate_limited: 'That’s a lot of messages in a short time. Please try again in an hour.',
+  invalid_domain: 'Enter a valid domain you control, such as rooms.example.com. Don’t include https:// or a path.',
+  domain_txt_missing:
+    'We couldn’t find the Pipemouse TXT record for this domain and workspace. Add it exactly as shown, wait for DNS to update, then try again.',
+  domain_conflict: 'That domain is already assigned to a Vercel project. Remove it there first, or use a different domain.',
+  domain_not_connected: 'That domain isn’t connected to this workspace.',
+  domain_signing_not_configured: 'Custom domains aren’t available because the server is missing its signing secret. Contact support.',
+  vercel_not_configured: 'Custom domains aren’t available because the Vercel connection isn’t configured. Contact support.',
+  vercel_forbidden: 'Vercel rejected the domain change. Check that the project access token can manage domains.',
+  vercel_rate_limited: 'Vercel is rate-limiting domain changes right now. Try again in a minute.',
+  vercel_request_failed: 'Vercel couldn’t complete the domain change. Try again in a moment.',
 };
 
 const FALLBACK = 'Something went wrong. Please try again.';

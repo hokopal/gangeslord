@@ -71,7 +71,7 @@ export async function writeLinksAction(formData: FormData): Promise<void> {
   const { workspace, slug, back, audienceId, track } = await linkContext(formData);
   let count: number;
   try {
-    count = await writeLinksToHubspot(workspace.id, audienceId, track.id, await siteOrigin(), slug, track.slug);
+    count = await writeLinksToHubspot(workspace.id, audienceId, track.id, await siteOrigin(slug), slug, track.slug);
   } catch (error) {
     redirect(`${back}?error=${encodeURIComponent(codeOf(error))}`);
   }

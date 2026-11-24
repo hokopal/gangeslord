@@ -32,7 +32,7 @@ export async function POST(request: Request) {
   } catch {
     return json({ jsonrpc: '2.0', id: null, error: { code: -32700, message: 'Parse error.' } }, 400, headers);
   }
-  const reply = await handleMcpBody(body, toolsFor(caller, await siteOrigin()), { canWrite: caller.scope === 'write' });
+  const reply = await handleMcpBody(body, toolsFor(caller, await siteOrigin(caller.workspaceSlug)), { canWrite: caller.scope === 'write' });
   return reply === null ? new Response(null, { status: 202, headers }) : json(reply, 200, headers);
 }
 

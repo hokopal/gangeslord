@@ -27,7 +27,7 @@ async function route(request: Request, path: string[], caller: ApiCaller): Promi
     } catch {
       throw new ApiError(400, 'invalid_request', 'The request body must be JSON.');
     }
-    return apiCreateLink(caller.workspaceId, caller.workspaceSlug, id, body ?? {}, await siteOrigin());
+    return apiCreateLink(caller.workspaceId, caller.workspaceSlug, id, body ?? {}, await siteOrigin(caller.workspaceSlug));
   }
   throw new ApiError(404, 'not_found', 'No such endpoint.');
 }

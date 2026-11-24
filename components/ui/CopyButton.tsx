@@ -3,21 +3,18 @@
 import { Check, Copy } from 'lucide-react';
 import { useState } from 'react';
 
-/**
- * Copies a path as a full URL. The address is this page's own unless `origin` names another,
- * as it does for room links, which point at the public site. The path is exposed as data-link for tests.
- */
-export function CopyButton({ path, label, origin }: { path: string; label: string; origin?: string }) {
+/** Copies a path as a full URL, or an explicit value such as a DNS record. */
+export function CopyButton({ path, label, origin, value }: { path?: string; label: string; origin?: string; value?: string }) {
   const [copied, setCopied] = useState(false);
 
   async function copy() {
-    const url = `${origin ?? window.location.origin}${path}`;
+    const text = value ?? `${origin ?? window.location.origin}${path ?? ''}`;
     try {
-      await navigator.clipboard.writeText(url);
+      await navigator.clipboard.writeText(text);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      window.prompt('Copy this link', url);
+      window.prompt(value ? 'Copy this value' : 'Copy this link', text);
     }
   }
 
