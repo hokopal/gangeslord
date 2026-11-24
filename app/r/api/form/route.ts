@@ -3,7 +3,7 @@ import { syncSubmission } from '@/lib/forms-server';
 import { appOrigin } from '@/lib/origin';
 import { tooManyRequests, withinLimit } from '@/lib/rate-limit';
 import { cleanSubmission, publicForm } from '@/lib/room-options';
-import { readJson, rememberVisitor, resolveVisit } from '@/lib/room-visit';
+import { readJson, rememberRoomForm, rememberVisitor, resolveVisit } from '@/lib/room-visit';
 import { createAdminSupabase } from '@/lib/supabase/admin';
 
 const fail = (code: string, status = 400) => NextResponse.json({ ok: false, error: code }, { status });
@@ -36,8 +36,8 @@ export async function POST(request: Request) {
   after(() => syncSubmission(submissionId as string, origin));
 
   const response = NextResponse.json({ ok: true });
-  // Remembers, for this room only, that the visitor has filled in the form.
-  response.cookies.set('fello_f', '1', { httpOnly: true, secure: true, sameSite: 'lax', path: `/r/${body.workspace}/${body.track}`, maxAge: 60 * 60 * 24 * 365 });
+  // The signed proof is bound to this exact room and works on both canonical and custom hosts.
+  rememberRoomForm(response, visit.workspace, visit.track);
   rememberVisitor(response, visit);
   return response;
 }

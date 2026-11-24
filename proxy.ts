@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { resolveWorkspaceDomain } from '@/lib/domain-dns';
+import { resolveWorkspaceDomain } from '@/lib/workspace-domains';
 import { MARKETING_PAGES } from '@/lib/marketing';
 import { APP_URL, SITE_URL } from '@/lib/site';
 import { isValidTitleSlug } from '@/lib/slug';
@@ -27,7 +27,7 @@ export async function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
   const home = isAppPath(pathname) ? APP_URL : SITE_URL;
   const isPlatformHost = !host || host === SITE_HOST || host === APP_HOST || host.endsWith('.vercel.app') || host.endsWith('.v0.build') || LOCAL_HOST.test(host);
-  const workspaceSlug = isPlatformHost ? null : await resolveWorkspaceDomain(host);
+  const workspaceSlug = isPlatformHost ? null : await resolveWorkspaceDomain(host, { headers: request.headers });
 
   if (workspaceSlug) {
     const path = pathname.length > 1 ? pathname.replace(/\/+$/, '') : '/';
@@ -54,6 +54,11 @@ export async function proxy(request: NextRequest) {
     const url = request.nextUrl.clone();
     url.pathname = `/r/${workspaceSlug}/${track}${item ? `/${item}` : ''}`;
     return NextResponse.rewrite(url);
+  }
+
+  // An unbound custom host must never fall through to the canonical room route for another workspace.
+  if (!isPlatformHost && (pathname === '/r' || pathname.startsWith('/r/'))) {
+    return new NextResponse('Not found', { status: 404 });
   }
 
   if (host === FIRST_HOST && !SITE_URL.includes(FIRST_HOST)) {

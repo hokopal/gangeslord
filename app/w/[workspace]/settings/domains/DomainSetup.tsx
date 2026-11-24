@@ -3,7 +3,7 @@ import { workspaceDnsRecord } from '@/lib/domain-dns';
 import { connectDomainAction } from './actions';
 import { DnsRecords, vercelPointingRecords } from './DnsRecords';
 
-export function DomainSetup({ workspaceSlug, domain }: { workspaceSlug: string; domain: string }) {
+export function DomainSetup({ workspaceSlug, workspaceId, domain }: { workspaceSlug: string; workspaceId: string; domain: string }) {
   return (
     <section className="domain-setup" aria-labelledby="domain-setup-title">
       <h3 id="domain-setup-title">Set up {domain}</h3>
@@ -11,7 +11,7 @@ export function DomainSetup({ workspaceSlug, domain }: { workspaceSlug: string; 
         Add this TXT record at your DNS provider. It binds the domain to this workspace and cannot be reused for
         another workspace.
       </p>
-      <DnsRecords label="Pipemouse workspace verification" records={[workspaceDnsRecord(domain, workspaceSlug)]} />
+      <DnsRecords label="Pipemouse workspace verification" records={[workspaceDnsRecord(domain, workspaceSlug, workspaceId)]} />
 
       <p className="hint domain-pointing-hint">
         Then point the domain to Vercel. Use the A record for an apex domain such as example.com, or the CNAME for

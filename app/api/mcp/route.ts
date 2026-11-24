@@ -1,5 +1,5 @@
 import { toolsFor } from '@/lib/api/tools';
-import { authenticateApiKey, countRequest, rateHeaders } from '@/lib/api-keys';
+import { authenticateApiKey, countRequests, rateHeaders } from '@/lib/api-keys';
 import { handleMcpBody } from '@/lib/mcp';
 import { siteOrigin } from '@/lib/origin';
 import { planIncludesMcp } from '@/lib/plan-limits';
@@ -21,16 +21,21 @@ export async function POST(request: Request) {
   if (!(await planIncludesMcp(caller.workspaceId))) {
     return json({ jsonrpc: '2.0', id: null, error: { code: -32003, message: 'The MCP server is included in the Pro and Business plans. This workspace is on Starter.' } }, 403);
   }
-  const rate = await countRequest(caller);
-  const headers = rateHeaders(rate);
-  if (!rate.allowed) {
-    return json({ jsonrpc: '2.0', id: null, error: { code: -32002, message: `Rate limit reached. Try again in ${rate.reset} seconds.` } }, 429, headers);
-  }
   let body: unknown;
   try {
     body = await request.json();
   } catch {
+    const rate = await countRequests(caller, 1);
+    const headers = rateHeaders(rate);
+    if (!rate.allowed) return json({ jsonrpc: '2.0', id: null, error: { code: -32002, message: `Rate limit reached. Try again in ${rate.reset} seconds.` } }, 429, headers);
     return json({ jsonrpc: '2.0', id: null, error: { code: -32700, message: 'Parse error.' } }, 400, headers);
+  }
+  // A batch is not one request: account for every message before executing any of them.
+  const messageCount = Array.isArray(body) ? Math.min(Math.max(body.length, 1), 21) : 1;
+  const rate = await countRequests(caller, messageCount);
+  const headers = rateHeaders(rate);
+  if (!rate.allowed) {
+    return json({ jsonrpc: '2.0', id: null, error: { code: -32002, message: `Rate limit reached. Try again in ${rate.reset} seconds.` } }, 429, headers);
   }
   const reply = await handleMcpBody(body, toolsFor(caller, await siteOrigin(caller.workspaceSlug)), { canWrite: caller.scope === 'write' });
   return reply === null ? new Response(null, { status: 202, headers }) : json(reply, 200, headers);

@@ -85,6 +85,7 @@ export async function getAudience(workspaceId: string, audienceId: string): Prom
   const { data: rows } = await supabase
     .from('contacts')
     .select('id, external_id, email, first_name, last_name, company')
+    .eq('workspace_id', workspaceId)
     .eq('audience_id', audienceId)
     .order('last_name')
     .order('first_name')
@@ -144,13 +145,14 @@ export async function deleteAudience(workspaceId: string, audienceId: string): P
 
 type ContactRow = { id: string; external_id: string; email: string | null; first_name: string | null; last_name: string | null; company: string | null };
 
-async function allContacts(audienceId: string): Promise<ContactRow[]> {
+async function allContacts(workspaceId: string, audienceId: string): Promise<ContactRow[]> {
   const supabase = await createServerSupabase();
   const rows: ContactRow[] = [];
   for (let page = 0; page < 10; page += 1) {
     const { data, error } = await supabase
       .from('contacts')
       .select('id, external_id, email, first_name, last_name, company')
+      .eq('workspace_id', workspaceId)
       .eq('audience_id', audienceId)
       .order('id')
       .range(page * 1000, page * 1000 + 999);
@@ -163,7 +165,7 @@ async function allContacts(audienceId: string): Promise<ContactRow[]> {
 
 /** Creates a personal link on a track for every contact in an audience who does not have one yet. */
 export async function generateLinks(workspaceId: string, audienceId: string, trackId: string): Promise<number> {
-  const contacts = await allContacts(audienceId);
+  const contacts = await allContacts(workspaceId, audienceId);
   const supabase = await createServerSupabase();
   for (const batch of chunks(contacts, 500)) {
     const rows = batch.map((c) => ({
@@ -182,24 +184,23 @@ export async function generateLinks(workspaceId: string, audienceId: string, tra
 
 type LinkRecord = { token: string; recipient_name: string; recipient_email: string | null; account_name: string | null; contact_id: string };
 
-async function linkRecords(audienceId: string, trackId: string): Promise<(LinkRecord & { externalId: string })[]> {
+async function linkRecords(workspaceId: string, audienceId: string, trackId: string): Promise<(LinkRecord & { externalId: string })[]> {
   const supabase = await createServerSupabase();
-  const contacts = new Map((await allContacts(audienceId)).map((c) => [c.id, c.external_id]));
+  const contacts = new Map((await allContacts(workspaceId, audienceId)).map((c) => [c.id, c.external_id]));
   const records: (LinkRecord & { externalId: string })[] = [];
-  for (let page = 0; page < 10; page += 1) {
+  // Restrict both the link rows and the contact ids to this workspace and audience.
+  for (const contactBatch of chunks([...contacts.keys()], 500)) {
     const { data, error } = await supabase
       .from('share_links')
       .select('token, recipient_name, recipient_email, account_name, contact_id')
+      .eq('workspace_id', workspaceId)
       .eq('track_id', trackId)
-      .not('contact_id', 'is', null)
-      .order('id')
-      .range(page * 1000, page * 1000 + 999);
+      .in('contact_id', contactBatch);
     if (error) throw new Error(error.message);
     for (const row of (data ?? []) as LinkRecord[]) {
       const externalId = contacts.get(row.contact_id);
       if (externalId) records.push({ ...row, externalId });
     }
-    if (!data || data.length < 1000) break;
   }
   return records;
 }
@@ -207,8 +208,8 @@ async function linkRecords(audienceId: string, trackId: string): Promise<(LinkRe
 const roomUrl = (origin: string, workspaceSlug: string, trackSlug: string, token: string) => `${origin}/r/${workspaceSlug}/${trackSlug}?r=${token}`;
 
 /** One row per contact with their link, for the CSV download. */
-export async function linkRows(audienceId: string, trackId: string, origin: string, workspaceSlug: string, trackSlug: string): Promise<LinkRow[]> {
-  return (await linkRecords(audienceId, trackId)).map((r) => ({
+export async function linkRows(workspaceId: string, audienceId: string, trackId: string, origin: string, workspaceSlug: string, trackSlug: string): Promise<LinkRow[]> {
+  return (await linkRecords(workspaceId, audienceId, trackId)).map((r) => ({
     email: r.recipient_email,
     name: r.recipient_name,
     company: r.account_name,
@@ -217,15 +218,17 @@ export async function linkRows(audienceId: string, trackId: string, origin: stri
 }
 
 /** How many contacts of an audience have a link on each of the given tracks. */
-export async function linkCounts(audienceId: string, trackIds: readonly string[]): Promise<Record<string, number>> {
+export async function linkCounts(workspaceId: string, audienceId: string, trackIds: readonly string[]): Promise<Record<string, number>> {
   const supabase = await createServerSupabase();
   const counts: Record<string, number> = {};
   await Promise.all(
     trackIds.slice(0, 30).map(async (trackId) => {
       const { count } = await supabase
         .from('share_links')
-        .select('id, contacts!inner(audience_id)', { count: 'exact', head: true })
+        .select('id, contacts!inner(audience_id,workspace_id)', { count: 'exact', head: true })
+        .eq('workspace_id', workspaceId)
         .eq('track_id', trackId)
+        .eq('contacts.workspace_id', workspaceId)
         .eq('contacts.audience_id', audienceId);
       counts[trackId] = count ?? 0;
     }),
@@ -235,7 +238,7 @@ export async function linkCounts(audienceId: string, trackIds: readonly string[]
 
 /** Writes each contact's link to the "Pipemouse room link" property in HubSpot. Returns how many were written. */
 export async function writeLinksToHubspot(workspaceId: string, audienceId: string, trackId: string, origin: string, workspaceSlug: string, trackSlug: string): Promise<number> {
-  const records = await linkRecords(audienceId, trackId);
+  const records = await linkRecords(workspaceId, audienceId, trackId);
   if (records.length === 0) throw new Error('links_missing');
   const token = await loadToken(workspaceId);
   await ensureLinkProperty(token, LINK_PROPERTY.name, LINK_PROPERTY.label);

@@ -6,7 +6,7 @@ const { resolveWorkspaceDomain, updateSession } = vi.hoisted(() => ({
   updateSession: vi.fn(),
 }));
 
-vi.mock('@/lib/domain-dns', () => ({ resolveWorkspaceDomain }));
+vi.mock('@/lib/workspace-domains', () => ({ resolveWorkspaceDomain }));
 vi.mock('@/lib/supabase/proxy', () => ({ updateSession }));
 
 import { proxy } from './proxy';
@@ -22,7 +22,7 @@ beforeEach(() => {
 });
 
 describe('custom domain proxy', () => {
-  it('rewrites a clean room path to the workspace proved by DNS', async () => {
+  it('rewrites a clean room path to the workspace bound to the host', async () => {
     resolveWorkspaceDomain.mockResolvedValue('acme');
     const response = await proxy(request('/proposal?r=token', 'rooms.example.com'));
     const rewrite = response.headers.get('x-middleware-rewrite');
@@ -55,11 +55,18 @@ describe('custom domain proxy', () => {
     expect(login.headers.get('location')).toBe('https://www.pipemouse.com/login');
   });
 
-  it('falls through to the existing session handler when DNS has no valid proof', async () => {
+  it('falls through to the existing session handler when the host has no verified binding', async () => {
     resolveWorkspaceDomain.mockResolvedValue(null);
     const response = await proxy(request('/proposal', 'rooms.example.com'));
     expect(updateSession).toHaveBeenCalledOnce();
     expect(response.headers.get('x-middleware-next')).toBe('1');
+  });
+
+  it('does not serve canonical rooms on an unbound custom host', async () => {
+    resolveWorkspaceDomain.mockResolvedValue(null);
+    const response = await proxy(request('/r/acme/proposal', 'rooms.example.com'));
+    expect(response.status).toBe(404);
+    expect(updateSession).not.toHaveBeenCalled();
   });
 
   it('preserves the legacy Vercel-host redirect', async () => {

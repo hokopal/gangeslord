@@ -6,10 +6,13 @@ import { isValidSlug } from './slug';
 
 const TXT_HOST_PREFIX = '_pipemouse.';
 const TXT_WORKSPACE_PREFIX = 'pipemouse-workspace=';
+const TXT_WORKSPACE_ID_PREFIX = 'workspace-id=';
 const TXT_PROOF_PREFIX = 'proof=';
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 const DNS_TIMEOUT_MS = 4000;
 const VALID_CACHE_MS = 60_000;
 const INVALID_CACHE_MS = 20_000;
+const MAX_CACHE_ENTRIES = 1000;
 
 const PLATFORM_HOSTS = new Set([
   'pipemouse.com',
@@ -19,7 +22,23 @@ const PLATFORM_HOSTS = new Set([
   new URL(APP_URL).hostname,
 ]);
 
-const resolutionCache = new Map<string, { slug: string | null; expires: number }>();
+export type WorkspaceDnsIdentity = { workspaceSlug: string; workspaceId: string };
+
+const resolutionCache = new Map<string, { owner: WorkspaceDnsIdentity | null; expires: number }>();
+
+function cacheResolution(hostname: string, owner: WorkspaceDnsIdentity | null, ttl: number): void {
+  const now = Date.now();
+  for (const [key, entry] of resolutionCache) {
+    if (entry.expires <= now) resolutionCache.delete(key);
+  }
+  resolutionCache.delete(hostname);
+  while (resolutionCache.size >= MAX_CACHE_ENTRIES) {
+    const oldest = resolutionCache.keys().next().value;
+    if (!oldest) break;
+    resolutionCache.delete(oldest);
+  }
+  resolutionCache.set(hostname, { owner, expires: now + ttl });
+}
 
 export type WorkspaceDnsRecord = { type: 'TXT'; name: string; value: string };
 
@@ -63,44 +82,47 @@ function signingKey(): Buffer {
   const secret = process.env.SUPABASE_JWT_SECRET ?? process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!secret) throw new Error('domain_signing_not_configured');
   // Domain proofs use a derived key so this HMAC cannot be confused with a Supabase JWT signature.
-  return createHash('sha256').update(`pipemouse-domain-dns-v1\0${secret}`).digest();
+  return createHash('sha256').update(`pipemouse-domain-dns-v2\0${secret}`).digest();
 }
 
-function domainProof(domain: string, workspaceSlug: string): string {
-  return createHmac('sha256', signingKey()).update(`${domain}\0${workspaceSlug}`).digest('base64url');
+function domainProof(domain: string, workspaceSlug: string, workspaceId: string): string {
+  return createHmac('sha256', signingKey()).update([domain, workspaceSlug, workspaceId].join(String.fromCharCode(0))).digest('base64url');
 }
 
-function proofMatches(domain: string, workspaceSlug: string, proof: string): boolean {
-  const expected = Buffer.from(domainProof(domain, workspaceSlug));
+function proofMatches(domain: string, workspaceSlug: string, workspaceId: string, proof: string): boolean {
+  const expected = Buffer.from(domainProof(domain, workspaceSlug, workspaceId));
   const actual = Buffer.from(proof);
   return expected.length === actual.length && timingSafeEqual(expected, actual);
 }
 
-/** The TXT record that proves a domain owner chose this exact workspace. */
-export function workspaceDnsRecord(domain: string, workspaceSlug: string): WorkspaceDnsRecord {
+/** The TXT record proves ownership of this exact immutable workspace, not just its current slug. */
+export function workspaceDnsRecord(domain: string, workspaceSlug: string, workspaceId: string): WorkspaceDnsRecord {
   const hostname = normalizeDomain(domain);
-  if (!isValidSlug(workspaceSlug)) throw new Error('invalid_workspace');
+  if (!isValidSlug(workspaceSlug) || !UUID.test(workspaceId)) throw new Error('invalid_workspace');
   return {
     type: 'TXT',
     name: `${TXT_HOST_PREFIX}${hostname}`,
-    value: `${TXT_WORKSPACE_PREFIX}${workspaceSlug};${TXT_PROOF_PREFIX}${domainProof(hostname, workspaceSlug)}`,
+    value: `${TXT_WORKSPACE_PREFIX}${workspaceSlug};${TXT_WORKSPACE_ID_PREFIX}${workspaceId};${TXT_PROOF_PREFIX}${domainProof(hostname, workspaceSlug, workspaceId)}`,
   };
 }
 
-/** Returns the unique valid workspace in a DNS answer, or null for missing, forged or ambiguous records. */
-export function workspaceSlugFromTxt(records: string[][], domain: string): string | null {
+/** Returns the unique valid workspace identity, rejecting legacy slug-only and ambiguous records. */
+export function workspaceIdentityFromTxt(records: string[][], domain: string): WorkspaceDnsIdentity | null {
   const hostname = normalizeDomain(domain);
-  const matches = new Set<string>();
+  const matches = new Map<string, WorkspaceDnsIdentity>();
 
   for (const chunks of records) {
     const fields = chunks.join('').split(';').map((field) => field.trim());
     const workspaceSlug = fields.find((field) => field.startsWith(TXT_WORKSPACE_PREFIX))?.slice(TXT_WORKSPACE_PREFIX.length);
+    const workspaceId = fields.find((field) => field.startsWith(TXT_WORKSPACE_ID_PREFIX))?.slice(TXT_WORKSPACE_ID_PREFIX.length);
     const proof = fields.find((field) => field.startsWith(TXT_PROOF_PREFIX))?.slice(TXT_PROOF_PREFIX.length);
-    if (!workspaceSlug || !proof || !isValidSlug(workspaceSlug)) continue;
-    if (proofMatches(hostname, workspaceSlug, proof)) matches.add(workspaceSlug);
+    if (!workspaceSlug || !workspaceId || !proof || !isValidSlug(workspaceSlug) || !UUID.test(workspaceId)) continue;
+    if (proofMatches(hostname, workspaceSlug, workspaceId, proof)) {
+      matches.set(`${workspaceSlug}:${workspaceId}`, { workspaceSlug, workspaceId });
+    }
   }
 
-  return matches.size === 1 ? [...matches][0] : null;
+  return matches.size === 1 ? [...matches.values()][0] : null;
 }
 
 async function withTimeout<T>(promise: Promise<T>): Promise<T> {
@@ -115,8 +137,8 @@ async function withTimeout<T>(promise: Promise<T>): Promise<T> {
   }
 }
 
-/** Resolves the workspace bound to a hostname. DNS failures fail closed and are briefly cached. */
-export async function resolveWorkspaceDomain(domain: string, options?: { fresh?: boolean }): Promise<string | null> {
+/** Reads the workspace proof during setup. This is never used as the request-routing authority. */
+export async function resolveWorkspaceDnsOwner(domain: string, options?: { fresh?: boolean }): Promise<WorkspaceDnsIdentity | null> {
   let hostname: string;
   try {
     hostname = normalizeDomain(domain);
@@ -125,15 +147,20 @@ export async function resolveWorkspaceDomain(domain: string, options?: { fresh?:
   }
 
   const cached = resolutionCache.get(hostname);
-  if (!options?.fresh && cached && cached.expires > Date.now()) return cached.slug;
+  if (!options?.fresh && cached && cached.expires > Date.now()) {
+    // Refresh insertion order so frequently used hostnames are retained.
+    resolutionCache.delete(hostname);
+    resolutionCache.set(hostname, cached);
+    return cached.owner;
+  }
 
   try {
     const records = await withTimeout(resolveTxt(`${TXT_HOST_PREFIX}${hostname}`));
-    const slug = workspaceSlugFromTxt(records, hostname);
-    resolutionCache.set(hostname, { slug, expires: Date.now() + (slug ? VALID_CACHE_MS : INVALID_CACHE_MS) });
-    return slug;
+    const owner = workspaceIdentityFromTxt(records, hostname);
+    cacheResolution(hostname, owner, owner ? VALID_CACHE_MS : INVALID_CACHE_MS);
+    return owner;
   } catch {
-    resolutionCache.set(hostname, { slug: null, expires: Date.now() + INVALID_CACHE_MS });
+    cacheResolution(hostname, null, INVALID_CACHE_MS);
     return null;
   }
 }

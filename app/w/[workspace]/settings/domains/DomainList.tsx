@@ -4,7 +4,7 @@ import type { WorkspaceDomain } from '@/lib/vercel-domains';
 import { removeDomainAction, verifyDomainAction } from './actions';
 import { DnsRecords, vercelPointingRecords, type DnsRecord } from './DnsRecords';
 
-export function DomainList({ domains, workspaceSlug }: { domains: WorkspaceDomain[]; workspaceSlug: string }) {
+export function DomainList({ domains, workspaceSlug, workspaceId }: { domains: WorkspaceDomain[]; workspaceSlug: string; workspaceId: string }) {
   if (domains.length === 0) return <p className="hint">No custom domains are connected to this workspace yet.</p>;
 
   return (
@@ -57,7 +57,7 @@ export function DomainList({ domains, workspaceSlug }: { domains: WorkspaceDomai
                 <DnsRecords
                   label={`DNS records for ${domain.name}`}
                   records={[
-                    workspaceDnsRecord(domain.name, workspaceSlug),
+                    workspaceDnsRecord(domain.name, workspaceSlug, workspaceId),
                     ...vercelPointingRecords(domain.name),
                     ...challenges,
                   ]}

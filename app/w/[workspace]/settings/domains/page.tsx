@@ -43,7 +43,7 @@ export default async function DomainSettingsPage({
   if (query.domain) {
     try {
       setupDomain = normalizeDomain(query.domain);
-      workspaceDnsRecord(setupDomain, slug);
+      workspaceDnsRecord(setupDomain, slug, context.workspace.id);
     } catch (error) {
       setupError = error instanceof Error && error.message === 'domain_signing_not_configured'
         ? 'domain_signing_not_configured'
@@ -110,10 +110,10 @@ export default async function DomainSettingsPage({
         </SubmitButton>
       </form>
 
-      {setupDomain ? <DomainSetup workspaceSlug={slug} domain={setupDomain} /> : null}
+      {setupDomain ? <DomainSetup workspaceSlug={slug} workspaceId={context.workspace.id} domain={setupDomain} /> : null}
 
       <h2 className="section-title">Connected domains</h2>
-      {loadError ? null : <DomainList domains={domains} workspaceSlug={slug} />}
+      {loadError ? null : <DomainList domains={domains} workspaceSlug={slug} workspaceId={context.workspace.id} />}
     </div>
   );
 }

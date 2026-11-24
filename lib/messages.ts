@@ -104,7 +104,7 @@ const FALLBACK = 'Something went wrong. Please try again.';
 
 /** User-facing copy for an error code raised by the database or the lib layer. */
 export function errorMessage(code: string): string {
-  return MESSAGES[code] ?? FALLBACK;
+  return Object.prototype.hasOwnProperty.call(MESSAGES, code) ? MESSAGES[code] : FALLBACK;
 }
 
 export const inviteErrorMessage = errorMessage;

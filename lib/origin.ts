@@ -1,5 +1,5 @@
 import { headers } from 'next/headers';
-import { resolveWorkspaceDomain } from './domain-dns';
+import { resolveWorkspaceDomain } from './workspace-domains';
 import { APP_URL, SITE_URL } from './site';
 import { preferredWorkspaceDomain } from './vercel-domains';
 
@@ -14,7 +14,7 @@ function requestHost(h: Headers): string {
 async function customDomain(h: Headers): Promise<{ origin: string; workspaceSlug: string } | null> {
   const host = requestHost(h);
   if (!host || LOCAL.test(host) || PREVIEW.test(host) || PLATFORM_HOSTS.has(host) || host.endsWith('.vercel.app') || host.endsWith('.v0.build')) return null;
-  const workspaceSlug = await resolveWorkspaceDomain(host);
+  const workspaceSlug = await resolveWorkspaceDomain(host, { headers: h });
   return workspaceSlug ? { origin: `https://${host}`, workspaceSlug } : null;
 }
 

@@ -1,4 +1,5 @@
-import { normalizeDomain, resolveWorkspaceDomain } from './domain-dns';
+import { normalizeDomain } from './domain-dns';
+import { listWorkspaceDomainBindings } from './workspace-domains';
 
 const VERCEL_API = 'https://api.vercel.com';
 const REQUEST_TIMEOUT_MS = 15_000;
@@ -93,6 +94,11 @@ export async function verifyProjectDomain(domain: string): Promise<ProjectDomain
   });
 }
 
+export async function getProjectDomain(domain: string): Promise<ProjectDomain> {
+  const name = normalizeDomain(domain);
+  return vercelFetch<ProjectDomain>(projectPath(`/domains/${encodeURIComponent(name)}`));
+}
+
 export async function removeProjectDomain(domain: string): Promise<void> {
   const name = normalizeDomain(domain);
   try {
@@ -103,29 +109,34 @@ export async function removeProjectDomain(domain: string): Promise<void> {
   }
 }
 
-/** Only domains with a valid signed TXT record for this workspace are visible to it. */
+/** Only hostnames explicitly bound to this workspace are visible to it. */
 export async function listWorkspaceDomains(workspaceSlug: string): Promise<WorkspaceDomain[]> {
+  const bindings = await listWorkspaceDomainBindings(workspaceSlug);
+  if (bindings.length === 0) return [];
   const body = await vercelFetch<{ domains?: ProjectDomain[] } | ProjectDomain[]>(projectPath('/domains'));
   const domains = Array.isArray(body) ? body : (body.domains ?? []);
-  const matches = await Promise.all(
-    domains
-      .filter((domain) => typeof domain.name === 'string' && !domain.redirect && !domain.gitBranch && !domain.customEnvironmentId)
-      .map(async (domain): Promise<ProjectDomain | null> => {
-        try {
-          const name = normalizeDomain(domain.name);
-          const owner = await resolveWorkspaceDomain(name);
-          return owner === workspaceSlug ? { ...domain, name, verified: domain.verified === true } : null;
-        } catch {
-          return null;
-        }
-      }),
-  );
+  const byName = new Map<string, ProjectDomain>();
+  for (const domain of domains) {
+    if (typeof domain.name !== 'string' || domain.redirect || domain.gitBranch || domain.customEnvironmentId) continue;
+    try {
+      byName.set(normalizeDomain(domain.name), domain);
+    } catch {
+      // Ignore platform or malformed hostnames returned by the project-wide Vercel list.
+    }
+  }
 
-  const sorted = matches
-    .filter((domain): domain is ProjectDomain => domain !== null)
-    .sort((a, b) => (a.createdAt ?? 0) - (b.createdAt ?? 0) || a.name.localeCompare(b.name));
-  const primary = sorted.find((domain) => domain.verified)?.name;
-  return sorted.map((domain) => ({ ...domain, primary: domain.name === primary }));
+  const rows = bindings.map((binding) => {
+    const project = byName.get(binding.domain);
+    return {
+      ...project,
+      name: binding.domain,
+      apexName: project?.apexName ?? binding.domain,
+      verified: binding.status === 'verified' && project?.verified === true,
+      createdAt: project?.createdAt ?? Date.parse(binding.createdAt),
+    } as ProjectDomain;
+  });
+  const primary = rows.find((domain) => domain.verified)?.name;
+  return rows.map((domain) => ({ ...domain, primary: domain.name === primary }));
 }
 
 /** The first verified workspace domain, or null so callers can fall back to the Pipemouse origin. */
@@ -133,8 +144,8 @@ export async function preferredWorkspaceDomain(workspaceSlug: string): Promise<s
   const cached = preferredCache.get(workspaceSlug);
   if (cached && cached.expires > Date.now()) return cached.domain;
   try {
-    const domains = await listWorkspaceDomains(workspaceSlug);
-    const domain = domains.find((entry) => entry.primary)?.name ?? null;
+    const domains = await listWorkspaceDomainBindings(workspaceSlug);
+    const domain = domains.find((entry) => entry.status === 'verified')?.domain ?? null;
     preferredCache.set(workspaceSlug, { domain, expires: Date.now() + PREFERRED_CACHE_MS });
     return domain;
   } catch {
@@ -149,6 +160,7 @@ export function clearPreferredWorkspaceDomain(workspaceSlug?: string): void {
 }
 
 export function domainErrorCode(error: unknown): string {
+  if (error instanceof Error && (error.message === 'domain_conflict' || error.message === 'domain_not_connected')) return error.message;
   if (error instanceof Error && error.message === 'vercel_not_configured') return 'vercel_not_configured';
   if (error instanceof VercelDomainError) {
     if (error.status === 409) return 'domain_conflict';

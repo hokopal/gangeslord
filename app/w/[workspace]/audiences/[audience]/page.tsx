@@ -31,8 +31,9 @@ export default async function AudiencePage({
   if (!found) notFound();
   const { audience, contacts } = found;
   const canWrite = can(role, 'content.write');
+  const canDelete = can(role, 'content.delete');
   const [tracks, hubspot] = await Promise.all([listTracks(workspace.id), getHubspotStatus(workspace.id)]);
-  const counts = await linkCounts(audience.id, tracks.map((t) => t.id));
+  const counts = await linkCounts(workspace.id, audience.id, tracks.map((t) => t.id));
   const linked = tracks.filter((t) => (counts[t.id] ?? 0) > 0);
   const extra = audience.properties.filter((p) => !(DEFAULT_PROPERTIES as readonly string[]).includes(p));
   const hidden = (
@@ -66,12 +67,14 @@ export default async function AudiencePage({
                 Sync again
               </SubmitButton>
             </form>
-            <form action={deleteAudienceAction}>
-              {hidden}
-              <SubmitButton className="btn btn-danger" pendingLabel="Deleting…">
-                Delete audience
-              </SubmitButton>
-            </form>
+            {canDelete ? (
+              <form action={deleteAudienceAction}>
+                {hidden}
+                <SubmitButton className="btn btn-danger" pendingLabel="Deleting…">
+                  Delete audience
+                </SubmitButton>
+              </form>
+            ) : null}
           </div>
         ) : null}
       </div>

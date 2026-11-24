@@ -11,6 +11,7 @@ import { roomBasePath, siteOrigin } from '@/lib/origin';
 import { initialItem } from '@/lib/room';
 import { normalizeDisplay, publicForm, type Display, type PublicForm } from '@/lib/room-options';
 import { loadRoom } from '@/lib/room-server';
+import { hasRoomFormProof } from '@/lib/room-visit';
 import { createServerSupabase } from '@/lib/supabase/server';
 
 type Params = { workspace: string; track: string; item?: string[] };
@@ -77,7 +78,7 @@ export default async function RoomPage({
   const extras = await loadExtras(workspace, track, token);
   if (!extras) notFound();
   const ordered = extras.ordering ? { ...loaded, items: applyOrder(loaded.items, extras.ordering.order) } : loaded;
-  const formDone = store.get('fello_f')?.value === '1';
+  const formDone = hasRoomFormProof(store.get('fello_fp')?.value, workspace, track);
   const known = extras.fields !== null;
   // A form that shows on arrival is a real lock: until it is filled in, the page is sent without
   // any links to the content, so there is nothing behind the form to get at.
