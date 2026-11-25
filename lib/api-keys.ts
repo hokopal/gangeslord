@@ -98,6 +98,16 @@ export async function countRequest(caller: ApiCaller): Promise<RateState> {
   }
 }
 
+/** Counts a JSON-RPC batch as individual requests, stopping before any over-limit message can run. */
+export async function countRequests(caller: ApiCaller, count: number): Promise<RateState> {
+  let state: RateState = { allowed: true, limit: RATE_LIMIT.requests, remaining: RATE_LIMIT.requests, reset: RATE_LIMIT.seconds };
+  for (let index = 0; index < Math.max(1, count); index += 1) {
+    state = await countRequest(caller);
+    if (!state.allowed) return state;
+  }
+  return state;
+}
+
 /** Standard rate-limit response headers, plus Retry-After when the request was refused. */
 export function rateHeaders(state: RateState): Record<string, string> {
   return {

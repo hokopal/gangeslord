@@ -7,10 +7,11 @@ import { RoomViewer } from '@/components/room/RoomViewer';
 import { WelcomeNote } from '@/components/room/WelcomeNote';
 import { personalizeRoom, renderMerge, type MergeFields } from '@/lib/merge';
 import { applyOrder } from '@/lib/optimize';
-import { siteOrigin } from '@/lib/origin';
+import { roomBasePath, siteOrigin } from '@/lib/origin';
 import { initialItem } from '@/lib/room';
 import { normalizeDisplay, publicForm, type Display, type PublicForm } from '@/lib/room-options';
 import { loadRoom } from '@/lib/room-server';
+import { hasRoomFormProof } from '@/lib/room-visit';
 import { createServerSupabase } from '@/lib/supabase/server';
 
 type Params = { workspace: string; track: string; item?: string[] };
@@ -77,7 +78,7 @@ export default async function RoomPage({
   const extras = await loadExtras(workspace, track, token);
   if (!extras) notFound();
   const ordered = extras.ordering ? { ...loaded, items: applyOrder(loaded.items, extras.ordering.order) } : loaded;
-  const formDone = store.get('fello_f')?.value === '1';
+  const formDone = hasRoomFormProof(store.get('fello_fp')?.value, workspace, track);
   const known = extras.fields !== null;
   // A form that shows on arrival is a real lock: until it is filled in, the page is sent without
   // any links to the content, so there is nothing behind the form to get at.
@@ -96,19 +97,21 @@ export default async function RoomPage({
       </main>
     );
   }
+  const roomOrigin = await siteOrigin(room.workspace.slug);
+  const basePath = await roomBasePath(room.workspace.slug, room.track.slug);
   return (
     <>
       <RoomViewer
         room={room}
         initialId={first.id}
-        basePath={`/r/${room.workspace.slug}/${room.track.slug}`}
+        basePath={basePath}
         footer={{ text: extras.branding.footerText, url: extras.branding.footerUrl, showFello: !extras.branding.hideFelloMark }}
         suggestions={extras.ordering?.next}
         display={extras.display}
         form={extras.form ? { ...extras.form, locked } : null}
         formDone={formDone}
         known={known}
-        shareUrl={`${await siteOrigin()}/r/${room.workspace.slug}/${room.track.slug}`}
+        shareUrl={`${roomOrigin}${basePath}`}
       />
       <WelcomeNote text={renderMerge(extras.welcome, extras.fields)} />
       {room.track.published ? (
@@ -116,7 +119,7 @@ export default async function RoomPage({
           workspace={room.workspace.slug}
           track={room.track.slug}
           items={room.items.map((entry) => ({ id: entry.id, slug: entry.slug, title: entry.title }))}
-          basePath={`/r/${room.workspace.slug}/${room.track.slug}`}
+          basePath={basePath}
           owner={room.workspace.name}
         />
       ) : null}

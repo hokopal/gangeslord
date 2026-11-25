@@ -40,7 +40,7 @@ export default async function TrackAnalyticsPage({
   );
   const base = `/w/${workspace.slug}/analytics`;
   const roomPath = `/r/${workspace.slug}/${track.slug}`;
-  const roomOrigin = await siteOrigin();
+  const roomOrigin = await siteOrigin(workspace.slug);
   const canWrite = can(role, 'links.write');
   const published = track.status === 'published';
   const hidden = (

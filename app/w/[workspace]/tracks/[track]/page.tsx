@@ -39,7 +39,7 @@ export default async function TrackEditorPage({
   const published = track.status === 'published';
   const base = `/w/${workspace.slug}/tracks/${track.id}`;
   const roomPath = `/r/${workspace.slug}/${track.slug}`;
-  const roomOrigin = await siteOrigin();
+  const roomOrigin = await siteOrigin(workspace.slug);
   const selected = items.find((i) => i.id === sp.item) ?? null;
   const cta = (placement: 'header' | 'sidebar') => ctas.find((c) => c.placement === placement);
   const itemCta = selected ? ctas.find((c) => c.placement === 'item' && c.trackItemId === selected.id) : undefined;

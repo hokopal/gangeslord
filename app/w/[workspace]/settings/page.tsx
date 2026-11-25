@@ -94,6 +94,16 @@ export default async function SettingsPage({
         </>
       ) : null}
 
+      {editable ? (
+        <>
+          <h2 className="section-title">Custom domains</h2>
+          <p className="hint">Use your own domain for branded buyer room links.</p>
+          <Link className="btn" href={`/w/${workspace.slug}/settings/domains`}>
+            Manage custom domains
+          </Link>
+        </>
+      ) : null}
+
       {can(role, 'members.manage') ? (
         <>
           <h2 className="section-title">People</h2>

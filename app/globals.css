@@ -425,6 +425,73 @@ h3 {
   white-space: nowrap;
 }
 
+.domain-add-form {
+  margin-top: 12px;
+}
+
+.domain-setup {
+  margin-top: 24px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.domain-setup h3,
+.domain-row h3 {
+  margin: 0 0 6px;
+  font-size: 15px;
+  overflow-wrap: anywhere;
+}
+
+.domain-pointing-hint,
+.domain-connect-form {
+  margin-top: 16px;
+}
+
+.dns-record-name {
+  white-space: nowrap;
+}
+
+.dns-value {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 260px;
+}
+
+.dns-value code {
+  overflow-wrap: anywhere;
+  font-size: 12px;
+}
+
+.domain-row {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.domain-row-header,
+.domain-actions,
+.domain-badges {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.domain-row-header {
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.domain-dns-details {
+  margin-top: 12px;
+}
+
+.domain-dns-details summary {
+  cursor: pointer;
+  margin-bottom: 8px;
+}
+
 /* ── Centered card (login, onboarding, invite) ─────────── */
 .center {
   min-height: 100%;
