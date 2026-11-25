@@ -6,8 +6,14 @@ import { planIncludesMcp } from '@/lib/plan-limits';
 
 export const maxDuration = 30;
 
+const CORS = {
+  'access-control-allow-origin': '*',
+  'access-control-allow-headers': 'authorization, content-type',
+  'access-control-allow-methods': 'POST, OPTIONS',
+};
+
 const json = (body: unknown, status = 200, headers: Record<string, string> = {}) =>
-  new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json', 'cache-control': 'no-store', ...headers } });
+  new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json', 'cache-control': 'no-store', ...CORS, ...headers } });
 
 /**
  * Pipemouse's MCP server: stateless Streamable HTTP. Each POST carries one JSON-RPC message
@@ -38,10 +44,11 @@ export async function POST(request: Request) {
     return json({ jsonrpc: '2.0', id: null, error: { code: -32002, message: `Rate limit reached. Try again in ${rate.reset} seconds.` } }, 429, headers);
   }
   const reply = await handleMcpBody(body, toolsFor(caller, await siteOrigin(caller.workspaceSlug)), { canWrite: caller.scope === 'write' });
-  return reply === null ? new Response(null, { status: 202, headers }) : json(reply, 200, headers);
+  return reply === null ? new Response(null, { status: 202, headers: { ...CORS, ...headers } }) : json(reply, 200, headers);
 }
 
-const notAllowed = () => new Response(null, { status: 405, headers: { allow: 'POST' } });
+const notAllowed = () => new Response(null, { status: 405, headers: { allow: 'POST, OPTIONS', ...CORS } });
 // This server opens no streams and keeps no sessions.
 export const GET = notAllowed;
 export const DELETE = notAllowed;
+export const OPTIONS = () => new Response(null, { status: 204, headers: { allow: 'POST, OPTIONS', ...CORS } });

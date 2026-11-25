@@ -20,25 +20,32 @@ export class ApiError extends Error {
 
 const notFound = (what: string) => new ApiError(404, 'not_found', `${what} not found.`);
 
-export async function apiListTracks(workspaceId: string) {
-  const { data } = await createAdminSupabase()
-    .from('tracks')
-    .select('id, name, slug, status, created_at')
-    .eq('workspace_id', workspaceId)
-    .order('created_at', { ascending: false })
-    .limit(200);
-  return (data ?? []).map((t) => ({ id: t.id, name: t.name, slug: t.slug, status: t.status, created_at: t.created_at }));
+export async function apiGetWorkspace(workspaceId: string) {
+  const { data } = await createAdminSupabase().from('workspaces').select('id, name, slug, plan').eq('id', workspaceId).maybeSingle();
+  if (!data) throw notFound('Workspace');
+  return { id: data.id, name: data.name, slug: data.slug, plan: data.plan };
 }
 
-export async function apiListLibrary(workspaceId: string, query?: string) {
+export async function apiListTracks(workspaceId: string) {
+  const admin = createAdminSupabase();
+  const [tracks, items] = await Promise.all([
+    admin.from('tracks').select('id, name, slug, status, created_at').eq('workspace_id', workspaceId).order('created_at', { ascending: false }).limit(200),
+    admin.from('track_items').select('track_id').eq('workspace_id', workspaceId),
+  ]);
+  const counts = new Map<string, number>();
+  for (const row of (items.data ?? []) as { track_id: string }[]) counts.set(row.track_id, (counts.get(row.track_id) ?? 0) + 1);
+  return (tracks.data ?? []).map((t) => ({ id: t.id, name: t.name, slug: t.slug, status: t.status, created_at: t.created_at, item_count: counts.get(t.id) ?? 0 }));
+}
+
+export async function apiListLibrary(workspaceId: string, query?: string, type?: string) {
   let request = createAdminSupabase()
     .from('assets')
     .select('id, title, type, status, source_url, description, created_at')
-    .eq('workspace_id', workspaceId)
-    .order('created_at', { ascending: false })
-    .limit(200);
+    .eq('workspace_id', workspaceId);
+  if (type === 'web' || type === 'pdf' || type === 'youtube') request = request.eq('type', type);
+  request = request.order('created_at', { ascending: false }).limit(200);
   const q = (query ?? '').replace(/[%_,()]/g, ' ').trim();
-  if (q) request = request.ilike('title', `%${q}%`);
+  if (q) request = request.or(`title.ilike.%${q}%,description.ilike.%${q}%,extracted_text.ilike.%${q}%`);
   const { data } = await request;
   return data ?? [];
 }
@@ -48,6 +55,96 @@ async function requireTrack(workspaceId: string, trackId: string) {
   const { data } = await createAdminSupabase().from('tracks').select('id, name, slug, status').eq('workspace_id', workspaceId).eq('id', trackId).maybeSingle();
   if (!data) throw notFound('Track');
   return data as { id: string; name: string; slug: string; status: string };
+}
+
+async function requireAsset(workspaceId: string, assetId: string) {
+  if (!UUID.test(assetId)) throw notFound('Library item');
+  const { data } = await createAdminSupabase()
+    .from('assets')
+    .select('id, title, type, status, source_url, description, extracted_text, created_at')
+    .eq('workspace_id', workspaceId)
+    .eq('id', assetId)
+    .maybeSingle();
+  if (!data) throw notFound('Library item');
+  return data as { id: string; title: string; type: string; status: string; source_url: string | null; description: string; extracted_text: string | null; created_at: string };
+}
+
+export async function apiGetTrack(workspaceId: string, trackId: string) {
+  const track = await requireTrack(workspaceId, trackId);
+  const admin = createAdminSupabase();
+  const [items, ctas] = await Promise.all([
+    admin
+      .from('track_items')
+      .select('id, asset_id, position, slug, title_override, description_override')
+      .eq('workspace_id', workspaceId)
+      .eq('track_id', trackId)
+      .order('position'),
+    admin.from('track_ctas').select('placement, track_item_id, label, url').eq('workspace_id', workspaceId).eq('track_id', trackId),
+  ]);
+  const itemRows = (items.data ?? []) as {
+    id: string; asset_id: string; position: number; slug: string; title_override: string | null; description_override: string | null;
+  }[];
+  const assetIds = itemRows.map((r) => r.asset_id);
+  const assets = assetIds.length
+    ? await admin.from('assets').select('id, title, type, render_mode, status, source_url, description').eq('workspace_id', workspaceId).in('id', assetIds)
+    : { data: [] };
+  const byId = new Map(
+    ((assets.data ?? []) as { id: string; title: string; type: string; render_mode: string; status: string; source_url: string | null; description: string }[]).map((a) => [a.id, a]),
+  );
+  return {
+    track: { id: track.id, name: track.name, slug: track.slug, status: track.status },
+    items: itemRows.flatMap((r) => {
+      const a = byId.get(r.asset_id);
+      if (!a) return [];
+      return [{
+        id: r.id,
+        asset_id: r.asset_id,
+        position: r.position,
+        slug: r.slug,
+        title: r.title_override || a.title || 'Untitled',
+        title_override: r.title_override,
+        description_override: r.description_override,
+        type: a.type,
+        source_url: a.source_url,
+        description: a.description,
+        status: a.status,
+        render_mode: a.render_mode,
+      }];
+    }),
+    ctas: ((ctas.data ?? []) as { placement: string; track_item_id: string | null; label: string; url: string }[]).map((c) => ({
+      placement: c.placement, track_item_id: c.track_item_id, label: c.label, url: c.url,
+    })),
+  };
+}
+
+export async function apiGetLibraryItem(workspaceId: string, assetId: string) {
+  const asset = await requireAsset(workspaceId, assetId);
+  return {
+    id: asset.id,
+    title: asset.title,
+    type: asset.type,
+    status: asset.status,
+    source_url: asset.source_url,
+    description: asset.description,
+    excerpt: (asset.extracted_text ?? '').slice(0, 2000) || null,
+    created_at: asset.created_at,
+  };
+}
+
+export async function apiListGuestNotes(workspaceId: string, trackId: string) {
+  await requireTrack(workspaceId, trackId);
+  const { data } = await createAdminSupabase()
+    .from('guest_notes')
+    .select('id, track_item_id, kind, body, page, reply_body, author_name, author_email, created_at, resolved_at')
+    .eq('track_id', trackId)
+    .order('created_at', { ascending: false })
+    .limit(500);
+  return ((data ?? []) as {
+    id: string; track_item_id: string | null; kind: string; body: string; page: number | null; reply_body: string | null; author_name: string | null; author_email: string | null; created_at: string; resolved_at: string | null;
+  }[]).map((n) => ({
+    id: n.id, track_item_id: n.track_item_id, kind: n.kind, body: n.body, page: n.page, reply_body: n.reply_body,
+    author_name: n.author_name, author_email: n.author_email, created_at: n.created_at, resolved_at: n.resolved_at,
+  }));
 }
 
 type RawSession = { id: string; track_id: string; visitor_id: string; share_link_id: string | null; started_at: string; last_seen_at: string; referrer: string | null; country: string | null };
