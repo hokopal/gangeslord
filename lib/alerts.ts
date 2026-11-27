@@ -4,7 +4,7 @@ import { connectionsFor, notify } from './integrations';
 import type { AlertEvent } from './integrations-core';
 import { createAdminSupabase } from './supabase/admin';
 
-const GA4_EVENT: Partial<Record<AlertEvent, Ga4Event>> = { link_opened: 'room_visit', cta_click: 'button_click', comment: 'comment' };
+const GA4_EVENT: Partial<Record<AlertEvent, Ga4Event>> = { link_opened: 'room_visit', cta_click: 'button_click', comment: 'comment', accepted: 'conversion' };
 
 /**
  * Forwards a room event to Google Analytics, once per visit and kind, when the workspace has

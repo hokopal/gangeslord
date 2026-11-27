@@ -12,6 +12,7 @@ const EVENT_LABEL: Record<string, string> = {
   item_view: 'Opened an item',
   threshold_met: 'Met the engagement threshold',
   cta_click: 'Clicked a button',
+  acceptance: 'Accepted and signed the room',
 };
 
 export default async function SessionPage({

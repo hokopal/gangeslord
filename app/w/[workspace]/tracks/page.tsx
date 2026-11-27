@@ -96,6 +96,9 @@ export default async function TracksPage({
                     <Link className="btn btn-sm" href={`${base}/${track.id}/notes`}>
                       Guest notes
                     </Link>
+                    <Link className="btn btn-sm" href={`${base}/${track.id}/plan`}>
+                      Mutual plan
+                    </Link>
                     <Link className="btn btn-sm" href={`${base}/${track.id}/options`}>
                       Room options
                     </Link>

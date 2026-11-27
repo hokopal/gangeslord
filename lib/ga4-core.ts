@@ -1,17 +1,19 @@
 // Google Analytics 4, through its Measurement Protocol. Pure helpers, shared by the settings
 // screen and the server.
 
-export type Ga4Event = 'room_visit' | 'button_click' | 'comment' | 'test';
+export type Ga4Event = 'room_visit' | 'button_click' | 'comment' | 'conversion' | 'test';
 export const GA4_EVENT_NAME: Record<Ga4Event, string> = {
   room_visit: 'pipemouse_room_visit',
   button_click: 'pipemouse_button_click',
   comment: 'pipemouse_comment',
+  conversion: 'pipemouse_conversion',
   test: 'pipemouse_test',
 };
 export const GA4_EVENT_LABEL: Record<Exclude<Ga4Event, 'test'>, string> = {
   room_visit: 'A visit to a room starts',
   button_click: 'A visitor clicks one of a room’s buttons',
   comment: 'A visitor leaves a comment or question',
+  conversion: 'A visitor accepts and signs the room',
 };
 
 /** Checks the two values Google Analytics issues for a web data stream. Throws ga4_id_invalid or ga4_secret_invalid. */

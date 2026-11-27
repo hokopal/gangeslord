@@ -13,6 +13,7 @@ import './site.css';
 import './site-pages.css';
 import './room-options.css';
 import './guest-notes.css';
+import './room-plan.css';
 import './pdf.css';
 import './room-sidebar.css';
 import './brand.css';
