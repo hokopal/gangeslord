@@ -1,3 +1,5 @@
+import { ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { SubmitButton } from '@/components/ui/SubmitButton';
 import { normalizeDomain, workspaceDnsRecord } from '@/lib/domain-dns';
@@ -63,6 +65,9 @@ export default async function DomainSettingsPage({
 
   return (
     <div className="page">
+      <Link href={`/w/${slug}/settings`} className="back">
+        <ArrowLeft aria-hidden="true" /> Settings
+      </Link>
       <h1 className="page-title">Custom domains</h1>
       <p className="page-subtitle">Use a domain you control for branded buyer room links.</p>
 

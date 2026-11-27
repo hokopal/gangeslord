@@ -1,3 +1,4 @@
+import { ArrowLeft } from 'lucide-react';
 import { BarChart3, Building2, KeyRound, MessageSquare, Sparkles, Users, Webhook } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -34,6 +35,9 @@ export default async function IntegrationsPage({ params }: { params: Promise<{ w
 
   return (
     <div className="page page-wide">
+      <Link href={`/w/${workspace.slug}/settings`} className="back">
+        <ArrowLeft aria-hidden="true" /> Settings
+      </Link>
       <h1 className="page-title">Integrations</h1>
       <p className="page-subtitle">Connect Pipemouse to the other tools your team uses. Only workspace admins can see and change these.</p>
 

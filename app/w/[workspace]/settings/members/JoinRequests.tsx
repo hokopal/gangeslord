@@ -5,9 +5,15 @@ import { decideJoinRequestAction } from './request-actions';
 
 const formatDate = (iso: string) => new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 
-/** People from the company's email domain who have asked to join this workspace. Shows nothing when there are none. */
+/** People from the company's email domain who have asked to join this workspace. Shows nothing when there are none, or when the read fails — this section must never take the whole page down. */
 export async function JoinRequests({ workspaceId, workspaceSlug }: { workspaceId: string; workspaceSlug: string }) {
-  const requests = await listJoinRequests(workspaceId);
+  let requests;
+  try {
+    requests = await listJoinRequests(workspaceId);
+  } catch (err) {
+    console.error('[settings/members] failed to load join requests', err);
+    return null;
+  }
   if (requests.length === 0) return null;
   return (
     <>
