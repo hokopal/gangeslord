@@ -33,6 +33,8 @@ const MESSAGES: Record<string, string> = {
   plan_owner_invalid: 'Choose who owns the step: you or the buyer.',
   plan_due_invalid: 'That isn’t a real date. Use the calendar to pick one.',
   plan_failed: 'We couldn’t save the step. Please try again.',
+  template_name_required: 'Give the plan a name of up to 120 characters.',
+  template_not_found: 'That plan no longer exists.',
   already_in_track: 'That item is already in this track.',
   cta_label_required: 'Give the button a label of up to 60 characters.',
   cta_url_required: 'Give the button a link.',

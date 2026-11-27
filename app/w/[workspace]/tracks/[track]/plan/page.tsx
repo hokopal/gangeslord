@@ -3,12 +3,13 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { SubmitButton } from '@/components/ui/SubmitButton';
 import { listAcceptances, listActionItems, type Acceptance } from '@/lib/action-plan';
+import { listTemplates } from '@/lib/plan-templates';
 import { planProgress } from '@/lib/action-plan-core';
 import { errorMessage } from '@/lib/messages';
 import { can } from '@/lib/roles';
 import { getTrackDetail } from '@/lib/tracks';
 import { getWorkspaceContext } from '@/lib/workspaces';
-import { addAction, deleteAction, moveAction, saveAction, toggleAction } from './actions';
+import { addAction, applyTemplate, deleteAction, moveAction, saveAction, toggleAction } from './actions';
 
 const fmtDate = (iso: string | null) => (iso ? new Date(`${iso}T00:00:00`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : null);
 const fmtWhen = (iso: string) => new Date(iso).toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
@@ -22,10 +23,10 @@ export default async function PlanPage({
   searchParams,
 }: {
   params: Promise<{ workspace: string; track: string }>;
-  searchParams: Promise<{ error?: string; saved?: string }>;
+  searchParams: Promise<{ error?: string; saved?: string; applied?: string }>;
 }) {
   const { workspace: slug, track: trackId } = await params;
-  const { error, saved } = await searchParams;
+  const { error, saved, applied } = await searchParams;
   const context = await getWorkspaceContext(slug);
   if (!context) notFound();
   const { workspace, role } = context;
@@ -41,6 +42,7 @@ export default async function PlanPage({
   );
 
   const items = await listActionItems(track.id);
+  const templates = canWrite ? await listTemplates(workspace.id) : [];
   // Only the track's creator (and people it is shared with) may read signatures; degrade gracefully otherwise.
   let acceptances: Acceptance[] = [];
   let acceptancesVisible = true;
@@ -69,6 +71,11 @@ export default async function PlanPage({
       {saved ? (
         <p className="notice" role="status">
           Saved.
+        </p>
+      ) : null}
+      {applied !== undefined ? (
+        <p className="notice" role="status">
+          Added {applied} step{applied === '1' ? '' : 's'} from your plan. Edit them below for this deal.
         </p>
       ) : null}
 
@@ -158,6 +165,25 @@ export default async function PlanPage({
           <input name="due" type="date" className="input plan-admin-due" aria-label="Due date (optional)" />
           <SubmitButton className="btn btn-primary" pendingLabel="Adding…">
             Add step
+          </SubmitButton>
+        </form>
+      ) : null}
+
+      {canWrite && templates.length > 0 ? (
+        <form action={applyTemplate} className="plan-admin-add" style={{ marginTop: 8 }}>
+          {hidden}
+          <select name="template" className="select" defaultValue="" required aria-label="Start from a plan template">
+            <option value="" disabled>
+              Start from a plan…
+            </option>
+            {templates.map((template) => (
+              <option key={template.id} value={template.id}>
+                {template.name}
+              </option>
+            ))}
+          </select>
+          <SubmitButton className="btn" pendingLabel="Adding…">
+            Add to this track
           </SubmitButton>
         </form>
       ) : null}
