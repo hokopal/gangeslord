@@ -6,6 +6,9 @@ import { useEffect, useRef, useState } from 'react';
 import { signOut } from '@/app/actions/auth';
 import type { Workspace } from '@/lib/workspaces';
 
+/** Deterministic avatar hue from a name, so different workspaces are visually distinct. */
+const hue = (name: string) => [...name].reduce((sum, ch) => sum + ch.charCodeAt(0), 0) % 360;
+
 export function WorkspaceSwitcher({
   current,
   workspaces,
@@ -43,7 +46,7 @@ export function WorkspaceSwitcher({
         aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
       >
-        <span className="avatar" aria-hidden="true">
+        <span className="avatar avatar-hash" style={{ '--hue': hue(current.name) } as React.CSSProperties} aria-hidden="true">
           {current.name.charAt(0)}
         </span>
         <span className="truncate" style={{ flex: 1 }}>
@@ -63,7 +66,7 @@ export function WorkspaceSwitcher({
               style={{ color: 'var(--text)' }}
               onClick={() => setOpen(false)}
             >
-              <span className="avatar" aria-hidden="true">
+              <span className="avatar avatar-hash" style={{ '--hue': hue(ws.name) } as React.CSSProperties} aria-hidden="true">
                 {ws.name.charAt(0)}
               </span>
               <span className="truncate" style={{ flex: 1 }}>

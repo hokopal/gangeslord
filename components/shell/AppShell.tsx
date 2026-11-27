@@ -1,6 +1,7 @@
 'use client';
 
-import { Menu } from 'lucide-react';
+import { ChevronRight, Menu } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 import { createContext, useContext, useState } from 'react';
 import type { Workspace, WorkspaceContext } from '@/lib/workspaces';
 import { Sidebar } from './Sidebar';
@@ -11,6 +12,25 @@ export function useWorkspace(): WorkspaceContext {
   const value = useContext(WorkspaceCtx);
   if (!value) throw new Error('useWorkspace must be used inside AppShell');
   return value;
+}
+
+const SECTION_LABELS: Record<string, string> = {
+  library: 'Library',
+  tracks: 'Tracks',
+  plans: 'Plans',
+  audiences: 'Audiences',
+  analytics: 'Analytics',
+  integrations: 'Integrations',
+  settings: 'Settings',
+};
+
+function sectionLabel(pathname: string, slug: string): string | null {
+  const segments = pathname.split('/').filter(Boolean);
+  // ['w', '<slug>', '<section>', ...]
+  if (segments[0] !== 'w' || segments[1] !== slug) return null;
+  const section = segments[2];
+  if (!section) return null;
+  return SECTION_LABELS[section] ?? section.charAt(0).toUpperCase() + section.slice(1);
 }
 
 export function AppShell({
@@ -26,6 +46,7 @@ export function AppShell({
   initialCollapsed?: boolean;
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(initialCollapsed);
   const toggleCollapsed = () => {
@@ -52,15 +73,19 @@ export function AppShell({
           <div className="topbar">
             <button
               type="button"
-              className="icon-button"
+              className="icon-button menu-toggle"
               aria-label="Open menu"
               onClick={() => setDrawerOpen(true)}
             >
               <Menu width={18} height={18} aria-hidden="true" />
             </button>
-            <span className="truncate" style={{ fontWeight: 600 }}>
-              {context.workspace.name}
-            </span>
+            <nav className="crumbs" aria-label="Breadcrumb">
+              <span className="crumb truncate">{context.workspace.name}</span>
+              <ChevronRight aria-hidden="true" />
+              <span className="crumb crumb-current truncate">
+                {sectionLabel(pathname, context.workspace.slug) ?? 'Workspace'}
+              </span>
+            </nav>
           </div>
           {children}
         </div>
