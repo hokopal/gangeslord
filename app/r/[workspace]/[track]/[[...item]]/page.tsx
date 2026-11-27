@@ -117,14 +117,18 @@ export default async function RoomPage({
       <WelcomeNote text={renderMerge(extras.welcome, extras.fields)} />
       {room.track.published ? (
         <>
-          <RoomNotes
-            workspace={room.workspace.slug}
-            track={room.track.slug}
-            items={room.items.map((entry) => ({ id: entry.id, slug: entry.slug, title: entry.title }))}
-            basePath={basePath}
-            owner={room.workspace.name}
-          />
-          <RoomPlan workspace={room.workspace.slug} track={room.track.slug} owner={room.workspace.name} />
+          {extras.display.comments ? (
+            <RoomNotes
+              workspace={room.workspace.slug}
+              track={room.track.slug}
+              items={room.items.map((entry) => ({ id: entry.id, slug: entry.slug, title: entry.title }))}
+              basePath={basePath}
+              owner={room.workspace.name}
+            />
+          ) : null}
+          {extras.display.steps ? (
+            <RoomPlan workspace={room.workspace.slug} track={room.track.slug} owner={room.workspace.name} showSign={extras.display.sign} />
+          ) : null}
         </>
       ) : null}
     </>

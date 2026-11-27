@@ -87,6 +87,34 @@ export default async function RoomOptionsPage({
               </span>
             </span>
           </label>
+          <h2 className="section-title">Panels</h2>
+          <label className="check-row">
+            <input type="checkbox" name="comments" defaultChecked={display.comments} />
+            <span>
+              <span style={{ fontWeight: 500 }}>Comments panel</span>
+              <span className="hint" style={{ display: 'block' }}>
+                Buyers can leave comments, questions and sticky notes, and you reply from the track’s Guest notes page.
+              </span>
+            </span>
+          </label>
+          <label className="check-row">
+            <input type="checkbox" name="steps" defaultChecked={display.steps} />
+            <span>
+              <span style={{ fontWeight: 500 }}>Next steps panel</span>
+              <span className="hint" style={{ display: 'block' }}>
+                The mutual action plan: the steps you and the buyer agree to, tickable by both sides in the room.
+              </span>
+            </span>
+          </label>
+          <label className="check-row" style={{ paddingLeft: 26 }}>
+            <input type="checkbox" name="sign" defaultChecked={display.sign} />
+            <span>
+              <span style={{ fontWeight: 500 }}>Accept &amp; sign</span>
+              <span className="hint" style={{ display: 'block' }}>
+                A signature block at the bottom of the Next steps panel. Only takes effect when the Next steps panel is on.
+              </span>
+            </span>
+          </label>
           <p className="hint">Every room also has previous and next buttons, an item counter, and left and right arrow-key navigation.</p>
 
           <h2 className="section-title">Lead form</h2>

@@ -21,7 +21,7 @@ const fmtDue = (iso: string | null) => (iso ? new Date(`${iso}T00:00:00`).toLoca
  * The mutual action plan: the steps both sides agreed to, tickable by the buyer, plus the
  * accept & sign step that closes the room. One panel, bottom-left of the screen.
  */
-export function RoomPlan({ workspace, track, owner }: { workspace: string; track: string; owner: string }) {
+export function RoomPlan({ workspace, track, owner, showSign = true }: { workspace: string; track: string; owner: string; showSign?: boolean }) {
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState<Item[]>([]);
   const [name, setName] = useState('');
@@ -135,6 +135,7 @@ export function RoomPlan({ workspace, track, owner }: { workspace: string; track
             {error ? <p className="plan-error" role="alert">{error}</p> : null}
           </div>
 
+          {showSign ? (
           <section className="plan-sign" aria-label="Accept and sign">
             {signedAt ? (
               <div className="plan-signed" role="status">
@@ -160,6 +161,7 @@ export function RoomPlan({ workspace, track, owner }: { workspace: string; track
               </form>
             )}
           </section>
+          ) : null}
         </aside>
       ) : null}
     </>
