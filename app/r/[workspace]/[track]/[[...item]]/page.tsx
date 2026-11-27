@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import { cache } from 'react';
 import { notFound } from 'next/navigation';
 import { RoomNotes } from '@/components/room/RoomNotes';
+import { RoomPlan } from '@/components/room/RoomPlan';
 import { RoomViewer } from '@/components/room/RoomViewer';
 import { WelcomeNote } from '@/components/room/WelcomeNote';
 import { personalizeRoom, renderMerge, type MergeFields } from '@/lib/merge';
@@ -115,13 +116,16 @@ export default async function RoomPage({
       />
       <WelcomeNote text={renderMerge(extras.welcome, extras.fields)} />
       {room.track.published ? (
-        <RoomNotes
-          workspace={room.workspace.slug}
-          track={room.track.slug}
-          items={room.items.map((entry) => ({ id: entry.id, slug: entry.slug, title: entry.title }))}
-          basePath={basePath}
-          owner={room.workspace.name}
-        />
+        <>
+          <RoomNotes
+            workspace={room.workspace.slug}
+            track={room.track.slug}
+            items={room.items.map((entry) => ({ id: entry.id, slug: entry.slug, title: entry.title }))}
+            basePath={basePath}
+            owner={room.workspace.name}
+          />
+          <RoomPlan workspace={room.workspace.slug} track={room.track.slug} owner={room.workspace.name} />
+        </>
       ) : null}
     </>
   );

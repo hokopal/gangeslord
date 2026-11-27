@@ -1,0 +1,307 @@
+/* ── Next steps in a room: the mutual action plan and accept & sign ─────────── */
+.plan-tab {
+  position: fixed;
+  left: 12px;
+  bottom: 76px;
+  z-index: 25;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text-secondary);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  transition: color 120ms, background-color 120ms;
+}
+
+.plan-tab:hover {
+  color: var(--text);
+  background: var(--hover);
+}
+
+.plan-tab svg {
+  width: 15px;
+  height: 15px;
+}
+
+.plan {
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 40;
+  width: min(380px, 100vw);
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  border-right: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  animation: rise-in 160ms ease both;
+}
+
+.plan-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 45px;
+  padding: 0 8px 0 16px;
+  flex: none;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+
+.plan-progress {
+  flex: none;
+  height: 3px;
+  background: var(--hover);
+}
+
+.plan-progress span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transition: width 200ms ease;
+}
+
+.plan-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 10px 12px;
+}
+
+.plan-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.plan-item label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 120ms;
+}
+
+.plan-item label:hover {
+  background: var(--hover);
+}
+
+.plan-item input[type='checkbox'] {
+  margin-top: 3px;
+  width: 15px;
+  height: 15px;
+  accent-color: var(--accent);
+  flex: none;
+}
+
+.plan-item-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.plan-item-label {
+  font-size: 13.5px;
+  line-height: 1.4;
+}
+
+.plan-item[data-done] .plan-item-label {
+  color: var(--text-secondary);
+  text-decoration: line-through;
+}
+
+.plan-item-meta {
+  display: flex;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.plan-owner {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  font-size: 10px;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: var(--hover);
+}
+
+.plan-owner[data-owner='buyer'] {
+  color: var(--accent);
+}
+
+.plan-empty {
+  color: var(--text-secondary);
+  font-size: 13px;
+  padding: 12px 6px;
+}
+
+.plan-error {
+  color: var(--danger);
+  font-size: 12px;
+  padding: 8px 6px 0;
+}
+
+.plan-sign {
+  flex: none;
+  border-top: 1px solid var(--border);
+  padding: 12px;
+}
+
+.plan-sign-title {
+  margin: 0 0 4px;
+  font-size: 13px;
+}
+
+.plan-sign-statement {
+  margin: 0 0 10px;
+  font-size: 11px;
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+.plan-sign-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.plan-consent {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  font-size: 11px;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.plan-consent input {
+  margin-top: 2px;
+  accent-color: var(--accent);
+}
+
+.plan-sign-button {
+  margin-top: 2px;
+}
+
+.plan-signed {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  color: #1a7f4b;
+  font-size: 13px;
+}
+
+.plan-signed svg {
+  flex: none;
+  margin-top: 2px;
+}
+
+.plan-signed p {
+  margin: 2px 0 0;
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* ── Mutual action plan: the seller's management page ────────────────────────── */
+.plan-progressbar {
+  max-width: 560px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--hover);
+  overflow: hidden;
+  margin: 4px 0 2px;
+}
+
+.plan-progressbar span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+  transition: width 200ms ease;
+}
+
+.plan-admin-list {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-width: 880px;
+}
+
+.plan-admin-item {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.plan-admin-item[data-done] {
+  border-color: transparent;
+  background: var(--hover);
+}
+
+.plan-admin-item[data-done] .plan-admin-label {
+  text-decoration: line-through;
+  color: var(--text-secondary);
+}
+
+.plan-admin-edit {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.plan-admin-label {
+  flex: 1 1 260px;
+  min-width: 200px;
+}
+
+.plan-admin-due {
+  width: 150px;
+}
+
+.plan-admin-ops {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.plan-admin-ops form {
+  display: inline-flex;
+}
+
+.plan-admin-stamp {
+  margin: 6px 2px 0;
+}
+
+.plan-admin-add {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 12px;
+  max-width: 880px;
+  flex-wrap: wrap;
+}
+
+.plan-admin-add .input[name="label"] {
+  flex: 1 1 260px;
+  min-width: 200px;
+}
