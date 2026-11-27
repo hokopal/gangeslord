@@ -148,13 +148,13 @@ export function RoomPlan({ workspace, track, owner }: { workspace: string; track
               <form onSubmit={(event) => void sign(event)} className="plan-sign-form">
                 <p className="plan-sign-title"><strong>Accept &amp; sign this proposal</strong></p>
                 <p className="plan-sign-statement">{ACCEPTANCE_STATEMENT}</p>
-                <input name="name" className="input" required maxLength={120} autoComplete="name" placeholder="Your full name" aria-label="Your full name (this acts as your signature)" defaultValue={name} />
-                <input name="email" type="email" className="input" required maxLength={254} autoComplete="email" placeholder="Work email" aria-label="Work email" defaultValue={email} />
+                <input name="name" className="plan-sign-input" required maxLength={120} autoComplete="name" placeholder="Your full name" aria-label="Your full name (this acts as your signature)" defaultValue={name} />
+                <input name="email" type="email" className="plan-sign-input" required maxLength={254} autoComplete="email" placeholder="Work email" aria-label="Work email" defaultValue={email} />
                 <label className="plan-consent">
                   <input type="checkbox" required />
                   <span>I agree to the statement above and understand my typed name is my signature.</span>
                 </label>
-                <button type="submit" className="btn btn-primary plan-sign-button" disabled={busy}>
+                <button type="submit" className="plan-sign-button" disabled={busy}>
                   {busy ? 'Signing…' : 'Sign'}
                 </button>
               </form>
