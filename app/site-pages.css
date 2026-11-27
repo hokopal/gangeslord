@@ -300,6 +300,19 @@ html:has(.site) {
   font-weight: 600;
 }
 
+.site .site-prose .mk-related a span {
+  display: block;
+}
+
+.site .site-prose .mk-related a small {
+  display: block;
+  margin-top: 4px;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.45;
+  color: var(--moss);
+}
+
 .site .site-prose .mk-related a:hover {
   border-color: var(--moss);
 }
