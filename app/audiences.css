@@ -2,7 +2,8 @@
 .welcome-note {
   position: fixed;
   right: 20px;
-  bottom: 20px;
+  /* Sit above the comments and plan tabs so the greeting never covers them. */
+  bottom: 160px;
   z-index: 40;
   max-width: 340px;
   display: flex;
@@ -43,7 +44,7 @@
   .welcome-note {
     left: 12px;
     right: 12px;
-    bottom: 12px;
+    bottom: 160px;
     max-width: none;
   }
 }

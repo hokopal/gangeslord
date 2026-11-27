@@ -612,7 +612,7 @@ h3 {
   background: var(--border);
 }
 
-/* ── Overflow row menu (native <details>, no JS) ────────── */
+/* ── Overflow row menu ──────────────────────────────────── */
 .row-menu {
   position: relative;
   display: inline-block;
