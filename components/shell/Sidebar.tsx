@@ -1,6 +1,6 @@
 'use client';
 
-import { BarChart3, Library, ListVideo, PanelLeftClose, PanelLeftOpen, Plug, Settings, Users } from 'lucide-react';
+import { BarChart3, Library, ListChecks, ListVideo, PanelLeftClose, PanelLeftOpen, Plug, Settings, Users } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { Brand } from '@/components/ui/Brand';
 import { can } from '@/lib/roles';
@@ -30,6 +30,7 @@ export function Sidebar({
   const items = [
     { href: `${base}/library`, label: 'Library', icon: <Library aria-hidden="true" /> },
     { href: `${base}/tracks`, label: 'Tracks', icon: <ListVideo aria-hidden="true" /> },
+    { href: `${base}/plans`, label: 'Plans', icon: <ListChecks aria-hidden="true" /> },
     { href: `${base}/audiences`, label: 'Audiences', icon: <Users aria-hidden="true" /> },
     { href: `${base}/analytics`, label: 'Analytics', icon: <BarChart3 aria-hidden="true" /> },
     ...(can(context.role, 'settings.write')

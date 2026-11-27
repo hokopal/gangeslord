@@ -380,3 +380,61 @@
   flex: 1 1 260px;
   min-width: 200px;
 }
+
+/* ── Plans library: template cards and the apply-to-track row ─────────────────── */
+.plan-template {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-top: 16px;
+  max-width: 880px;
+}
+
+.plan-template-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.plan-template-head > svg {
+  color: var(--text-secondary);
+  flex: none;
+}
+
+.plan-template-rename {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex: 1;
+  min-width: 0;
+}
+
+.plan-template-rename .input {
+  flex: 1 1 200px;
+  min-width: 140px;
+  max-width: 380px;
+}
+
+.plan-template-name {
+  flex: 1;
+  margin: 0;
+  font-size: 15px;
+}
+
+.plan-template-head .icon-button {
+  margin-left: auto;
+}
+
+.plan-admin-apply {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.plan-admin-apply .select {
+  min-width: 220px;
+}

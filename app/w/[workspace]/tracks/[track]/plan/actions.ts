@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { addActionItem, deleteActionItem, moveActionItem, saveActionItem, setActionDoneAsSeller } from '@/lib/action-plan';
+import { applyTemplateToTrack } from '@/lib/plan-templates';
 import { can } from '@/lib/roles';
 import { getWorkspaceContext } from '@/lib/workspaces';
 
@@ -83,4 +84,19 @@ export async function deleteAction(formData: FormData): Promise<void> {
   }
   revalidatePath(back);
   redirect(`${back}?saved=1`);
+}
+
+/** Copies the chosen template's steps onto this track (atomic). */
+export async function applyTemplate(formData: FormData): Promise<void> {
+  const { context, trackId, back } = await guard(formData);
+  const templateId = text(formData, 'template');
+  if (!UUID.test(templateId)) redirect(`${back}?error=template_not_found`);
+  let added = 0;
+  try {
+    added = await applyTemplateToTrack(templateId, trackId);
+  } catch (error) {
+    redirect(`${back}?error=${code(error, 'plan_failed')}`);
+  }
+  revalidatePath(back);
+  redirect(`${back}?applied=${added}`);
 }
