@@ -1,3 +1,4 @@
+import { ChevronRight, CreditCard, Globe, Palette, Plug, Users } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { SubmitButton } from '@/components/ui/SubmitButton';
@@ -80,47 +81,71 @@ export default async function SettingsPage({
         ) : null}
       </form>
 
-      <h2 className="section-title">Plan</h2>
-      <Link className="btn" href={`/w/${workspace.slug}/settings/plan`}>
-        Plan: see what’s included
-      </Link>
+      <h2 className="section-title">Manage</h2>
+      <nav className="settings-nav" aria-label="Settings sections">
+        <Link className="settings-row" href={`/w/${workspace.slug}/settings/plan`}>
+          <span className="settings-icon">
+            <CreditCard aria-hidden="true" />
+          </span>
+          <span className="settings-text">
+            <span className="settings-title">Plan</span>
+            <span className="settings-hint">What’s included in your plan and how much of it you use.</span>
+          </span>
+          <ChevronRight className="settings-chevron" aria-hidden="true" />
+        </Link>
 
-      {editable ? (
-        <>
-          <h2 className="section-title">Branding</h2>
-          <Link className="btn" href={`/w/${workspace.slug}/settings/branding`}>
-            Logo, colour and room footer
+        {editable ? (
+          <Link className="settings-row" href={`/w/${workspace.slug}/settings/branding`}>
+            <span className="settings-icon">
+              <Palette aria-hidden="true" />
+            </span>
+            <span className="settings-text">
+              <span className="settings-title">Branding</span>
+              <span className="settings-hint">Logo, colour and what buyers see in the room footer.</span>
+            </span>
+            <ChevronRight className="settings-chevron" aria-hidden="true" />
           </Link>
-        </>
-      ) : null}
+        ) : null}
 
-      {editable ? (
-        <>
-          <h2 className="section-title">Custom domains</h2>
-          <p className="hint">Use your own domain for branded buyer room links.</p>
-          <Link className="btn" href={`/w/${workspace.slug}/settings/domains`}>
-            Manage custom domains
+        {editable ? (
+          <Link className="settings-row" href={`/w/${workspace.slug}/settings/domains`}>
+            <span className="settings-icon">
+              <Globe aria-hidden="true" />
+            </span>
+            <span className="settings-text">
+              <span className="settings-title">Custom domains</span>
+              <span className="settings-hint">Serve room links from your own domain.</span>
+            </span>
+            <ChevronRight className="settings-chevron" aria-hidden="true" />
           </Link>
-        </>
-      ) : null}
+        ) : null}
 
-      {can(role, 'members.manage') ? (
-        <>
-          <h2 className="section-title">People</h2>
-          <Link className="btn" href={`/w/${workspace.slug}/settings/members`}>
-            Manage members
+        {can(role, 'members.manage') ? (
+          <Link className="settings-row" href={`/w/${workspace.slug}/settings/members`}>
+            <span className="settings-icon">
+              <Users aria-hidden="true" />
+            </span>
+            <span className="settings-text">
+              <span className="settings-title">People</span>
+              <span className="settings-hint">Invite teammates and control what they can see and do.</span>
+            </span>
+            <ChevronRight className="settings-chevron" aria-hidden="true" />
           </Link>
-        </>
-      ) : null}
+        ) : null}
 
-      {editable ? (
-        <>
-          <h2 className="section-title">Integrations</h2>
-          <Link className="btn" href={`/w/${workspace.slug}/integrations`}>
-            Manage AI, Slack and other connections
+        {editable ? (
+          <Link className="settings-row" href={`/w/${workspace.slug}/integrations`}>
+            <span className="settings-icon">
+              <Plug aria-hidden="true" />
+            </span>
+            <span className="settings-text">
+              <span className="settings-title">Integrations</span>
+              <span className="settings-hint">AI, Slack and other connections for this workspace.</span>
+            </span>
+            <ChevronRight className="settings-chevron" aria-hidden="true" />
           </Link>
-        </>
-      ) : null}
+        ) : null}
+      </nav>
     </div>
   );
 }

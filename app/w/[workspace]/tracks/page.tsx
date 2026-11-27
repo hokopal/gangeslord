@@ -1,7 +1,8 @@
-import { ListVideo, Sparkles } from 'lucide-react';
+import { BookOpen, Gauge, ListChecks, ListVideo, MessageSquare, SlidersHorizontal, Sparkles, Wand2 } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { EmptyState } from '@/components/shell/EmptyState';
+import { RowMenu } from '@/components/shell/RowMenu';
 import { SubmitButton } from '@/components/ui/SubmitButton';
 import { errorMessage } from '@/lib/messages';
 import { can } from '@/lib/roles';
@@ -90,24 +91,17 @@ export default async function TracksPage({
                   </td>
                   <td style={{ whiteSpace: 'nowrap' }}>{formatDate(track.createdAt)}</td>
                   <td className="actions">
-                    <Link className="btn btn-sm" href={`${base}/${track.id}/pages`}>
-                      Reading and watching
-                    </Link>
-                    <Link className="btn btn-sm" href={`${base}/${track.id}/notes`}>
-                      Guest notes
-                    </Link>
-                    <Link className="btn btn-sm" href={`${base}/${track.id}/plan`}>
-                      Mutual plan
-                    </Link>
-                    <Link className="btn btn-sm" href={`${base}/${track.id}/options`}>
-                      Room options
-                    </Link>
-                    <Link className="btn btn-sm" href={`${base}/${track.id}/optimize`}>
-                      Optimise
-                    </Link>
-                    <Link className="btn btn-sm" href={`${base}/${track.id}/personalize`}>
-                      Personalise
-                    </Link>
+                    <RowMenu
+                      label={`Actions for ${track.name}`}
+                      items={[
+                        { href: `${base}/${track.id}/pages`, label: 'Reading and watching', icon: <BookOpen aria-hidden="true" /> },
+                        { href: `${base}/${track.id}/notes`, label: 'Guest notes', icon: <MessageSquare aria-hidden="true" /> },
+                        { href: `${base}/${track.id}/plan`, label: 'Mutual plan', icon: <ListChecks aria-hidden="true" /> },
+                        { href: `${base}/${track.id}/options`, label: 'Room options', icon: <SlidersHorizontal aria-hidden="true" /> },
+                        { href: `${base}/${track.id}/optimize`, label: 'Optimise', icon: <Gauge aria-hidden="true" /> },
+                        { href: `${base}/${track.id}/personalize`, label: 'Personalise', icon: <Wand2 aria-hidden="true" /> },
+                      ]}
+                    />
                   </td>
                 </tr>
               ))}

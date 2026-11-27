@@ -85,7 +85,7 @@ h3 {
   gap: 8px;
   height: 30px;
   padding: 0 8px;
-  border-radius: 4px;
+  border-radius: 6px;
   color: var(--text-secondary);
   font-weight: 500;
   text-align: left;
@@ -164,13 +164,51 @@ h3 {
   overflow-y: auto;
 }
 
+/* Slim context bar: hamburger on phones, a quiet breadcrumb everywhere. */
 .topbar {
-  display: none;
+  display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   height: 44px;
-  padding: 0 8px;
+  padding: 0 16px;
   border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: light-dark(rgba(255, 255, 255, 0.85), rgba(25, 25, 25, 0.85));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.menu-toggle {
+  display: none;
+}
+
+.crumbs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.crumb {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.crumb-current {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.crumbs svg {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  opacity: 0.7;
 }
 
 .icon-button {
@@ -178,7 +216,7 @@ h3 {
   place-items: center;
   width: 28px;
   height: 28px;
-  border-radius: 4px;
+  border-radius: 6px;
   color: var(--text-secondary);
   cursor: pointer;
   transition: background-color 120ms;
@@ -193,8 +231,11 @@ h3 {
 }
 
 @media (max-width: 767px) {
+  .menu-toggle {
+    display: grid;
+  }
   .topbar {
-    display: flex;
+    padding: 0 8px;
   }
   .sidebar {
     position: fixed;
@@ -277,7 +318,7 @@ h3 {
   gap: 6px;
   height: 32px;
   padding: 0 12px;
-  border-radius: 4px;
+  border-radius: 6px;
   font-weight: 500;
   white-space: nowrap;
   cursor: pointer;
@@ -344,7 +385,7 @@ h3 {
 .select {
   height: 32px;
   padding: 0 10px;
-  border-radius: 4px;
+  border-radius: 6px;
   border: 1px solid var(--border-strong);
   background: var(--bg);
   color: var(--text);
@@ -361,7 +402,9 @@ h3 {
 .select:focus-visible,
 .btn:focus-visible,
 .sidebar-row:focus-visible,
-.icon-button:focus-visible {
+.icon-button:focus-visible,
+.settings-row:focus-visible,
+.row-menu-trigger:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 1px;
 }
@@ -375,6 +418,43 @@ h3 {
 .hint {
   font-size: 12px;
   color: var(--text-secondary);
+}
+
+/* Notion-style hover affordance on data rows. */
+.table tbody tr {
+  transition: background-color 120ms;
+}
+
+.table tbody tr:hover td {
+  background: color-mix(in srgb, var(--hover) 55%, transparent);
+}
+
+::selection {
+  background: color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+/* Quiet, thin scrollbars for the app chrome. */
+.sidebar,
+.main {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+.sidebar::-webkit-scrollbar,
+.main::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.sidebar::-webkit-scrollbar-thumb,
+.main::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 4px;
+}
+
+.sidebar::-webkit-scrollbar-track,
+.main::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 .notice {
@@ -530,4 +610,148 @@ h3 {
   flex: 1;
   height: 1px;
   background: var(--border);
+}
+
+/* ── Overflow row menu (native <details>, no JS) ────────── */
+.row-menu {
+  position: relative;
+  display: inline-block;
+  text-align: left;
+}
+
+.row-menu-trigger {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background-color 120ms;
+}
+
+.row-menu-trigger:hover {
+  background: var(--hover);
+  color: var(--text);
+}
+
+.row-menu-panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 4px);
+  z-index: 30;
+  min-width: 210px;
+  padding: 4px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.row-menu-panel a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.row-menu-panel a:hover {
+  background: var(--hover);
+}
+
+.row-menu-panel svg {
+  width: 15px;
+  height: 15px;
+  color: var(--text-secondary);
+  flex: none;
+}
+
+/* The auto-x scroll box would clip the panel; only keep it for small screens. */
+@media (min-width: 1100px) {
+  .table-wrap {
+    overflow: visible;
+  }
+}
+
+@media (max-width: 1099px) {
+  .row-menu-panel {
+    top: auto;
+    bottom: calc(100% + 4px);
+  }
+}
+
+/* ── Settings: grouped navigation rows ───────────────────── */
+.settings-nav {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  color: var(--text);
+}
+
+.settings-row + .settings-row {
+  border-top: 1px solid var(--border);
+}
+
+.settings-row:hover {
+  background: var(--hover);
+}
+
+.settings-icon {
+  width: 32px;
+  height: 32px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-sidebar);
+  color: var(--text-secondary);
+}
+
+.settings-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.settings-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+  flex: 1;
+}
+
+.settings-title {
+  font-weight: 500;
+}
+
+.settings-hint {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.settings-chevron {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  color: var(--text-secondary);
+}
+
+/* ── Deterministic avatar colour ─────────────────────────── */
+.avatar-hash {
+  background: light-dark(hsl(var(--hue) 62% 89%), hsl(var(--hue) 28% 32%));
+  color: light-dark(hsl(var(--hue) 45% 34%), hsl(var(--hue) 65% 82%));
 }
