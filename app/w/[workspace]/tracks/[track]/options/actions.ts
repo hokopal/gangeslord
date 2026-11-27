@@ -23,7 +23,7 @@ export async function saveRoomOptionsAction(formData: FormData): Promise<void> {
     await saveRoomOptions(
       context.workspace.id,
       detail.track.id,
-      { share: on(formData, 'share'), progress: on(formData, 'progress'), numbers: on(formData, 'numbers') },
+      { share: on(formData, 'share'), progress: on(formData, 'progress'), numbers: on(formData, 'numbers'), comments: on(formData, 'comments'), steps: on(formData, 'steps'), sign: on(formData, 'sign') },
       {
         enabled: on(formData, 'formEnabled'),
         when: text(formData, 'when'),

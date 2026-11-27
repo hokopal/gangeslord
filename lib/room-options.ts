@@ -1,13 +1,15 @@
 // How a room looks and behaves beyond its content: display options and the lead form.
 // Pure and shared by the settings screen, the server and the buyer's room.
 
-export type Display = { share: boolean; progress: boolean; numbers: boolean };
-export const DEFAULT_DISPLAY: Display = { share: true, progress: true, numbers: false };
+export type Display = { share: boolean; progress: boolean; numbers: boolean; comments: boolean; steps: boolean; sign: boolean };
+export const DEFAULT_DISPLAY: Display = { share: true, progress: true, numbers: false, comments: true, steps: true, sign: true };
 
 export function normalizeDisplay(raw: unknown): Display {
   const value = (raw && typeof raw === 'object' ? raw : {}) as Record<string, unknown>;
   const flag = (key: keyof Display) => (typeof value[key] === 'boolean' ? (value[key] as boolean) : DEFAULT_DISPLAY[key]);
-  return { share: flag('share'), progress: flag('progress'), numbers: flag('numbers') };
+  // Accept & sign only exists inside the Next steps panel; off when the panel is off.
+  const steps = flag('steps');
+  return { share: flag('share'), progress: flag('progress'), numbers: flag('numbers'), comments: flag('comments'), steps, sign: steps && flag('sign') };
 }
 
 export const FORM_FIELDS = [
