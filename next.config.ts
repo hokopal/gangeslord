@@ -2,7 +2,7 @@ import type { NextConfig } from 'next';
 
 // Sent with every response. Rooms show other sites' pages in frames, so what Pipemouse may load
 // is left open; what is locked down is who may frame Pipemouse, and the browser features it never uses.
-const osOrigin = new URL(process.env.PIPEMPOUSE_OS_URL ?? 'https://space.pipemouse.com').origin;
+const osOrigin = new URL(process.env.PIPEMPOUSE_OS_URL ?? 'https://os.pipemouse.com').origin;
 
 const securityHeaders = [
   { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },

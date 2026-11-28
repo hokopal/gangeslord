@@ -5,7 +5,7 @@ and buyer rooms in one self-hostable product. It ships from open source and is
 white-labeled for Pipemouse.
 
 - Website: https://www.pipemouse.com
-- Pipemouse OS: https://space.pipemouse.com
+- Pipemouse OS: https://os.pipemouse.com
 - Rooms: https://rooms.pipemouse.com
 
 ## What's in the box

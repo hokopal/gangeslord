@@ -33,7 +33,7 @@ export function cookieDomainFor(hostname: string): string | undefined {
 export const SITE_NAME = 'Pipemouse';
 export const OS_NAME = 'Pipemouse OS';
 export const ROOMS_NAME = 'Rooms';
-export const OS_URL = (process.env.NEXT_PUBLIC_OS_URL ?? 'https://space.pipemouse.com').replace(/\/$/, '');
+export const OS_URL = (process.env.NEXT_PUBLIC_OS_URL ?? 'https://os.pipemouse.com').replace(/\/$/, '');
 export const SITE_TAGLINE = 'Go-to-market software for revenue teams';
 export const SITE_DESCRIPTION =
   'Pipemouse is the go-to-market platform that connects CRM, AI agents, workflows, and sales rooms, giving revenue teams one place to act on customer context.';

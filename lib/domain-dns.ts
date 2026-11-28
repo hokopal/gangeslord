@@ -17,6 +17,7 @@ const MAX_CACHE_ENTRIES = 1000;
 const PLATFORM_HOSTS = new Set([
   'pipemouse.com',
   'www.pipemouse.com',
+  'os.pipemouse.com',
   'space.pipemouse.com',
   'rooms.pipemouse.com',
   new URL(SITE_URL).hostname,
