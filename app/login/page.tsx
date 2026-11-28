@@ -34,8 +34,8 @@ export default async function LoginPage({
         <div className="login-form-content">
           <p className="login-eyebrow">Welcome to Pipemouse</p>
           <h1 id="login-title">Sign in or create your account</h1>
-          <p>
-            Enter your work email and we’ll send you a secure link. New to Pipemouse? The same link creates your account and opens your GTM workspace.
+          <p className="login-sub">
+            Enter your work email and we’ll send you a secure link. New to Pipemouse? The same link creates your account, then you can choose OS or Rooms.
           </p>
           {error ? (
             <p className="notice notice-error" role="alert">
