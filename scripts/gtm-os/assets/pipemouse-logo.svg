@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 64" role="img" aria-label="Pipemouse">
+  <circle cx="22" cy="13.5" r="9.5" fill="#4338CA"/>
+  <path fill="#4338CA" d="M8 56.5V31.8C8 23.2 14.2 17 23.2 17h1.4c10.4 0 17 5.4 17 14.6v6.1H28.9v9.2a7 7 0 0 1-7 7H8z"/>
+  <text x="56" y="43" font-family="Inter, ui-sans-serif, system-ui, -apple-system, sans-serif" font-size="30" font-weight="800" fill="#0F172A">Pipemouse</text>
+</svg>
