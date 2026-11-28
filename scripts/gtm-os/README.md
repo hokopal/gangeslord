@@ -54,7 +54,9 @@ git remote add origin git@github.com:hokopal/pipemouse.git && git push -u origin
    app icons) are not touched.
 8. Writes `NOTICE.md`, `TRADEMARK.md`, `README.md` and
    `PIPEMPOUSE_ABSORB_NOTES.md` (deletions, every overwritten asset, audit of
-   any surviving upstream-brand tokens, manual review checklist).
+   any surviving upstream-brand tokens, manual review checklist), plus a
+   minimal `.github/workflows/ci.yml` (install + typecheck + lint + build) so
+   the absorb proves itself on first push there.
 9. Audits: JSON-parses every `package.json`; fails loudly (exit 2) if any
    are invalid.
 

@@ -355,6 +355,11 @@ const notesFile = [
   '',
 ].join('\n');
 await fs.writeFile(path.join(outDir, 'PIPEMPOUSE_ABSORB_NOTES.md'), notesFile);
+// ship a minimal CI so the absorb proves itself on first push
+const ciDest = path.join(outDir, '.github', 'workflows');
+await fs.mkdir(ciDest, { recursive: true });
+await fs.copyFile(path.join(ASSETS, 'ci.yml'), path.join(ciDest, 'ci.yml'));
+log('wrote .github/workflows/ci.yml');
 log('wrote NOTICE.md, TRADEMARK.md, README.md, PIPEMPOUSE_ABSORB_NOTES.md');
 
 // 9. audit -----------------------------------------------------------------
