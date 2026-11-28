@@ -40,7 +40,7 @@ export function SuiteDemo() {
           <ul className="suite-demo-list">
             <li><FileText aria-hidden="true" /><span>Security overview</span><small>Read</small></li>
             <li><FileText aria-hidden="true" /><span>Product tour</span><small>Watching</small></li>
-            <li><BarChart3 aria-hidden="true" /><span>Pricing guide</span><small>Returned</small></li>
+            <li><BarChart3 aria-hidden="true" /><span>Implementation overview</span><small>Returned</small></li>
           </ul>
         </section>
       </div>

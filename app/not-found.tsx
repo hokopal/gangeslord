@@ -37,10 +37,7 @@ export default function NotFound() {
                 <Link href="/product">Rooms</Link>: personalized buyer rooms and engagement analytics.
               </li>
               <li>
-                <Link href="/pricing">Rooms pricing</Link>: every Rooms plan is free today; future prices are crossed out.
-              </li>
-              <li>
-                <Link href="/faq">Platform questions</Link>: answers about products, pricing, logins, and data.
+                <Link href="/faq">Platform questions</Link>: answers about products, logins, and data.
               </li>
               <li>
                 <Link href="/contact">Contact</Link>: a person replies, usually the same day.
@@ -53,9 +50,9 @@ export default function NotFound() {
       <section className="site-close">
         <h2>Make your next customer interaction count.</h2>
         <Link href="/login" className="site-btn site-btn-lamp site-btn-lg">
-          Start with Rooms free
+          Get started with Pipemouse
         </Link>
-        <p>Every Rooms plan is currently free. No credit card required.</p>
+        <p>Connect your GTM work and buyer engagement in one platform.</p>
       </section>
       <SiteFooter />
     </div>

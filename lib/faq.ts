@@ -23,10 +23,6 @@ export const FAQ: { q: string; a: string }[] = [
     a: 'Rooms opens inside the Pipemouse OS workspace, connecting internal account work with buyer-facing content and engagement analytics. OS provides the CRM and workflow context; Rooms provides the guided buyer experience and signals such as reading time, video plays, clicks, forms, and questions.',
   },
   {
-    q: 'How much does Pipemouse cost?',
-    a: 'Every Rooms plan is currently free, including Pro and Business, and no card is required. Starter stays free for good; the crossed-out prices show planned future per-workspace pricing. Pipemouse OS is not covered by these Rooms prices.',
-  },
-  {
     q: 'Do buyers need an account to open a Room?',
     a: 'No. A Room is a web link that opens in a modern browser on a phone or laptop. Buyers do not install an app or sign in; the personal link identifies their engagement.',
   },
@@ -49,9 +45,5 @@ export const FAQ: { q: string; a: string }[] = [
   {
     q: 'How are Rooms keys and tokens protected?',
     a: 'Rooms API keys, HubSpot tokens, and webhook addresses are encrypted before storage and are never shown again, even to admins. They can only be replaced or removed.',
-  },
-  {
-    q: 'Can I change or cancel a Rooms plan?',
-    a: 'Yes. A workspace admin can switch plans, update payment details, or cancel from the Plan page. Existing rooms are not deleted when moving to Starter, but new tracks cannot be created until the workspace is within Starter’s limit of three.',
   },
 ];

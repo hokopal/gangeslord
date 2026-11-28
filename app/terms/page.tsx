@@ -69,16 +69,6 @@ export default function TermsPage() {
         content, and buyer engagement tracking you choose to use.
       </p>
 
-      <h2 id="price">Price</h2>
-      <p>
-        Every Rooms plan is currently free and nothing is charged. Starter stays free for good. Pro and Business will later be paid plans, priced
-        per workspace per month as shown on our pricing page. These prices apply to Rooms, not Pipemouse OS. Any separate Pipemouse OS pricing or
-        terms will be presented when you subscribe. Nothing is charged unless a workspace admin chooses a paid plan. If you do, payments are taken
-        monthly until you cancel. You can cancel at any time from the Plan page; the plan stays active until the end of the period already paid for,
-        and payments already made are not refunded except where the law requires it. Payments are taken by Paddle, which sells Pipemouse as merchant
-        of record and is responsible for tax and invoices; Paddle’s own terms apply to the purchase.
-      </p>
-
       <h2 id="leaving">Leaving Pipemouse</h2>
       <p>
         You can stop using Pipemouse at any time and ask us to delete your workspace. We may discontinue the service, or close an account, and will give notice

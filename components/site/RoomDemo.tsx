@@ -9,7 +9,7 @@ const ITEMS: DemoItem[] = [
   { title: 'Why teams outgrow shared folders', kind: 'web', detail: 'Web page' },
   { title: 'Security overview', kind: 'pdf', detail: 'PDF, 6 pages' },
   { title: 'Product tour', kind: 'video', detail: 'Video, 4 min' },
-  { title: 'Pricing guide', kind: 'pdf', detail: 'PDF, 2 pages' },
+  { title: 'Implementation overview', kind: 'pdf', detail: 'PDF, 2 pages' },
 ];
 
 /** Seconds on an item before the demo counts the buyer as engaged with it. */

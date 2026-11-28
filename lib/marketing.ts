@@ -1,5 +1,4 @@
 import { FAQ } from '@/lib/faq';
-import { COMPARISON, PLANS, PRICE_NOTE, priceLabel, regularPriceLabel } from '@/lib/plans';
 import { OS_DEFINITION, OS_URL, ROOMS_DEFINITION, SITE_DEFINITION } from '@/lib/site';
 
 /**
@@ -39,23 +38,23 @@ export type MarketingPage = {
 
 export const CONTENT_UPDATED = '2026-11-15';
 
-const INTEGRATIONS: { name: string; product: string; what: string; plan: string }[] = [
-  { name: 'Custom objects and views', product: 'OS', what: 'Model your GTM process around the records, relationships, pipelines, and working views your team needs.', plan: 'Available' },
-  { name: 'GraphQL and REST APIs', product: 'OS', what: 'Read and write customer data, build custom applications, and connect Pipemouse OS to your own systems.', plan: 'Available' },
-  { name: 'Webhooks', product: 'OS', what: 'Send customer and workflow events to the services that need to act on them.', plan: 'Available' },
-  { name: 'SDK and CLI', product: 'OS', what: 'Build, publish, and operate applications on the Pipemouse developer platform.', plan: 'Available' },
-  { name: 'HubSpot', product: 'Rooms', what: 'Import a segment as an audience with a personal link per contact; log each room visit on the contact timeline; create or update contacts from form submissions.', plan: 'Audiences on Pro, timeline on Business' },
-  { name: 'Salesforce', product: 'Rooms', what: 'Create or update a person from a room lead form using your own credentials.', plan: 'Pro' },
-  { name: 'Apollo', product: 'Rooms', what: 'Create or update a contact from a lead form submission.', plan: 'Pro' },
-  { name: 'Salesloft', product: 'Rooms', what: 'Create or update a person from a lead form submission.', plan: 'Pro' },
-  { name: 'Instantly', product: 'Rooms', what: 'Add a lead from a form submission to your Instantly workspace.', plan: 'Pro' },
-  { name: 'Mailchimp', product: 'Rooms', what: 'Add or update a subscriber from a form submission, with their consent.', plan: 'Pro' },
-  { name: 'Google Analytics', product: 'Rooms', what: 'Send room views and item engagement to your GA4 property.', plan: 'Pro' },
-  { name: 'Slack', product: 'Rooms', what: 'Send a message when a link is opened, a buyer engages with two or more items, or a buyer clicks a button.', plan: 'Pro' },
-  { name: 'Webhooks', product: 'Rooms', what: 'Send engagement events to Zapier, Make, n8n, Clay, or your own endpoint.', plan: 'Pro' },
-  { name: 'MCP server', product: 'Rooms', what: 'Let AI assistants look up content and tracks, read engagement analytics, and create personal room links through the Model Context Protocol.', plan: 'Pro' },
-  { name: 'REST API', product: 'Rooms', what: 'Use read-only and read-write keys for library assets, tracks, links, sessions, and analytics.', plan: 'Business' },
-  { name: 'Anthropic, OpenAI, Google Gemini, OpenRouter, Together AI, Groq', product: 'Rooms', what: 'Draft a track from a short brief using your own model key, provider, and billing relationship.', plan: 'All Rooms plans' },
+const INTEGRATIONS: { name: string; product: string; what: string; availability: string }[] = [
+  { name: 'Custom objects and views', product: 'OS', what: 'Model your GTM process around the records, relationships, pipelines, and working views your team needs.', availability: 'Available' },
+  { name: 'GraphQL and REST APIs', product: 'OS', what: 'Read and write customer data, build custom applications, and connect Pipemouse OS to your own systems.', availability: 'Available' },
+  { name: 'Webhooks', product: 'OS', what: 'Send customer and workflow events to the services that need to act on them.', availability: 'Available' },
+  { name: 'SDK and CLI', product: 'OS', what: 'Build, publish, and operate applications on the Pipemouse developer platform.', availability: 'Available' },
+  { name: 'HubSpot', product: 'Rooms', what: 'Import a segment as an audience with a personal link per contact; log each room visit on the contact timeline; create or update contacts from form submissions.', availability: 'Available' },
+  { name: 'Salesforce', product: 'Rooms', what: 'Create or update a person from a room lead form using your own credentials.', availability: 'Available' },
+  { name: 'Apollo', product: 'Rooms', what: 'Create or update a contact from a lead form submission.', availability: 'Available' },
+  { name: 'Salesloft', product: 'Rooms', what: 'Create or update a person from a lead form submission.', availability: 'Available' },
+  { name: 'Instantly', product: 'Rooms', what: 'Add a lead from a form submission to your Instantly workspace.', availability: 'Available' },
+  { name: 'Mailchimp', product: 'Rooms', what: 'Add or update a subscriber from a form submission, with their consent.', availability: 'Available' },
+  { name: 'Google Analytics', product: 'Rooms', what: 'Send room views and item engagement to your GA4 property.', availability: 'Available' },
+  { name: 'Slack', product: 'Rooms', what: 'Send a message when a link is opened, a buyer engages with two or more items, or a buyer clicks a button.', availability: 'Available' },
+  { name: 'Webhooks', product: 'Rooms', what: 'Send engagement events to Zapier, Make, n8n, Clay, or your own endpoint.', availability: 'Available' },
+  { name: 'MCP server', product: 'Rooms', what: 'Let AI assistants look up content and tracks, read engagement analytics, and create personal room links through the Model Context Protocol.', availability: 'Available' },
+  { name: 'REST API', product: 'Rooms', what: 'Use read-only and read-write keys for library assets, tracks, links, sessions, and analytics.', availability: 'Available' },
+  { name: 'Anthropic, OpenAI, Google Gemini, OpenRouter, Together AI, Groq', product: 'Rooms', what: 'Draft a track from a short brief using your own model key, provider, and billing relationship.', availability: 'Available' },
 ];
 
 export const MARKETING_PAGES: MarketingPage[] = [
@@ -151,52 +150,9 @@ export const MARKETING_PAGES: MarketingPage[] = [
       { q: 'What content can go in a room?', a: 'Web pages, PDFs, and YouTube videos. Pages that block embedding are captured as snapshots so they still open inside the room.' },
       { q: 'How does Rooms measure reading time?', a: 'Active time is counted only while the room is the visible, focused tab. PDFs are measured page by page, and videos by how much was actually played.' },
     ],
-    related: ['/os', '/what-is-a-sales-room', '/integrations', '/pricing'],
+    related: ['/os', '/what-is-a-sales-room', '/integrations'],
     updated: CONTENT_UPDATED,
-    cta: { label: 'Start with Rooms free', href: '/login', note: 'Every Rooms plan is currently free. No credit card required.' },
-  },
-  {
-    path: '/pricing',
-    label: 'Pricing',
-    title: 'Rooms Pricing: Free Plans for B2B GTM Teams',
-    description: 'Explore Rooms pricing. Every Rooms plan is currently free, including Pro and Business, with workspace-based pricing planned for the future.',
-    eyebrow: 'Rooms pricing',
-    h1: 'Choose the Rooms plan that fits your motion.',
-    intro: PRICE_NOTE,
-    answer: 'Rooms has three workspace plans, and all are currently free. Starter supports up to 3 tracks. Pro, normally $20 per workspace per month, supports up to 25 tracks and adds HubSpot audiences, personalization, CRM connections, and Slack alerts. Business, normally $49 per workspace per month, supports unlimited tracks, HubSpot timeline logging, and a REST API. Pipemouse OS is not included in these Rooms prices.',
-    schemaType: 'WebPage',
-    sections: [
-      ...PLANS.map((p) => ({
-        id: p.id,
-        heading: `${p.name}: ${priceLabel(p)}${regularPriceLabel(p) ? ` (normally ${regularPriceLabel(p)})` : ''}`,
-        paragraphs: [p.audience, ...(p.includes ? [p.includes] : [])],
-        list: p.features,
-      })),
-      {
-        id: 'compare',
-        heading: 'Compare Rooms plans',
-        table: { head: ['What you get', ...PLANS.map((p) => p.name)], rows: COMPARISON.map((row) => [row.label, ...row.values]) },
-      },
-      {
-        id: 'os',
-        heading: 'Pipemouse OS is a separate product',
-        paragraphs: ['The plans on this page apply to Rooms. Pipemouse OS provides the CRM, workflows, AI agents, and developer platform. It has separate terms and is not described by these Rooms prices.'],
-      },
-      {
-        id: 'billing',
-        heading: 'How Rooms billing works',
-        paragraphs: ['No card is needed and nothing is charged while every Rooms plan is free. When paid plans open, Paddle will sell Pipemouse as merchant of record and handle payment, sales tax, and invoices. Card details will go to Paddle and never reach Pipemouse. A workspace admin can switch plans, update payment details, or cancel from the Plan page.'],
-      },
-    ],
-    faq: [
-      { q: 'Is Rooms free?', a: 'Yes. Every Rooms plan is currently free, including Pro and Business, with no card required. Starter stays free for good.' },
-      { q: 'Is Rooms pricing per user?', a: 'No. Each Rooms price covers the whole workspace, however many people are in it.' },
-      { q: 'Does this pricing include Pipemouse OS?', a: 'No. This page covers Rooms. Pipemouse OS has separate terms.' },
-      { q: 'What happens if I move down to Starter?', a: 'Nothing is deleted and existing rooms keep working. You cannot create new tracks until you are within Starter’s limit of three.' },
-    ],
-    related: ['/product', '/os', '/faq'],
-    updated: CONTENT_UPDATED,
-    cta: { label: 'Start with Rooms free', href: '/login', note: 'No credit card required. Starter stays free for good.' },
+    cta: { label: 'Get started with Rooms', href: '/login', note: 'Create your Pipemouse account and give buyers a clearer path through your content.' },
   },
   {
     path: '/integrations',
@@ -212,7 +168,7 @@ export const MARKETING_PAGES: MarketingPage[] = [
       {
         id: 'all',
         heading: 'Integrations and developer capabilities',
-        table: { head: ['Product', 'Integration', 'What it enables', 'Availability'], rows: INTEGRATIONS.map((i) => [i.product, i.name, i.what, i.plan]) },
+        table: { head: ['Product', 'Integration', 'What it enables', 'Availability'], rows: INTEGRATIONS.map((i) => [i.product, i.name, i.what, i.availability]) },
       },
       {
         id: 'mcp',
@@ -262,7 +218,7 @@ export const MARKETING_PAGES: MarketingPage[] = [
       {
         id: 'measure',
         heading: 'Which engagement signals are useful?',
-        list: ['A known stakeholder opening through a personal link', 'Active time on a specific item while the tab is visible and focused', 'Repeated attention to pricing, implementation, or security material', 'PDF page-level reading and video play progress', 'Return visits, calls to action, form submissions, and questions'],
+        list: ['A known stakeholder opening through a personal link', 'Active time on a specific item while the tab is visible and focused', 'Repeated attention to implementation, security, or product material', 'PDF page-level reading and video play progress', 'Return visits, calls to action, form submissions, and questions'],
       },
     ],
     faq: [
@@ -425,20 +381,19 @@ export const MARKETING_PAGES: MarketingPage[] = [
             ['Audience', 'Usually one buying group', 'One buyer, one account, or a whole segment'],
             ['Personalization', 'Often invite-based', 'Personal links generated individually or in bulk'],
             ['Engagement detail', 'Varies by vendor', 'Active time per item, PDF page, video, and visit'],
-            ['Rooms pricing', 'Often per seat', 'Per workspace, currently free'],
           ],
         },
       },
       { id: 'choose', heading: 'Which approach fits your motion?', paragraphs: ['Choose a deal room when joint procurement tasks and a mutual plan are the main need. Choose a content-first room when buyers need a clearer content experience and your team needs to understand what different stakeholders actually engaged with. Pipemouse also supports mutual action plans inside the broader suite.'] },
     ],
-    related: ['/what-is-a-sales-room', '/compare/sales-room-vs-email-attachments', '/pricing'],
+    related: ['/what-is-a-sales-room', '/compare/sales-room-vs-email-attachments', '/product'],
     updated: CONTENT_UPDATED,
   },
   {
     path: '/faq',
     label: 'Questions',
     title: 'Pipemouse Platform Questions and Answers',
-    description: 'Answers about Pipemouse OS, Rooms, GTM use cases, pricing, integrations, buyer access, engagement tracking, and security.',
+    description: 'Answers about Pipemouse OS, Rooms, GTM use cases, integrations, buyer access, engagement tracking, and security.',
     eyebrow: 'Pipemouse platform · Questions',
     h1: 'Straight answers about the Pipemouse platform.',
     intro: 'What the products do, how they work together, and what to expect before you start.',
@@ -446,7 +401,7 @@ export const MARKETING_PAGES: MarketingPage[] = [
     schemaType: 'FAQPage',
     sections: [],
     faq: FAQ,
-    related: ['/os', '/product', '/pricing'],
+    related: ['/os', '/product', '/integrations'],
     updated: CONTENT_UPDATED,
   },
 ];

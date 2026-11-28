@@ -64,7 +64,7 @@ const question = (f: { q: string; a: string }) => ({ '@type': 'Question', name: 
 export function MarketingPageView({ path }: { path: string }) {
   const page = pageAt(path);
   const trail = crumbs(page);
-  const cta = page.cta ?? { label: 'Start with Rooms free', href: START, note: 'Every Rooms plan is currently free. No credit card required.' };
+  const cta = page.cta ?? { label: 'Get started with Pipemouse', href: START, note: 'Sign in or create your account to connect your GTM work and buyer engagement.' };
   return (
     <div className="site">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData(page)).replace(/</g, '\\u003c') }} />

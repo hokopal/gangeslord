@@ -18,14 +18,13 @@ export function SiteHeader({ home = false }: { home?: boolean }) {
         <Link href="/os">OS</Link>
         <Link href="/product">Rooms</Link>
         <Link href="/use-cases/sales">Use cases</Link>
-        <Link href="/pricing">Pricing</Link>
       </nav>
       <div className="site-nav-actions">
         <Link href={START} className="site-link">
           Sign in
         </Link>
         <Link href={START} className="site-btn site-btn-lamp">
-          Start free
+          Get started
         </Link>
       </div>
     </header>
@@ -33,7 +32,7 @@ export function SiteHeader({ home = false }: { home?: boolean }) {
 }
 
 const FOOTER_GROUPS: { title: string; paths: string[] }[] = [
-  { title: 'Products', paths: ['/os', '/product', '/pricing', '/integrations', '/faq'] },
+  { title: 'Products', paths: ['/os', '/product', '/integrations', '/faq'] },
   { title: 'Use cases', paths: ['/use-cases/marketing', '/use-cases/account-based-marketing', '/use-cases/sales', '/use-cases/revenue-operations'] },
   { title: 'Learn', paths: ['/what-is-a-sales-room', '/guides/track-buyer-engagement', '/compare/sales-room-vs-email-attachments', '/compare/content-room-vs-deal-room'] },
 ];

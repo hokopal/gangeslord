@@ -1,5 +1,4 @@
 import { MARKETING_PAGES } from '@/lib/marketing';
-import { COMPARISON, PLANS, PRICE_NOTE, priceLabel } from '@/lib/plans';
 import { OS_DEFINITION, OS_URL, ROOMS_DEFINITION, SITE_DEFINITION, SITE_URL } from '@/lib/site';
 
 /** A plain-text summary of Pipemouse for AI assistants and answer engines, following the llms.txt convention. */
@@ -41,23 +40,9 @@ ${ROOMS_DEFINITION}
 
 B2B marketing teams personalizing campaigns and measuring content engagement, sales teams coordinating deals and following up on buyer signals, account-based marketing teams mapping buying-group engagement, and revenue operations teams connecting GTM data, workflows, and systems.
 
-## Rooms plans and pricing
-
-${PRICE_NOTE}
-
-These plans apply to Rooms. Pipemouse OS has separate terms.
-
-${PLANS.map((plan) => `- ${plan.name}: ${priceLabel(plan)}. ${plan.audience} ${plan.tracks === null ? 'Unlimited tracks.' : `Up to ${plan.tracks} tracks.`}`).join('\n')}
-
-| | ${PLANS.map((plan) => plan.name).join(' | ')} |
-|---|---|---|---|
-${COMPARISON.map((row) => `| ${row.label} | ${row.values.join(' | ')} |`).join('\n')}
-
-When paid Rooms plans open, payments will be taken by Paddle as merchant of record, handling tax and invoices.
-
 ## Pages
 
-- [Home](${SITE_URL}/): Pipemouse platform positioning, products, GTM workflows, use cases, Rooms pricing, and FAQs
+- [Home](${SITE_URL}/): Pipemouse platform positioning, products, GTM workflows, use cases, and FAQs
 ${MARKETING_PAGES.map((p) => `- [${p.label}](${SITE_URL}${p.path}): ${p.description} Markdown: ${SITE_URL}/md${p.path}`).join('\n')}
 - [Full site content in one file](${SITE_URL}/llms-full.txt)
 - [Privacy policy](${SITE_URL}/privacy)

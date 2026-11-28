@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { FAQ } from '@/lib/faq';
-import { COMPARISON, PLANS, PRICE_NOTE, currentPrice, priceLabel, regularPriceLabel } from '@/lib/plans';
 import { OS_DEFINITION, OS_NAME, ROOMS_DEFINITION, ROOMS_NAME, SITE_DEFINITION, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '@/lib/site';
 import { RoomDemo } from './RoomDemo';
 import { SiteFooter, SiteHeader } from './SiteChrome';
@@ -68,7 +67,7 @@ const CONNECTIONS: { group: string; names: string[] }[] = [
   { group: 'Developer platform', names: ['GraphQL', 'REST APIs', 'SDK', 'CLI'] },
 ];
 
-// Search and answer engines receive the same platform, product, pricing, and FAQ distinctions as readers.
+// Search and answer engines receive the same platform, product, and FAQ distinctions as readers.
 const STRUCTURED_DATA = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -108,11 +107,7 @@ const STRUCTURED_DATA = {
       operatingSystem: 'Web',
       publisher: { '@id': `${SITE_URL}/#organization` },
       isPartOf: { '@id': `${SITE_URL}/#platform` },
-      offers: PLANS.map((plan) => ({
-        '@type': 'Offer', name: `Rooms ${plan.name}`, price: String(currentPrice(plan)), priceCurrency: 'USD', description: plan.audience,
-        ...(currentPrice(plan) > 0 ? { priceSpecification: { '@type': 'UnitPriceSpecification', price: String(currentPrice(plan)), priceCurrency: 'USD', billingDuration: 'P1M', unitText: 'workspace per month' } } : {}),
-      })),
-      featureList: PLANS.flatMap((plan) => plan.features),
+      featureList: ['Personalized digital sales rooms', 'Buyer engagement analytics', 'PDF and video analytics', 'CRM and Slack connections'],
     },
     { '@type': 'FAQPage', mainEntity: FAQ.map((item) => ({ '@type': 'Question', name: item.q, acceptedAnswer: { '@type': 'Answer', text: item.a } })) },
   ],
@@ -138,13 +133,13 @@ export function Landing() {
             </p>
             <div className="site-hero-actions">
               <Link href={START} className="site-btn site-btn-lamp site-btn-lg">
-                Start free
+                Get started
               </Link>
               <a href="#platform" className="site-btn site-btn-ghost site-btn-lg">
                 Explore the platform
               </a>
             </div>
-            <p className="site-hero-note">Rooms is free to start. Pipemouse OS is built for your GTM workflow.</p>
+            <p className="site-hero-note">One connected platform for customer context, coordinated execution, and buyer engagement.</p>
           </div>
           <SuiteDemo />
         </section>
@@ -268,59 +263,6 @@ export function Landing() {
           <Link href="/integrations" className="site-suite-link">Explore integrations and developer tools</Link>
         </section>
 
-        <section className="site-section site-plans" id="plans">
-          <h2>Rooms pricing that starts free.</h2>
-          <p className="site-lede">{PRICE_NOTE} These plans apply to Rooms. Pipemouse OS is not covered by the Rooms prices on this page.</p>
-          <div className="site-plan-grid">
-            {PLANS.map((plan) => (
-              <article key={plan.id} className="site-plan" data-plan={plan.id}>
-                <h3>{plan.name}</h3>
-                <p className="site-plan-price">
-                  {regularPriceLabel(plan) ? <s className="site-plan-regular">{regularPriceLabel(plan)}</s> : null} {priceLabel(plan)}
-                </p>
-                <p className="site-plan-audience">{plan.audience}</p>
-                {plan.includes ? <p className="site-plan-includes">{plan.includes}</p> : null}
-                <ul>
-                  {plan.features.map((feature) => (
-                    <li key={feature}>{feature}</li>
-                  ))}
-                </ul>
-                <Link href={START} className="site-btn site-btn-dark">
-                  Start with {plan.name}
-                </Link>
-              </article>
-            ))}
-          </div>
-
-          <h3 className="site-compare-title">Compare Rooms plans</h3>
-          <div className="site-compare">
-            <table>
-              <thead>
-                <tr>
-                  <th scope="col">What you get</th>
-                  {PLANS.map((plan) => (
-                    <th key={plan.id} scope="col">
-                      {plan.name}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {COMPARISON.map((row) => (
-                  <tr key={row.label}>
-                    <th scope="row">{row.label}</th>
-                    {row.values.map((value, index) => (
-                      <td key={PLANS[index].id} data-no={value === 'No'}>
-                        {value}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
-
         <section className="site-section site-faq" id="faq">
           <h2>Straight answers about Pipemouse.</h2>
           <div>
@@ -337,7 +279,7 @@ export function Landing() {
           <h2>Make every GTM motion part of the same story.</h2>
           <div className="site-close-actions">
             <Link href={START} className="site-btn site-btn-lamp site-btn-lg">
-              Start with Rooms free
+              Get started with Pipemouse
             </Link>
             <Link href="/os" className="site-btn site-btn-ghost site-btn-lg">
               Explore Pipemouse OS
