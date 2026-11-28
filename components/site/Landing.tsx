@@ -139,7 +139,6 @@ export function Landing() {
                 Explore the platform
               </a>
             </div>
-            <p className="site-hero-note">One connected platform for customer context, coordinated execution, and buyer engagement.</p>
           </div>
           <SuiteDemo />
         </section>
