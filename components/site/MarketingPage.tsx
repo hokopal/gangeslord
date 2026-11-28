@@ -64,6 +64,7 @@ const question = (f: { q: string; a: string }) => ({ '@type': 'Question', name: 
 export function MarketingPageView({ path }: { path: string }) {
   const page = pageAt(path);
   const trail = crumbs(page);
+  const cta = page.cta ?? { label: 'Get started with Pipemouse', href: START, note: 'Sign in or create your account to connect your GTM work and buyer engagement.' };
   return (
     <div className="site">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData(page)).replace(/</g, '\\u003c') }} />
@@ -187,11 +188,17 @@ export function MarketingPageView({ path }: { path: string }) {
       </main>
 
       <section className="site-close">
-        <h2>Your next buyer is going to get a link. Make it a room.</h2>
-        <Link href={START} className="site-btn site-btn-lamp site-btn-lg">
-          Start free
-        </Link>
-        <p>Every plan is free. No card needed.</p>
+        <h2>Make your next customer interaction count.</h2>
+        {cta.href.startsWith('http') ? (
+          <a href={cta.href} className="site-btn site-btn-lamp site-btn-lg">
+            {cta.label}
+          </a>
+        ) : (
+          <Link href={cta.href} className="site-btn site-btn-lamp site-btn-lg">
+            {cta.label}
+          </Link>
+        )}
+        <p>{cta.note}</p>
       </section>
       <SiteFooter />
     </div>

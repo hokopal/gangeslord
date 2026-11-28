@@ -1,6 +1,7 @@
 import { after, NextResponse } from 'next/server';
 import { alertFor } from '@/lib/alerts';
 import { appOrigin } from '@/lib/origin';
+import { syncOsActivity } from '@/lib/os-activity';
 import { tooManyRequests, withinLimit } from '@/lib/rate-limit';
 import { validateAcceptance } from '@/lib/acceptance-core';
 import { readJson, rememberVisitor, resolveVisit } from '@/lib/room-visit';
@@ -31,7 +32,9 @@ export async function POST(request: Request) {
   });
   if (error || !data) return fail('not_accepted');
   const origin = await appOrigin();
-  after(() => alertFor(visit.session, 'accepted', origin));
+  after(async () => {
+    await Promise.all([alertFor(visit.session, 'accepted', origin), syncOsActivity(visit.session, origin, 'accepted')]);
+  });
   const response = NextResponse.json({ ok: true, ...(data as { accepted: boolean; accepted_at: string }) });
   rememberVisitor(response, visit);
   return response;

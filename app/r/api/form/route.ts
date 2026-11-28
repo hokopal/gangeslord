@@ -1,6 +1,7 @@
 import { after, NextResponse } from 'next/server';
 import { syncSubmission } from '@/lib/forms-server';
 import { appOrigin } from '@/lib/origin';
+import { syncOsActivity } from '@/lib/os-activity';
 import { tooManyRequests, withinLimit } from '@/lib/rate-limit';
 import { cleanSubmission, publicForm } from '@/lib/room-options';
 import { readJson, rememberRoomForm, rememberVisitor, resolveVisit } from '@/lib/room-visit';
@@ -33,7 +34,10 @@ export async function POST(request: Request) {
   if (!submissionId) return fail('not_accepted');
 
   const origin = await appOrigin();
-  after(() => syncSubmission(submissionId as string, origin));
+  after(async () => {
+    await syncSubmission(submissionId as string, origin);
+    await syncOsActivity(visit.session, origin, 'form_submitted');
+  });
 
   const response = NextResponse.json({ ok: true });
   // The signed proof is bound to this exact room and works on both canonical and custom hosts.

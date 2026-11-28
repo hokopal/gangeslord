@@ -11,6 +11,7 @@ import { connectCrmAction, disconnectCrmAction, testCrmAction } from './actions'
 const ERRORS: Record<string, string> = {
   crm_settings_invalid: 'One of those values doesn’t look right. Copy each one again, with no spaces before or after.',
   salesforce_domain_invalid: 'That isn’t a Salesforce My Domain address. It ends in .my.salesforce.com, for example yourcompany.my.salesforce.com.',
+  os_url_invalid: 'Enter the public HTTPS address of your OS workspace, with no path, query or credentials.',
   not_allowed: 'Only workspace admins can change this.',
 };
 const formatWhen = (iso: string) =>
@@ -90,6 +91,12 @@ export default async function CrmConnectorPage({
         </div>
       ) : null}
 
+      {status.lastStatus ? (
+        <p className="hint" role="status">
+          Latest activity: {status.lastStatus}{status.lastSentAt ? ` · ${formatWhen(status.lastSentAt)}` : ''}
+        </p>
+      ) : null}
+
       <h2 className="section-title">What it does</h2>
       <ul className="hint" style={{ paddingLeft: 18, listStyle: 'disc', display: 'grid', gap: 4 }}>
         {info.does.map((line) => (
@@ -97,7 +104,9 @@ export default async function CrmConnectorPage({
         ))}
       </ul>
       <p className="hint" style={{ marginTop: 8 }}>
-        It applies to every room in this workspace that has a lead form. Answers to your own questions are not sent.
+        {connector === 'pipemouse_os'
+          ? 'Identified room visits and lead form submissions sync automatically. Answers to your own questions are not sent.'
+          : 'It applies to every room in this workspace that has a lead form. Answers to your own questions are not sent.'}
       </p>
 
       {status.log.length > 0 ? (

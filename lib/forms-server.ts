@@ -164,7 +164,7 @@ export async function syncSubmission(submissionId: string, origin: string): Prom
     }
     if (Object.keys(status).length > 0) await admin.from('form_submissions').update(status).eq('id', submissionId);
     // Sales tools the workspace connected with its own credentials (Apollo, Salesforce). Each logs its own result.
-    await pushSubmission(submission.workspace_id as string, fields, { name: track.name as string, url: `${origin}/r/${workspace.slug}/${track.slug}` });
+    await pushSubmission(submission.workspace_id as string, fields, { name: track.name as string, url: `${origin}/r/${workspace.slug}/${track.slug}` }, submissionId);
   } catch {
     // Syncing is best-effort; the submission itself is already stored.
   }

@@ -4,7 +4,7 @@ import { SitePage } from '@/components/site/SiteChrome';
 
 export const metadata: Metadata = {
   title: 'Cookies',
-  description: 'Every cookie Pipemouse sets, what it is for and how long it lasts. Pipemouse uses no advertising or third-party tracking cookies.',
+  description: 'How Pipemouse uses essential, functional, analytics, advertising, and tracking cookies, and the choices available to you.',
   alternates: { canonical: '/cookies' },
 };
 
@@ -13,11 +13,14 @@ const COOKIES = [
   { name: 'fello_sidebar', where: 'The Pipemouse application', purpose: 'Remembers whether you minimised the sidebar.', lasts: '1 year' },
   { name: 'fello_vid', where: 'Rooms', purpose: 'A random identifier, so a returning visitor to a room is counted as the same visitor.', lasts: '1 year' },
   { name: 'fello_r', where: 'A room opened from a personal link', purpose: 'Remembers the personal link for that room, so a reload still shows the visitor’s own version.', lasts: '30 days' },
+  { name: 'Analytics and performance cookies', where: 'The GTM site and Pipemouse applications', purpose: 'Measure visits, usage, performance, and interactions so we can improve our pages, product, and campaigns.', lasts: 'Varies by provider and configuration' },
+  { name: 'Advertising and attribution cookies', where: 'The GTM site and our marketing pages', purpose: 'Measure ad performance, attribute visits and conversions, and help deliver or personalize advertising.', lasts: 'Varies by provider and configuration' },
+  { name: 'Third-party tracking technologies', where: 'Pages that include analytics, advertising, social media, or embedded content', purpose: 'Allow third parties to recognize your browser and collect information about your interactions across sites and sessions.', lasts: 'Varies by provider and configuration' },
 ];
 
 export default function CookiesPage() {
   return (
-    <SitePage title="Cookies" intro="The complete list of cookies Pipemouse sets. There are four, and none of them is for advertising.">
+    <SitePage title="Cookies" intro="Pipemouse uses essential, functional, analytics, advertising, and tracking cookies and similar technologies. This page explains what they do and the choices you have.">
       <h2 id="list">The cookies</h2>
       <div className="site-table-wrap">
         <table>
@@ -44,23 +47,29 @@ export default function CookiesPage() {
         </table>
       </div>
 
-      <h2 id="not">What Pipemouse does not use</h2>
+      <h2 id="advertising">Advertising and tracking</h2>
       <p>
-        Pipemouse sets no advertising cookies and no third-party tracking cookies, and it does not follow visitors across other websites. The public
-        pages of this site set no cookies at all until you sign in.
+        Pipemouse uses standard analytics, advertising, and tracking cookies and similar technologies, including cookies set by third parties.
+        These technologies may collect cookie identifiers, device and browser information, IP addresses, pages visited, referring pages, campaign
+        tags, and interactions with our content or ads. They help us understand usage, measure and attribute conversions, and deliver or personalize
+        advertising.
       </p>
       <p>
-        Content inside a room, such as an embedded web page or a YouTube video, is loaded from its own website, which may set its own cookies
-        under its own policy.
+        Some providers may combine information collected on Pipemouse with information from other websites, apps, or services under their own
+        policies. Content inside a room, such as an embedded web page or a YouTube video, is loaded from its own website, which may also set its
+        own cookies.
       </p>
 
       <h2 id="control">Controlling cookies</h2>
       <p>
-        You can block or delete cookies in your browser’s settings. Without the sign-in cookie you cannot stay signed in. Without the room
-        cookies a room still opens, but a returning visitor is counted as a new one.
+        You can block or delete cookies in your browser’s settings and use any controls offered by your browser or third-party providers. Without
+        the sign-in cookie you cannot stay signed in. Without the room cookies a room still opens, but a returning visitor is counted as a new one.
+        Blocking some third-party cookies can also affect embedded content.
       </p>
       <p>
-        More about what is collected and why is in the <Link href="/privacy">privacy policy</Link>.
+        Depending on where you live, you may have the right to opt out of targeted advertising or certain sharing of personal information. To ask
+        about these choices, <Link href="/contact">contact us</Link>. More about what is collected and why is in the{' '}
+        <Link href="/privacy">privacy policy</Link>.
       </p>
     </SitePage>
   );

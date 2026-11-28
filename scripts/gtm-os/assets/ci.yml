@@ -1,0 +1,56 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: yarn
+
+      - name: Enable corepack
+        run: corepack enable
+
+      - name: Install (immutable)
+        run: yarn install --immutable
+
+      - name: Typecheck
+        run: yarn nx run-many -t typecheck --parallel=3
+
+      - name: Lint
+        run: yarn nx run-many -t lint --parallel=3
+
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: yarn
+
+      - name: Enable corepack
+        run: corepack enable
+
+      - name: Install (immutable)
+        run: yarn install --immutable
+
+      - name: Build product packages
+        run: yarn nx run-many -t build --parallel=2

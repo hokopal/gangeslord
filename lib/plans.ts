@@ -87,7 +87,7 @@ export const regularPriceLabel = (plan: Plan) => (plan.price > 0 && EVERY_PLAN_F
 /** The price to tell machines about: zero while every plan is free. */
 export const currentPrice = (plan: Plan): number => (EVERY_PLAN_FREE ? 0 : plan.price);
 
-export const PRICE_NOTE = `Every plan is free for now — the crossed-out prices are what they will cost later. Starter stays free for good. When paid plans open, they will be billed monthly per workspace, not per person, and can be cancelled at any time.`;
+export const PRICE_NOTE = `Every Rooms plan is free for now. The crossed-out prices are what they will cost later. Starter stays free for good. When paid plans open, they will be billed monthly per workspace, not per person, and can be cancelled at any time.`;
 
 /** The side-by-side table: one row per thing people compare, one value per plan in the order above. */
 export const COMPARISON: { label: string; values: [string, string, string] }[] = [

@@ -26,16 +26,16 @@ export default async function LoginPage({
             <Logo size={26} />
             <span>Pipemouse</span>
           </Link>
-          <Link href="/product" className="login-back">
-            Explore the product <ArrowUpRight size={15} aria-hidden="true" />
+          <Link href="/" className="login-back">
+            Explore platform <ArrowUpRight size={15} aria-hidden="true" />
           </Link>
         </div>
 
         <div className="login-form-content">
           <p className="login-eyebrow">Welcome to Pipemouse</p>
-          <h1 id="login-title">Sign in or start free</h1>
+          <h1 id="login-title">Sign in or create your account</h1>
           <p className="login-sub">
-            Enter your work email and we’ll send you a link. New here? The same link creates your account. Every plan is free.
+            Enter your work email and we’ll send you a secure link. New to Pipemouse? The same link creates your account, then you can choose OS or Rooms.
           </p>
           {error ? (
             <p className="notice notice-error" role="alert">
@@ -58,16 +58,16 @@ export default async function LoginPage({
         </div>
 
         <div className="login-form-foot">
-          <span>Every plan is free. No card required.</span>
+          <span>One secure link for your Pipemouse account. No password needed.</span>
         </div>
       </section>
 
       <section className="login-promo" aria-labelledby="login-promo-title">
         <div className="login-promo-copy">
-          <p className="login-promo-eyebrow">A better buyer experience</p>
-          <h2 id="login-promo-title">Send buyers a room, <span>not a pile of links.</span></h2>
+          <p className="login-promo-eyebrow">The connected go-to-market platform</p>
+          <h2 id="login-promo-title">Connect customer context to <span>buyer engagement.</span></h2>
           <p>
-            Pages, PDFs and videos live in one guided room. Every buyer gets a personal link, and you see exactly what held their attention.
+            Pipemouse brings your CRM, workflows, AI agents, and buyer-facing Rooms into one platform, so every team can act on the same customer story.
           </p>
         </div>
 
@@ -87,20 +87,20 @@ export default async function LoginPage({
             </div>
             <div className="login-room-item">
               <span className="login-room-icon"><FileText size={18} /></span>
-              <div><strong>Pricing &amp; rollout.pdf</strong><span>PDF document</span></div>
+              <div><strong>Implementation overview.pdf</strong><span>PDF document</span></div>
               <span className="login-room-time">4m 05s</span>
             </div>
           </div>
           <div className="login-room-signal">
             <MousePointer2 size={18} />
             <div>
-              <strong>Buyer returned to pricing</strong>
-              <p>Alex opened Pricing &amp; rollout.pdf twice today.</p>
+            <strong>Buyer returned to the overview</strong>
+            <p>Alex opened Implementation overview.pdf twice today.</p>
             </div>
           </div>
         </div>
 
-        <p className="login-promo-note">One link for them. Real buying signals for you.</p>
+        <p className="login-promo-note">Shared context for your team. Clear next steps for every customer.</p>
       </section>
     </main>
   );

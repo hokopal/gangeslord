@@ -2,6 +2,7 @@ import { cookies } from 'next/headers';
 import { after, NextResponse } from 'next/server';
 import { alertFor } from '@/lib/alerts';
 import { syncHubspotActivity } from '@/lib/hubspot-activity';
+import { syncOsActivity } from '@/lib/os-activity';
 import { appOrigin } from '@/lib/origin';
 import { createServerSupabase } from '@/lib/supabase/server';
 import { tooManyRequests, withinLimit } from '@/lib/rate-limit';
@@ -49,7 +50,7 @@ export async function POST(request: Request) {
     const origin = await appOrigin();
     after(async () => {
       await alertFor(data as string, 'link_opened', origin);
-      await syncHubspotActivity(data as string, origin);
+      await Promise.all([syncHubspotActivity(data as string, origin), syncOsActivity(data as string, origin)]);
     });
   }
   const response = NextResponse.json({ session: (data as string | null) ?? null });

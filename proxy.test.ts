@@ -51,7 +51,7 @@ describe('custom domain proxy', () => {
     resolveWorkspaceDomain.mockResolvedValue('acme');
     const app = await proxy(request('/w/acme/settings', 'rooms.example.com'));
     const login = await proxy(request('/login', 'rooms.example.com'));
-    expect(app.headers.get('location')).toBe('https://space.pipemouse.com/w/acme/settings');
+    expect(app.headers.get('location')).toBe('https://rooms.pipemouse.com/w/acme/settings');
     expect(login.headers.get('location')).toBe('https://www.pipemouse.com/login');
   });
 

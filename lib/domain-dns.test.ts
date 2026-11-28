@@ -28,7 +28,9 @@ describe('normalizeDomain', () => {
     'localhost',
     '127.0.0.1',
     'rooms.vercel.app',
+    'os.pipemouse.com',
     'space.pipemouse.com',
+    'rooms.pipemouse.com',
     'rooms.example..com',
     '-rooms.example.com',
   ])('rejects %s', (input) => {

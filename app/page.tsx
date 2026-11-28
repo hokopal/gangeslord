@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
+import { ProductChooser } from '@/components/auth/ProductChooser';
 import { Landing } from '@/components/site/Landing';
 import { onAppHost } from '@/lib/origin';
 import { SITE_DESCRIPTION, SITE_NAME, SITE_TAGLINE } from '@/lib/site';
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
   alternates: { canonical: '/' },
 };
 
-/** Signed-in people go straight to their workspace. Everyone else sees what Pipemouse is. */
+/** Signed-in people choose a product. Everyone else sees what Pipemouse is. */
 export default async function Home() {
   const user = await getUser();
   if (!user) {
@@ -20,6 +21,6 @@ export default async function Home() {
     return <Landing />;
   }
   const workspaces = await listMyWorkspaces();
-  if (workspaces.length === 0) redirect('/onboarding');
-  redirect(`/w/${workspaces[0].slug}/library`);
+  const roomsHref = workspaces.length === 0 ? '/onboarding' : `/w/${workspaces[0].slug}/library`;
+  return <ProductChooser roomsHref={roomsHref} />;
 }

@@ -4,6 +4,7 @@ import {
   apolloContact, CRM_KINDS, instantlyLead, mailchimpMember, parseCrmSettings, salesforceLead, salesforceTask, salesloftPerson, soqlByEmail,
   type CrmKind, type Person,
 } from './crm-core';
+import { checkOsConnection, pushOsSubmission } from './os';
 import { createAdminSupabase, serverSecret } from './supabase/admin';
 
 // Sales and marketing tools, connected with the workspace's own credentials. Everything here runs with
@@ -15,12 +16,12 @@ const SALESLOFT = 'https://api.salesloft.com/v2';
 const INSTANTLY = 'https://api.instantly.ai/api/v2';
 const TIMEOUT = 10_000;
 
-export type CrmStatus = { kind: CrmKind; connected: boolean; hint: string | null; log: { event: string; ok: boolean; detail: string; createdAt: string }[] };
+export type CrmStatus = { kind: CrmKind; connected: boolean; hint: string | null; lastStatus: string | null; lastSentAt: string | null; log: { event: string; ok: boolean; detail: string; createdAt: string }[] };
 
 export async function getCrmStatus(workspaceId: string, kind: CrmKind, withLog = true): Promise<CrmStatus> {
   const admin = createAdminSupabase();
   const [{ data: row }, { data: log }] = await Promise.all([
-    admin.from('workspace_integrations').select('hint').eq('workspace_id', workspaceId).eq('kind', kind).maybeSingle(),
+    admin.from('workspace_integrations').select('hint, last_status, last_sent_at').eq('workspace_id', workspaceId).eq('kind', kind).maybeSingle(),
     withLog
       ? admin.from('integration_log').select('event, ok, detail, created_at').eq('workspace_id', workspaceId).eq('kind', kind).order('created_at', { ascending: false }).limit(20)
       : Promise.resolve({ data: [] }),
@@ -29,6 +30,8 @@ export async function getCrmStatus(workspaceId: string, kind: CrmKind, withLog =
     kind,
     connected: Boolean(row),
     hint: (row?.hint as string | undefined) ?? null,
+    lastStatus: (row?.last_status as string | null | undefined) ?? null,
+    lastSentAt: (row?.last_sent_at as string | null | undefined) ?? null,
     log: ((log ?? []) as { event: string; ok: boolean; detail: string; created_at: string }[]).map((e) => ({ event: e.event, ok: e.ok, detail: e.detail, createdAt: e.created_at })),
   };
 }
@@ -39,7 +42,7 @@ export const listCrmStatuses = (workspaceId: string) => Promise.all(CRM_KINDS.ma
 export async function saveCrm(workspaceId: string, userId: string, kind: CrmKind, values: Record<string, string>): Promise<void> {
   const { secret, hint } = parseCrmSettings(kind, values);
   const { error } = await createAdminSupabase().from('workspace_integrations').upsert({
-    workspace_id: workspaceId, kind, secret_ciphertext: encryptKey(secret, serverSecret()), hint, events: [], updated_by: userId, updated_at: new Date().toISOString(),
+    workspace_id: workspaceId, kind, secret_ciphertext: encryptKey(secret, serverSecret()), hint, events: [], last_status: null, last_sent_at: null, updated_by: userId, updated_at: new Date().toISOString(),
   });
   if (error) throw new Error('unknown');
 }
@@ -178,6 +181,7 @@ async function mailchimpPush(config: Record<string, string>, person: Person): Pr
 
 /** A read-only call per tool that proves the credentials work and can reach what the connector needs. */
 const CHECK: Record<CrmKind, (config: Record<string, string>) => Promise<void>> = {
+  pipemouse_os: (config) => checkOsConnection({ baseUrl: config.baseUrl, apiKey: config.apiKey }),
   apollo: async (config) => {
     const { status } = await apolloFind(config.apiKey, 'connection-check@fello.invalid');
     if (status !== 200) throw new Error(refusal('Apollo', status));
@@ -201,7 +205,8 @@ const CHECK: Record<CrmKind, (config: Record<string, string>) => Promise<void>> 
   },
 };
 
-const PUSH: Record<CrmKind, (config: Record<string, string>, person: Person, room: { name: string; url: string }) => Promise<string>> = {
+const PUSH: Record<CrmKind, (config: Record<string, string>, person: Person, room: { name: string; url: string }, context: { eventId: string }) => Promise<string>> = {
+  pipemouse_os: (config, person, room, context) => pushOsSubmission({ baseUrl: config.baseUrl, apiKey: config.apiKey }, person, room, context.eventId),
   apollo: (config, person) => apolloPush(config.apiKey, person),
   salesforce: salesforcePush,
   salesloft: (config, person) => salesloftPush(config.apiKey, person),
@@ -228,12 +233,12 @@ export async function testCrm(workspaceId: string, kind: CrmKind): Promise<strin
  * Sends a person who filled in a room's form to every sales tool the workspace has connected,
  * and logs how each went. Best-effort: it never throws, so it cannot break the form.
  */
-export async function pushSubmission(workspaceId: string, person: Person, room: { name: string; url: string }): Promise<void> {
+export async function pushSubmission(workspaceId: string, person: Person, room: { name: string; url: string }, eventId = `${person.email}:${room.url}`): Promise<void> {
   for (const kind of CRM_KINDS) {
     try {
       const config = await secrets(workspaceId, kind);
       if (!config) continue;
-      const outcome = await PUSH[kind](config, person, room);
+      const outcome = await PUSH[kind](config, person, room, { eventId });
       await record(workspaceId, kind, 'form submitted', true, outcome);
     } catch (error) {
       const detail = error instanceof Error && !/fetch|abort|timeout/i.test(error.message) ? error.message : 'Could not reach the service';

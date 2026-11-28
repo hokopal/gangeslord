@@ -1,6 +1,7 @@
 import { after } from 'next/server';
 import { alertFor } from '@/lib/alerts';
 import { syncHubspotActivity } from '@/lib/hubspot-activity';
+import { syncOsActivity } from '@/lib/os-activity';
 import { recomputeForSession } from '@/lib/optimize-server';
 import { appOrigin } from '@/lib/origin';
 import { createServerSupabase } from '@/lib/supabase/server';
@@ -39,7 +40,7 @@ export async function POST(request: Request) {
     after(async () => {
       if (outcome === 'threshold') await alertFor(session, 'binge', origin);
       if (type === 'cta_click') await alertFor(session, 'cta_click', origin, { button: typeof meta === 'string' ? meta : undefined });
-      await syncHubspotActivity(session, origin);
+      await Promise.all([syncHubspotActivity(session, origin), syncOsActivity(session, origin)]);
       // New engagement is new evidence: let a self-optimising track learn from it.
       if (outcome === 'threshold') await recomputeForSession(session);
     });

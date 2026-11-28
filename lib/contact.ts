@@ -1,6 +1,6 @@
 import { createAdminSupabase } from './supabase/admin';
 
-export const TOPICS = { general: 'A general question', privacy: 'Privacy or my data', support: 'Help with my account', sales: 'Plans and pricing' } as const;
+export const TOPICS = { general: 'A general question', privacy: 'Privacy or my data', support: 'Help with my account', sales: 'Talk to sales' } as const;
 export type Topic = keyof typeof TOPICS;
 
 export type ContactInput = { name: string; email: string; topic: string; message: string };
