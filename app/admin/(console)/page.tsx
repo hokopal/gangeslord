@@ -4,7 +4,7 @@ import { Stat } from '@/components/ui/Stat';
 import { getPlatformAdmin, platformOverview } from '@/lib/platform';
 
 const formatDate = (iso: string) => new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-const INTEGRATION_LABEL: Record<string, string> = { ai: 'AI', slack: 'Slack', webhook: 'Webhook', hubspot: 'HubSpot' };
+const INTEGRATION_LABEL: Record<string, string> = { ai: 'AI', slack: 'Slack', webhook: 'Webhook', hubspot: 'HubSpot', pipemouse_os: 'Pipemouse OS' };
 
 export default async function AdminDashboard({ searchParams }: { searchParams: Promise<{ q?: string; done?: string }> }) {
   const admin = await getPlatformAdmin();

@@ -8,7 +8,7 @@ export type RowMenuItem = { href: string; label: string; icon: React.ReactNode }
 
 /**
  * A quiet "⋯" row action menu for data tables. Closes on outside pointer,
- * Escape and selection — same interaction contract as the workspace switcher.
+ * Escape and selection, using the same interaction contract as the workspace switcher.
  */
 export function RowMenu({ label, items }: { label: string; items: RowMenuItem[] }) {
   const [open, setOpen] = useState(false);

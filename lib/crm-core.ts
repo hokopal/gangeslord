@@ -1,7 +1,7 @@
 // Sales and marketing tools a workspace can connect with its own credentials, so that people who
 // fill in a room's form appear there. Pure helpers, shared by the settings screen and the server.
 
-export const CRM_KINDS = ['apollo', 'salesforce', 'salesloft', 'instantly', 'mailchimp'] as const;
+export const CRM_KINDS = ['pipemouse_os', 'apollo', 'salesforce', 'salesloft', 'instantly', 'mailchimp'] as const;
 export type CrmKind = (typeof CRM_KINDS)[number];
 export const isCrmKind = (value: unknown): value is CrmKind => typeof value === 'string' && (CRM_KINDS as readonly string[]).includes(value);
 
@@ -9,6 +9,19 @@ type Field = { key: string; label: string; secret: boolean; placeholder: string;
 const API_KEY = (help: string): Field => ({ key: 'apiKey', label: 'API key', secret: true, placeholder: '', help });
 
 export const CRM_INFO: Record<CrmKind, { name: string; summary: string; does: string[]; fields: Field[] }> = {
+  pipemouse_os: {
+    name: 'Pipemouse OS',
+    summary: 'Keep OS people, companies and notes in sync with identified Rooms visitors and lead forms.',
+    does: [
+      'People are matched by email and companies by domain or name, so repeat activity updates the same records.',
+      'Each identified room visit gets one OS note that is rewritten as items, engagement and button clicks arrive.',
+      'Each lead form submission gets its own linked note. Custom form answers stay in Rooms.',
+    ],
+    fields: [
+      { key: 'baseUrl', label: 'OS workspace address', secret: false, placeholder: 'https://os.example.com', help: 'The public HTTPS address of your OS workspace, without a path.' },
+      API_KEY('In OS, open Settings → Developers → API keys and create a key with access to people, companies and notes.'),
+    ],
+  },
   apollo: {
     name: 'Apollo',
     summary: 'Add people who fill in a room’s form to Apollo as contacts.',
@@ -82,6 +95,17 @@ export function parseCrmSettings(kind: CrmKind, values: Record<string, string>):
   const clean = (key: string) => (values[key] ?? '').trim();
   const invalid = new Error('crm_settings_invalid');
   const apiKey = clean('apiKey');
+  if (kind === 'pipemouse_os') {
+    let url: URL;
+    try {
+      url = new URL(clean('baseUrl'));
+    } catch {
+      throw new Error('os_url_invalid');
+    }
+    if (url.protocol !== 'https:' || url.username || url.password || url.pathname !== '/' || url.search || url.hash) throw new Error('os_url_invalid');
+    if (!/^[A-Za-z0-9_.:-]{16,2048}$/.test(apiKey)) throw invalid;
+    return { secret: JSON.stringify({ baseUrl: url.origin, apiKey }), hint: `${url.hostname}, ${ending(apiKey)}` };
+  }
   if (kind === 'apollo' || kind === 'salesloft') {
     if (!/^[A-Za-z0-9_.-]{16,200}$/.test(apiKey)) throw invalid;
     return { secret: JSON.stringify({ apiKey }), hint: ending(apiKey) };

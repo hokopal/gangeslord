@@ -13,8 +13,9 @@ export default function PrivacyPage() {
     <SitePage title="Privacy policy" intro="What Pipemouse collects, why, who sees it, and what you can do about it. Written to be read, not skimmed past.">
       <h2 id="who">Who this covers</h2>
       <p>
-        Pipemouse is a service that lets a company gather content into a room and share it with the people it is selling to. This policy covers two
-        groups: <strong>customers</strong>, who have a Pipemouse account, and <strong>buyers</strong>, who open a room a customer has sent them.
+        Pipemouse is a go-to-market platform that combines CRM, workflows, AI agents, developer tools, and digital sales rooms. This policy covers{' '}
+        <strong>customers</strong> who have a Pipemouse account, <strong>buyers</strong> who open a room a customer has sent them, and{' '}
+        <strong>visitors</strong> who browse our public websites.
       </p>
       <p>
         When a buyer opens a room, Pipemouse handles their information on behalf of the customer who sent it. That customer decides who receives a
@@ -26,7 +27,7 @@ export default function PrivacyPage() {
       <p>From customers:</p>
       <ul>
         <li>Your email address, which is how you sign in, and the name of your workspace.</li>
-        <li>The content you add: links to web pages, uploaded PDFs, video links, snapshots of pages, and the tracks you build from them.</li>
+        <li>The content and customer records you add: companies, contacts, deals, CRM fields, links to web pages, uploaded PDFs, video links, snapshots of pages, and the tracks you build.</li>
         <li>The connections you set up, such as a HubSpot token, a Slack or webhook address, or an AI provider key. These are encrypted before they are stored and are never shown again.</li>
         <li>Contacts you import from HubSpot or enter by hand so that each can be sent a personal link: name, email address, company and any other properties you choose to import.</li>
         <li>Messages you send us through the contact page.</li>
@@ -40,9 +41,15 @@ export default function PrivacyPage() {
         <li>If the room was opened through a personal link, the name, email address and company the customer attached to that link.</li>
         <li>What the visitor chooses to leave: answers to a form in the room, and any comments, questions, notes or drawings. If the customer has connected other tools, form answers are passed on to them.</li>
       </ul>
+      <p>From visitors to our public websites, and through cookies and similar technologies:</p>
+      <ul>
+        <li>Cookie identifiers, device and browser information, and approximate location derived from an IP address by a service provider.</li>
+        <li>Pages visited, links and buttons used, referring pages, campaign tags, and interactions with our content or ads.</li>
+        <li>Information from analytics, advertising, and measurement partners about campaign performance, conversions, and attribution.</li>
+      </ul>
       <p>
-        Pipemouse does not store buyers’ IP addresses in its own records. The companies that host Pipemouse keep standard server logs, which can include IP
-        addresses, for security and reliability.
+        Pipemouse does not store buyers’ IP addresses in its own room engagement records. Our hosting, analytics, advertising, and other service
+        providers may process IP addresses in server logs or for security, analytics, attribution, and advertising.
       </p>
 
       <h2 id="google">Google user data</h2>
@@ -51,7 +58,7 @@ export default function PrivacyPage() {
         <li><strong>What we access:</strong> your name, your email address and your profile picture. Pipemouse asks for nothing else: no email, calendar, contacts or files.</li>
         <li><strong>How we use it:</strong> only to create your Pipemouse account and sign you in to it.</li>
         <li><strong>How we store it:</strong> with the rest of your account record, protected in the same way, for as long as your account exists.</li>
-        <li><strong>Who we share it with:</strong> nobody, apart from the hosting providers listed below that run Pipemouse for us.</li>
+        <li><strong>Who we share it with:</strong> nobody, apart from the service providers that run Pipemouse for us.</li>
       </ul>
       <p>
         Pipemouse’s use of information received from Google APIs follows the Google API Services User Data Policy, including its Limited Use
@@ -64,14 +71,20 @@ export default function PrivacyPage() {
         <li>To send the customer the alerts and CRM updates they have switched on.</li>
         <li>To keep Pipemouse secure, prevent abuse, and fix problems.</li>
         <li>To reply when you contact us.</li>
+        <li>To understand how visitors use our websites and improve our content and product.</li>
+        <li>To measure marketing campaigns, attribute visits and conversions, and deliver or personalize advertising.</li>
       </ul>
-      <p>We do not sell personal information, and we do not use it for advertising.</p>
+      <p>
+        We do not sell customer content or Google user data. We do use cookie identifiers and browsing or interaction information for analytics,
+        advertising, attribution, and campaign measurement. Some of these activities may be considered targeted advertising or sharing under certain
+        privacy laws. See the <Link href="/cookies">cookie policy</Link> for more detail.
+      </p>
 
       <h2 id="share">Who we share it with</h2>
       <p>Companies that run Pipemouse for us:</p>
       <ul>
-        <li>Supabase, which provides the database, sign-in and file storage.</li>
-        <li>Vercel, which hosts the website and application.</li>
+        <li>Cloud hosting, database, authentication, file storage, security, and email providers that operate the service for us.</li>
+        <li>Analytics, advertising, and measurement partners that process cookie identifiers and site or campaign interactions for the purposes described above.</li>
       </ul>
       <p>Services a customer chooses to connect, which receive only what that connection needs:</p>
       <ul>
@@ -102,7 +115,12 @@ export default function PrivacyPage() {
         <Link href="/contact">contact us</Link> and choose “Privacy or my data”.
       </p>
       <p>
-        Pipemouse stores information with hosting providers that may be in a different country from yours. Pipemouse is not intended for children and
+        You can manage cookies through your browser and any controls offered by third-party providers. Depending on where you live, you may also
+        have the right to opt out of targeted advertising or certain sharing of personal information. Contact us to ask about or exercise these
+        choices.
+      </p>
+      <p>
+        Pipemouse stores information with service providers that may be in a different country from yours. Pipemouse is not intended for children and
         should not be used by anyone under 16.
       </p>
 

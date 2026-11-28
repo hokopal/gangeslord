@@ -13,8 +13,8 @@ export default function TermsPage() {
     <SitePage title="Terms of service" intro="The agreement between you and Pipemouse when you use the service.">
       <h2 id="agreement">The agreement</h2>
       <p>
-        By creating an account or using Pipemouse, you agree to these terms. If you use Pipemouse for a company, you agree on that company’s behalf and
-        confirm you are allowed to.
+        By creating an account or using Pipemouse OS, Rooms, or our public websites, you agree to these terms. If you use Pipemouse for a company,
+        you agree on that company’s behalf and confirm you are allowed to.
       </p>
 
       <h2 id="early">Pipemouse is an early version</h2>
@@ -25,14 +25,14 @@ export default function TermsPage() {
 
       <h2 id="account">Your account</h2>
       <p>
-        You sign in with a link sent to your email address, so keep that mailbox secure. You are responsible for what is done through your
-        account and for the people you invite to your workspace. Tell us promptly if you think someone else has access.
+        Keep your sign-in credentials and email mailbox secure. You are responsible for what is done through your account and for the people you
+        invite to your workspace. Tell us promptly if you think someone else has access.
       </p>
 
       <h2 id="content">Your content</h2>
       <p>
-        You keep ownership of the content you add to Pipemouse. You give Pipemouse permission to store it, copy it and display it as needed to run the
-        service for you, including showing it to the people you share rooms with.
+        You keep ownership of the content and customer records you add to Pipemouse. You give Pipemouse permission to store, copy, process, and
+        display them as needed to run the service for you, including showing room content to the people you share rooms with.
       </p>
       <p>
         You confirm that you have the right to use and share everything you add, including web pages you ask Pipemouse to embed or take a snapshot
@@ -62,14 +62,21 @@ export default function TermsPage() {
         charges it makes, including for an AI key you supply, are between you and that service.
       </p>
 
+      <h2 id="cookies">Cookies and tracking</h2>
+      <p>
+        Pipemouse uses essential, functional, analytics, advertising, and tracking cookies and similar technologies as described in our{' '}
+        <Link href="/cookies">cookie policy</Link>. You are responsible for any notices or permissions required for the customer data, third-party
+        content, and buyer engagement tracking you choose to use.
+      </p>
+
       <h2 id="price">Price</h2>
       <p>
-        Every plan is currently free and nothing is charged. Starter stays free for good. Pro and Business will later
-        be paid plans, priced per workspace per month as shown on our pricing page. Nothing is
-        charged unless a workspace admin chooses a paid plan. If you do, payments are taken monthly until
-        you cancel. You can cancel at any time from the Plan page; the plan stays active until the end of the period already paid for, and
-        payments already made are not refunded except where the law requires it. Payments are taken by Paddle, which sells Pipemouse as
-        merchant of record and is responsible for tax and invoices; Paddle’s own terms apply to the purchase.
+        Every Rooms plan is currently free and nothing is charged. Starter stays free for good. Pro and Business will later be paid plans, priced
+        per workspace per month as shown on our pricing page. These prices apply to Rooms, not Pipemouse OS. Any separate Pipemouse OS pricing or
+        terms will be presented when you subscribe. Nothing is charged unless a workspace admin chooses a paid plan. If you do, payments are taken
+        monthly until you cancel. You can cancel at any time from the Plan page; the plan stays active until the end of the period already paid for,
+        and payments already made are not refunded except where the law requires it. Payments are taken by Paddle, which sells Pipemouse as merchant
+        of record and is responsible for tax and invoices; Paddle’s own terms apply to the purchase.
       </p>
 
       <h2 id="leaving">Leaving Pipemouse</h2>

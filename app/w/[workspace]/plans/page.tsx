@@ -34,7 +34,7 @@ export default async function PlansPage({
     <div className="page">
       <h1 className="page-title">Plans</h1>
       <p className="page-subtitle">
-        Named, reusable mutual action plans. Apply one to a track and the steps are copied in — ready to edit for that deal.
+        Named, reusable mutual action plans. Apply one to a track and the steps are copied in, ready to edit for that deal.
       </p>
       {error ? (
         <p className="notice notice-error" role="alert">
@@ -59,7 +59,7 @@ export default async function PlansPage({
 
       {templates.length === 0 ? (
         <p className="hint" style={{ marginTop: 16 }}>
-          No plans yet. A good plan is short — who does what, by when — starting with the obvious three steps.
+          No plans yet. A good plan is short: who does what, by when, starting with the obvious three steps.
         </p>
       ) : (
         templates.map((template) => (

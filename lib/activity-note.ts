@@ -9,6 +9,8 @@ export type VisitSummary = {
   totalItems: number;
   /** Labels of buttons the visitor clicked. */
   buttons: string[];
+  /** Non-private milestones such as a form submission or acceptance. */
+  milestones?: string[];
   sessionUrl: string;
 };
 

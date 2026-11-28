@@ -5,15 +5,17 @@ and buyer rooms in one self-hostable product. It ships from open source and is
 white-labeled for Pipemouse.
 
 - Website: https://www.pipemouse.com
-- App: https://space.pipemouse.com
+- Pipemouse OS: https://space.pipemouse.com
+- Rooms: https://rooms.pipemouse.com
 
 ## What's in the box
 
 - **CRM core** — deals, companies, contacts, pipelines, custom objects and
   views defined as code
 - **Workflows & AI agents** — automate follow-ups, enrichment and handoffs
-- **Buyer-facing surface** — pair with Pipemouse rooms (see the `gangeslord`
-  repo) for mutual action plans, decks and engagement analytics
+- **Rooms** — open the buyer-facing Rooms app inside the OS workspace for
+  mutual action plans, decks and engagement analytics. Set
+  `REACT_APP_ROOMS_BASE_URL` when Rooms runs on a different origin.
 - **GraphQL / REST APIs, webhooks, SDK, CLI** — build on the platform,
   Pipemouse-style
 

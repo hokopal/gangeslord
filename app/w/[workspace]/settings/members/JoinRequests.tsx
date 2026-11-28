@@ -5,7 +5,7 @@ import { decideJoinRequestAction } from './request-actions';
 
 const formatDate = (iso: string) => new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 
-/** People from the company's email domain who have asked to join this workspace. Shows nothing when there are none, or when the read fails — this section must never take the whole page down. */
+/** People from the company's email domain who have asked to join this workspace. Shows nothing when there are none, or when the read fails, so this section never takes the whole page down. */
 export async function JoinRequests({ workspaceId, workspaceSlug }: { workspaceId: string; workspaceSlug: string }) {
   let requests;
   try {

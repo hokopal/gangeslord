@@ -18,6 +18,7 @@ const PLATFORM_HOSTS = new Set([
   'pipemouse.com',
   'www.pipemouse.com',
   'space.pipemouse.com',
+  'rooms.pipemouse.com',
   new URL(SITE_URL).hostname,
   new URL(APP_URL).hostname,
 ]);

@@ -14,16 +14,16 @@ export function DomainSetup({ workspaceSlug, workspaceId, domain }: { workspaceS
       <DnsRecords label="Pipemouse workspace verification" records={[workspaceDnsRecord(domain, workspaceSlug, workspaceId)]} />
 
       <p className="hint domain-pointing-hint">
-        Then point the domain to Vercel. Use the A record for an apex domain such as example.com, or the CNAME for
+        Then point the domain to Pipemouse. Use the A record for an apex domain such as example.com, or the CNAME for
         a subdomain such as rooms.example.com.
       </p>
-      <DnsRecords label="Vercel domain routing" records={vercelPointingRecords(domain)} />
+      <DnsRecords label="Pipemouse domain routing" records={vercelPointingRecords(domain)} />
 
       <form action={connectDomainAction} className="domain-connect-form">
         <input type="hidden" name="workspace" value={workspaceSlug} />
         <input type="hidden" name="domain" value={domain} />
         <SubmitButton className="btn btn-primary" pendingLabel="Connecting…">
-          I&apos;ve added the DNS records — connect domain
+          I&apos;ve added the DNS records. Connect domain
         </SubmitButton>
       </form>
       <p className="hint">DNS changes can take a while to appear. You can return to this page and try again.</p>

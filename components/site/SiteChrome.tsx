@@ -6,7 +6,7 @@ import { LEGAL_UPDATED } from '@/lib/site';
 const START = '/login';
 
 /** The public site's header. `home` uses in-page links; other pages link back to the home page's sections. */
-export function SiteHeader(_props: { home?: boolean }) {
+export function SiteHeader({ home = false }: { home?: boolean }) {
   return (
     <header className="site-nav">
       <Link href="/" className="site-logo" aria-label="Pipemouse home">
@@ -14,9 +14,10 @@ export function SiteHeader(_props: { home?: boolean }) {
         <span>Pipemouse</span>
       </Link>
       <nav aria-label="Sections">
-        <Link href="/product">Product</Link>
+        <Link href={home ? '#platform' : '/#platform'}>Platform</Link>
+        <Link href="/os">OS</Link>
+        <Link href="/product">Rooms</Link>
         <Link href="/use-cases/sales">Use cases</Link>
-        <Link href="/integrations">Integrations</Link>
         <Link href="/pricing">Pricing</Link>
       </nav>
       <div className="site-nav-actions">
@@ -32,7 +33,7 @@ export function SiteHeader(_props: { home?: boolean }) {
 }
 
 const FOOTER_GROUPS: { title: string; paths: string[] }[] = [
-  { title: 'Product', paths: ['/product', '/pricing', '/integrations', '/faq'] },
+  { title: 'Products', paths: ['/os', '/product', '/pricing', '/integrations', '/faq'] },
   { title: 'Use cases', paths: ['/use-cases/marketing', '/use-cases/account-based-marketing', '/use-cases/sales', '/use-cases/revenue-operations'] },
   { title: 'Learn', paths: ['/what-is-a-sales-room', '/guides/track-buyer-engagement', '/compare/sales-room-vs-email-attachments', '/compare/content-room-vs-deal-room'] },
 ];

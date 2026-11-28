@@ -27,15 +27,15 @@ export default async function LoginPage({
             <span>Pipemouse</span>
           </Link>
           <Link href="/product" className="login-back">
-            Explore the product <ArrowUpRight size={15} aria-hidden="true" />
+            Explore Rooms <ArrowUpRight size={15} aria-hidden="true" />
           </Link>
         </div>
 
         <div className="login-form-content">
-          <p className="login-eyebrow">Welcome to Pipemouse</p>
+          <p className="login-eyebrow">Welcome to Pipemouse Rooms</p>
           <h1 id="login-title">Sign in or start free</h1>
           <p className="login-sub">
-            Enter your work email and we’ll send you a link. New here? The same link creates your account. Every plan is free.
+            Enter your work email and we’ll send you a link. New here? The same link creates your Rooms account. Every Rooms plan is currently free.
           </p>
           {error ? (
             <p className="notice notice-error" role="alert">
@@ -58,7 +58,7 @@ export default async function LoginPage({
         </div>
 
         <div className="login-form-foot">
-          <span>Every plan is free. No card required.</span>
+          <span>Every Rooms plan is currently free. No card required.</span>
         </div>
       </section>
 

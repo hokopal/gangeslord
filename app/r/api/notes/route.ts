@@ -1,6 +1,7 @@
 import { after, NextResponse } from 'next/server';
 import { alertFor } from '@/lib/alerts';
 import { appOrigin } from '@/lib/origin';
+import { syncOsActivity } from '@/lib/os-activity';
 import { tooManyRequests, withinLimit } from '@/lib/rate-limit';
 import { isUuid, readJson, rememberVisitor, resolveVisit, type RoomVisit } from '@/lib/room-visit';
 import { createAdminSupabase } from '@/lib/supabase/admin';
@@ -55,7 +56,9 @@ export async function POST(request: Request) {
   // Tell the workspace's alert channels that something was left. Drawings and private notes stay quiet.
   if (body.kind === 'comment' || body.kind === 'question') {
     const origin = await appOrigin();
-    after(() => alertFor(visit.session, 'comment', origin));
+    after(async () => {
+      await Promise.all([alertFor(visit.session, 'comment', origin), syncOsActivity(visit.session, origin, 'comment')]);
+    });
   }
   return reply(visit);
 }

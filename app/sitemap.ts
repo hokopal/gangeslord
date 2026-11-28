@@ -11,7 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${SITE_URL}${p.path}`,
       lastModified: new Date(p.updated),
       changeFrequency: 'monthly' as const,
-      priority: ['/product', '/pricing'].includes(p.path) ? 0.9 : 0.7,
+      priority: ['/os', '/product', '/pricing'].includes(p.path) ? 0.9 : 0.7,
     })),
     { url: `${SITE_URL}/contact`, lastModified, changeFrequency: 'yearly', priority: 0.4 },
     { url: `${SITE_URL}/privacy`, lastModified, changeFrequency: 'yearly', priority: 0.3 },

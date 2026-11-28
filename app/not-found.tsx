@@ -28,19 +28,22 @@ export default function NotFound() {
             <h2 id="not-found-pages">Pages that exist</h2>
             <ul>
               <li>
-                <Link href="/">Home</Link> — what Pipemouse is and where to start.
+                <Link href="/">Home</Link>: what Pipemouse is and where to start.
               </li>
               <li>
-                <Link href="/product">Product</Link> — what a room contains and how buyers open it.
+                <Link href="/os">Pipemouse OS</Link>: the CRM, workflows, AI agents, and developer platform.
               </li>
               <li>
-                <Link href="/pricing">Pricing</Link> — every plan is free today; paid plans are crossed out.
+                <Link href="/product">Rooms</Link>: personalized buyer rooms and engagement analytics.
               </li>
               <li>
-                <Link href="/faq">Questions people ask first</Link> — answers about pricing, logins and data.
+                <Link href="/pricing">Rooms pricing</Link>: every Rooms plan is free today; future prices are crossed out.
               </li>
               <li>
-                <Link href="/contact">Contact</Link> — a person replies, usually the same day.
+                <Link href="/faq">Platform questions</Link>: answers about products, pricing, logins, and data.
+              </li>
+              <li>
+                <Link href="/contact">Contact</Link>: a person replies, usually the same day.
               </li>
             </ul>
           </section>
@@ -48,11 +51,11 @@ export default function NotFound() {
       </main>
 
       <section className="site-close">
-        <h2>Your next buyer is going to get a link. Make it a room.</h2>
+        <h2>Make your next customer interaction count.</h2>
         <Link href="/login" className="site-btn site-btn-lamp site-btn-lg">
-          Start free
+          Start with Rooms free
         </Link>
-        <p>Every plan is free. No card needed.</p>
+        <p>Every Rooms plan is currently free. No credit card required.</p>
       </section>
       <SiteFooter />
     </div>

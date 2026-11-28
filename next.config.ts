@@ -2,12 +2,13 @@ import type { NextConfig } from 'next';
 
 // Sent with every response. Rooms show other sites' pages in frames, so what Pipemouse may load
 // is left open; what is locked down is who may frame Pipemouse, and the browser features it never uses.
+const osOrigin = new URL(process.env.PIPEMPOUSE_OS_URL ?? 'https://space.pipemouse.com').origin;
+
 const securityHeaders = [
   { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
-  // Only Pipemouse itself may put its pages in a frame, which stops click-hijacking of the app.
-  { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+  // CSP frame-ancestors replaces X-Frame-Options here because it can name the one trusted OS origin.
   // Forms may only post to Pipemouse, or be sent on to Paddle's billing page.
-  { key: 'Content-Security-Policy', value: "frame-ancestors 'self'; base-uri 'self'; form-action 'self' https://*.paddle.com; object-src 'none'" },
+  { key: 'Content-Security-Policy', value: `frame-ancestors 'self' ${osOrigin}; base-uri 'self'; form-action 'self' https://*.paddle.com; object-src 'none'` },
   { key: 'X-Content-Type-Options', value: 'nosniff' },
   // Other sites learn only that a visitor came from Pipemouse, never which room.
   { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
